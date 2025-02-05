@@ -15,7 +15,6 @@ impl ExpVec {
   op_equal(Self, Self) -> Bool
   op_get(Self, Int) -> Int
   shrink(Self) -> Unit
-  split_at(Self, Int) -> (Self, Self)
 }
 
 type Polynomial
