@@ -56,10 +56,12 @@ pub fn to_poly[A : Eq + Semiring](arr : Array[A]) -> Polynomial[A] {
 }
 
 ///|
-impl[A : Eq + Semiring] Semiring for Polynomial[A] with zero() { { terms: [] } }
+impl[A : Default + Eq + Semiring] Semiring for Polynomial[A] with zero() {
+  { terms: [] }
+}
 
 ///|
-impl[A : Eq + Semiring] Semiring for Polynomial[A] with one() {
+impl[A : Default + Eq + Semiring] Semiring for Polynomial[A] with one() {
   if A::one() == A::zero() {
     { terms: [] }
   } else {
@@ -68,7 +70,7 @@ impl[A : Eq + Semiring] Semiring for Polynomial[A] with one() {
 }
 
 ///|
-impl[A : Eq + Semiring] Semiring for Polynomial[A] with op_mul(xs, ys) {
+impl[A : Default + Eq + Semiring] Semiring for Polynomial[A] with op_mul(xs, ys) {
   let lx = xs.terms.length()
   let ly = ys.terms.length()
   let poly = Polynomial::empty(cap=lx + ly - 1)
@@ -81,7 +83,7 @@ impl[A : Eq + Semiring] Semiring for Polynomial[A] with op_mul(xs, ys) {
 }
 
 ///|
-impl[A : Eq + Semiring] Semiring for Polynomial[A] with op_add(xs, ys) {
+impl[A : Default + Eq + Semiring] Semiring for Polynomial[A] with op_add(xs, ys) {
   let lx = xs.terms.length()
   let ly = ys.terms.length()
   let l_max = @math.maximum(lx, ly)
@@ -96,17 +98,17 @@ impl[A : Eq + Semiring] Semiring for Polynomial[A] with op_add(xs, ys) {
 }
 
 ///| Return the zero polynomial.
-pub fn Polynomial::empty[A](cap~ : Int) -> Polynomial[A] {
-  { terms: unsafe_array_make(cap) }
+pub fn Polynomial::empty[A : Default](cap~ : Int) -> Polynomial[A] {
+  { terms: Array::make(cap, A::default()) }
 }
 
-
+///|
 fn Polynomial::from_array[A](terms : Array[A]) -> Polynomial[A] {
   { terms, }
 }
 
 ///|
-pub fn convolution[A : Semiring](
+pub fn convolution[A : Default + Semiring](
   self : Polynomial[A],
   other : Polynomial[A]
 ) -> Polynomial[A] {
@@ -123,7 +125,7 @@ pub fn convolution[A : Semiring](
 }
 
 ///|
-pub fn var[A : Eq + Semiring]() -> Polynomial[A] {
+pub fn var[A : Default + Eq + Semiring]() -> Polynomial[A] {
   if A::one() == A::zero() {
     Polynomial::zero()
   } else {
@@ -132,7 +134,9 @@ pub fn var[A : Eq + Semiring]() -> Polynomial[A] {
 }
 
 ///|
-pub fn coe[A : Eq + Semiring + HomomorphismNat](n : Int) -> Polynomial[A] {
+pub fn coe[A : Default + Eq + Semiring + HomomorphismNat](
+  n : Int
+) -> Polynomial[A] {
   match n {
     0 => Polynomial::zero()
     n => { terms: [A::from_nat(n)] }
