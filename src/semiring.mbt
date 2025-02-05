@@ -1,5 +1,4 @@
-///|
-typealias Complex = @luna_complex.Complex
+
 
 ///|
 trait Semiring {
