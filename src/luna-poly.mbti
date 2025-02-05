@@ -1,0 +1,37 @@
+package KCN-judu/luna-poly
+
+// Values
+fn coe[A : Eq + Semiring + HomomorphismNat](Int) -> Polynomial[A]
+
+fn to_poly[A : Eq + Semiring](Array[A]) -> Polynomial[A]
+
+fn var[A : Eq + Semiring]() -> Polynomial[A]
+
+// Types and methods
+type ExpVec
+impl ExpVec {
+  length(Self) -> Int
+  new(exp_vec~ : Array[Int] = .., arity~ : Int = ..) -> Self
+  op_equal(Self, Self) -> Bool
+  op_get(Self, Int) -> Int
+  shrink(Self) -> Unit
+  split_at(Self, Int) -> (Self, Self)
+}
+
+type Polynomial
+impl Polynomial {
+  empty[A : Default](cap~ : Int) -> Self[A]
+}
+impl[V : Compare] Compare for Polynomial[V]
+impl[V : Eq] Eq for Polynomial[V]
+
+type SparsePolynomial
+impl[T : Eq] Eq for SparsePolynomial[T]
+
+// Type aliases
+
+// Traits
+trait HomomorphismNat
+
+trait Semiring
+

@@ -71,13 +71,13 @@ impl[A : Eq + Semiring] Semiring for Polynomial[A] with one() {
 impl[A : Eq + Semiring] Semiring for Polynomial[A] with op_mul(xs, ys) {
   let lx = xs.terms.length()
   let ly = ys.terms.length()
-  let poly = Polynomial::empty(cap=lx + ly - 1)
+  let poly = Array::make(lx + ly - 1, A::zero())
   for i in 0..<lx {
     for j in 0..<ly {
-      poly.terms[i + j] = poly.terms[i + j] + xs.terms[i] * ys.terms[j]
+      poly[i + j] = poly[i + j] + xs.terms[i] * ys.terms[j]
     }
   }
-  poly
+  { terms: poly }
 }
 
 ///|
@@ -87,39 +87,25 @@ impl[A : Eq + Semiring] Semiring for Polynomial[A] with op_add(xs, ys) {
   let l_max = @math.maximum(lx, ly)
   let l_min = @math.minimum(lx, ly)
   let larger = if ly >= lx { ys } else { xs }
-  let poly = Polynomial::empty(cap=l_max)
-  for i in 0..<l_min {
-    poly.terms[i] = xs.terms[i] + ys.terms[i]
+  {
+    terms: Array::makei(l_max, fn(i) {
+      if i < l_min {
+        xs.terms[i] + ys.terms[i]
+      } else {
+        larger.terms[i]
+      }
+    }),
   }
-  Array::unsafe_blit(poly.terms, l_min, larger.terms, l_min, l_max - l_min)
-  poly
 }
 
 ///| Return the zero polynomial.
-pub fn Polynomial::empty[A](cap~ : Int) -> Polynomial[A] {
-  { terms: unsafe_array_make(cap) }
-}
-
-
-fn Polynomial::from_array[A](terms : Array[A]) -> Polynomial[A] {
-  { terms, }
+pub fn Polynomial::empty[A : Default](cap~ : Int) -> Polynomial[A] {
+  { terms: Array::make(cap, A::default()) }
 }
 
 ///|
-pub fn convolution[A : Semiring](
-  self : Polynomial[A],
-  other : Polynomial[A]
-) -> Polynomial[A] {
-  let l1 = self.terms.length()
-  let l2 = other.terms.length()
-  let cap = l1 + l2 - 1
-  let poly = Polynomial::empty(cap~)
-  for i in 0..<l1 {
-    for j in 0..<l2 {
-      poly.terms[i + j] = poly.terms[i + j] + self.terms[i] * other.terms[j]
-    }
-  }
-  poly
+fn Polynomial::from_array[A](terms : Array[A]) -> Polynomial[A] {
+  { terms, }
 }
 
 ///|
@@ -139,7 +125,7 @@ pub fn coe[A : Eq + Semiring + HomomorphismNat](n : Int) -> Polynomial[A] {
   }
 }
 
-test "polynomial" {
+test "dense polynomial" {
   let x = var
   let p1 = to_poly([1, 2, 3])
   inspect!(p1, content="1 + 2x^1 + 3x^2")
