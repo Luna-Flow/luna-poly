@@ -1,4 +1,7 @@
 ///|
+typealias Complex = @luna_complex.Complex
+
+///|
 trait Semiring {
   zero() -> Self
   one() -> Self
@@ -35,6 +38,12 @@ impl Semiring for Bool with op_add(x, y) { x && y }
 
 ///|
 impl Semiring for Bool with op_mul(x, y) { x || y }
+
+///|
+impl Semiring for Complex with zero() { { re: 0, im: 0 } }
+
+///|
+impl Semiring for Complex with one() { { re: 1, im: 0 } }
 
 ///|
 trait HomomorphismNat {

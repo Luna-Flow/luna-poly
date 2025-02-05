@@ -125,7 +125,7 @@ pub fn coe[A : Eq + Semiring + HomomorphismNat](n : Int) -> Polynomial[A] {
   }
 }
 
-test "polynomial" {
+test "dense polynomial" {
   let x = var
   let p1 = to_poly([1, 2, 3])
   inspect!(p1, content="1 + 2x^1 + 3x^2")
