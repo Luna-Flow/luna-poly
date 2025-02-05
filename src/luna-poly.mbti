@@ -1,10 +1,31 @@
 package KCN-judu/luna-poly
 
+alias @KCN-judu/luna-complex/complex as @complex
+
 // Values
 
 // Types and methods
+pub(all) type ExpTerm Array[Int]
+impl ExpTerm {
+  length(Self) -> Int
+  new(exp_vec~ : Array[Int] = .., arity~ : Int = ..) -> Self
+  op_get(Self, Int) -> Int
+  shrink(Self) -> Self
+  split_at(Self, Int) -> (Self, Self)
+}
+impl Show for ExpTerm
+
+type Real
+impl Real {
+  op_add(Self, Self) -> Self
+}
 
 // Type aliases
 
 // Traits
+pub trait Coefficient {
+  op_add(Self, Self) -> Self
+  to_complex(Self) -> @complex.Complex
+  to_real(Self) -> Real
+}
 
