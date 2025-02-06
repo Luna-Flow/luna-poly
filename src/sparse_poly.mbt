@@ -51,7 +51,7 @@ fn ExpVec::pop(self : ExpVec) -> Int? {
 
 ///|
 pub fn ExpVec::shrink(self : ExpVec) -> Unit {
-  for i = self.length() - 1; self[i] == 0; i = i + 1 {
+  for i = self.length() - 1; self[i] == 0 && not(self.is_empty()); i = i + 1 {
     let _ = self.pop()
 
   }
@@ -105,37 +105,62 @@ struct SparsePolynomial[V] {
 }
 
 ///|
-pub fn SparsePolynomial::new[V : Semiring]() -> SparsePolynomial[V] {
+pub fn SparsePolynomial::new[V : Semiring + Eq]() -> SparsePolynomial[V] {
   let terms : Map[ExpVec, V] = Map::new()
   terms.set([], V::zero())
   { terms, }
 }
 
 ///|
-pub fn SparsePolynomial::add_term[V : Semiring](
+pub fn SparsePolynomial::add_term[V : Semiring + Eq](
   self : SparsePolynomial[V],
   exp_vec : ExpVec,
   coefficient : V
 ) -> Unit {
   let val = self.terms.get(exp_vec)
   match val {
-    Some(curr_val) => self.terms.set(exp_vec, curr_val + coefficient)
+    Some(curr_val) =>
+      if curr_val + coefficient == V::zero() {
+        if self.terms.size() > 1 {
+          self.terms.remove(exp_vec)
+        } else {
+          self.terms.remove(exp_vec)
+          self.terms.set([], V::zero())
+        }
+      } else {
+        self.terms.set(exp_vec, curr_val + coefficient)
+      }
     None => self.terms.set(exp_vec, coefficient)
   }
 }
 
 ///|
-pub fn SparsePolynomial::mul_term[V : Semiring](
+pub fn SparsePolynomial::mul_term[V : Semiring + Eq](
   self : SparsePolynomial[V],
   exp_vec : ExpVec,
   coefficient : V
 ) -> Unit {
-  for x in self.terms {
-    let (curr_key, curr_val) = x
-    if not(exp_vec.is_empty()) {
-      self.terms.remove(curr_key)
+  if coefficient == V::zero() {
+    self.terms.clear()
+    self.terms.set([], V::zero())
+  } else if exp_vec.is_empty() {
+    for x in self.terms {
+      let (curr_key, curr_val) = x
+      self.terms.set(curr_key, curr_val * coefficient)
     }
-    self.terms.set(curr_key + exp_vec, curr_val * coefficient)
+  } else {
+    let temp : Map[ExpVec, V] = Map::new()
+    for x in self.terms {
+      let (curr_key, curr_val) = x
+      if curr_val != V::zero() {
+        temp.set(curr_key + exp_vec, curr_val * coefficient)
+      }
+    }
+    self.terms.clear()
+    for x in temp {
+      let (key, val) = x
+      self.terms.set(key, val)
+    }
   }
 }
 
