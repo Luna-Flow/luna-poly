@@ -58,6 +58,11 @@ pub fn ExpVec::shrink(self : ExpVec) -> Unit {
 }
 
 ///|
+pub fn op_set(self : ExpVec, i : Int, v : Int) -> Unit {
+  self._[i] = v
+}
+
+///|
 pub fn ExpVec::op_equal(self : ExpVec, other : ExpVec) -> Bool {
   self.shrink()
   other.shrink()
@@ -65,6 +70,71 @@ pub fn ExpVec::op_equal(self : ExpVec, other : ExpVec) -> Bool {
 }
 
 ///|
-struct SparsePolynomial[T] {
-  terms : Map[ExpVec, T]
-} derive(Eq)
+pub fn ExpVec::is_empty(self : ExpVec) -> Bool {
+  self._.is_empty()
+}
+
+///|
+fn ExpVec::copy(self : ExpVec) -> ExpVec {
+  let exp_vec = self._.copy()
+  exp_vec
+}
+
+///|
+fn ExpVec::op_add(self : ExpVec, other : ExpVec) -> ExpVec {
+  if self.length() >= other.length() {
+    let res = self.copy()
+    for i in 0..<other.length() {
+      res[i] = res[i] + other[i]
+    }
+    res.shrink()
+    res
+  } else {
+    let res = other.copy()
+    for i in 0..<self.length() {
+      res[i] = res[i] + self[i]
+    }
+    res.shrink()
+    res
+  }
+}
+
+///|
+struct SparsePolynomial[V] {
+  terms : Map[ExpVec, V]
+}
+
+///|
+pub fn SparsePolynomial::new[V : Semiring]() -> SparsePolynomial[V] {
+  let terms : Map[ExpVec, V] = Map::new()
+  terms.set([], V::zero())
+  { terms, }
+}
+
+///|
+pub fn SparsePolynomial::add_term[V : Semiring](
+  self : SparsePolynomial[V],
+  exp_vec : ExpVec,
+  coefficient : V
+) -> Unit {
+  let val = self.terms.get(exp_vec)
+  match val {
+    Some(curr_val) => self.terms.set(exp_vec, curr_val + coefficient)
+    None => self.terms.set(exp_vec, coefficient)
+  }
+}
+
+///|
+pub fn SparsePolynomial::mul_term[V : Semiring](
+  self : SparsePolynomial[V],
+  exp_vec : ExpVec,
+  coefficient : V
+) -> Unit {
+  for x in self.terms {
+    let (curr_key, curr_val) = x
+    if not(exp_vec.is_empty()) {
+      self.terms.remove(curr_key)
+    }
+    self.terms.set(curr_key + exp_vec, curr_val * coefficient)
+  }
+}
