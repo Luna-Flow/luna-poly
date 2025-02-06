@@ -66,7 +66,7 @@ pub fn op_set(self : ExpVec, i : Int, v : Int) -> Unit {
 pub fn ExpVec::op_equal(self : ExpVec, other : ExpVec) -> Bool {
   self.shrink()
   other.shrink()
-  self == other
+  self._ == other._
 }
 
 ///|
@@ -137,4 +137,12 @@ pub fn SparsePolynomial::mul_term[V : Semiring](
     }
     self.terms.set(curr_key + exp_vec, curr_val * coefficient)
   }
+}
+
+test "sparse polynomial" {
+  let ev_1 = ExpVec::new(exp_vec=[1, 2, 3])
+  let ev_2 = ExpVec::new(exp_vec=[1, 2, 3, 4])
+  assert_false!(ev_1 == ev_2)
+  let _ = ev_2.pop()
+  assert_true!(ev_1 == ev_2)
 }
