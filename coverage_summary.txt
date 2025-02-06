@@ -1,4 +1,0 @@
-src/dense_poly.mbt: 21/34
-src/semiring.mbt: 3/13
-src/sparse_poly.mbt: 0/23
-Total: 24/70

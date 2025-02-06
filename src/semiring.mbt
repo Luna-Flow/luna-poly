@@ -1,7 +1,4 @@
 ///|
-typealias Complex = @luna_complex.Complex
-
-///|
 trait Semiring {
   zero() -> Self
   one() -> Self

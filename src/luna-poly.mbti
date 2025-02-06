@@ -10,12 +10,13 @@ fn var[A : Eq + Semiring]() -> Polynomial[A]
 // Types and methods
 type ExpVec
 impl ExpVec {
+  is_empty(Self) -> Bool
   length(Self) -> Int
   new(exp_vec~ : Array[Int] = .., arity~ : Int = ..) -> Self
   op_equal(Self, Self) -> Bool
   op_get(Self, Int) -> Int
+  op_set(Self, Int, Int) -> Unit
   shrink(Self) -> Unit
-  split_at(Self, Int) -> (Self, Self)
 }
 
 type Polynomial
@@ -26,7 +27,11 @@ impl[V : Compare] Compare for Polynomial[V]
 impl[V : Eq] Eq for Polynomial[V]
 
 type SparsePolynomial
-impl[T : Eq] Eq for SparsePolynomial[T]
+impl SparsePolynomial {
+  add_term[V : Semiring](Self[V], ExpVec, V) -> Unit
+  mul_term[V : Semiring](Self[V], ExpVec, V) -> Unit
+  new[V : Semiring]() -> Self[V]
+}
 
 // Type aliases
 
