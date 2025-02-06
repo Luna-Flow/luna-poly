@@ -1,5 +1,3 @@
-
-
 ///|
 trait Semiring {
   zero() -> Self
