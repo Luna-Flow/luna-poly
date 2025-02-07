@@ -3,6 +3,10 @@ package KCN-judu/luna-poly
 // Values
 fn coe[A : Eq + Semiring + HomomorphismNat](Int) -> Polynomial[A]
 
+fn is_zero[A : Semiring + Eq](A) -> Bool
+
+fn monomial[A : Eq + Semiring](Int, A) -> Polynomial[A]
+
 fn to_poly[A : Eq + Semiring](Array[A]) -> Polynomial[A]
 
 fn var[A : Eq + Semiring]() -> Polynomial[A]
@@ -12,31 +16,51 @@ type ExpVec
 impl ExpVec {
   is_empty(Self) -> Bool
   length(Self) -> Int
-  new(exp_vec~ : Array[Int] = .., arity~ : Int = ..) -> Self
   op_equal(Self, Self) -> Bool
   op_get(Self, Int) -> Int
   op_set(Self, Int, Int) -> Unit
-  shrink(Self) -> Unit
 }
 
 type Polynomial
 impl Polynomial {
-  empty[A : Default](cap~ : Int) -> Self[A]
+  derivative[A : HomomorphismNat + Eq + Semiring](Self[A]) -> Self[A]
+  empty[A : Semiring](cap~ : Int) -> Self[A]
+  eval[A : Semiring](Self[A], A) -> A
+  fold[A, B](Self[A], (B, A) -> B, init~ : B) -> B
+  karatsuba[A : Eq + Semiring + Inverse](Self[A], Self[A]) -> Self[A]
+  leading[A](Self[A]) -> (Int, A)?
+  length[A](Self[A]) -> Int
+  scale[A : Eq + Semiring](Self[A], Int, A) -> Self[A]
+  substitute[A, B : Semiring](Self[A], (B, A) -> B, init~ : B) -> B
+  substitute_poly[A : Eq + Semiring](Self[A], Self[A]) -> Self[A]
 }
 impl[V : Compare] Compare for Polynomial[V]
 impl[V : Eq] Eq for Polynomial[V]
 
 type SparsePolynomial
 impl SparsePolynomial {
-  add_term[V : Semiring](Self[V], ExpVec, V) -> Unit
-  mul_term[V : Semiring](Self[V], ExpVec, V) -> Unit
-  new[V : Semiring]() -> Self[V]
+  add_inplace[A : Semiring + Eq](Self[A], Self[A]) -> Unit
+  add_term[A : Semiring + Eq](Self[A], (ExpVec, A)) -> Self[A]
+  add_term_inplace[A : Semiring + Eq](Self[A], (ExpVec, A)) -> Unit
+  from_array[A : Semiring + Eq](Array[(ExpVec, A)]) -> Self[A]
+  mul_term[A : Semiring + Eq](Self[A], (ExpVec, A)) -> Self[A]
+  mul_term_inplace[A : Semiring + Eq](Self[A], (ExpVec, A)) -> Unit
+  new[A : Semiring + Eq]() -> Self[A]
+  op_add[A : Semiring + Eq](Self[A], Self[A]) -> Self[A]
+  op_get[A : Semiring + Eq](Self[A], ExpVec) -> A?
+  op_mul[A : Semiring + Eq](Self[A], Self[A]) -> Self[A]
+  size[A : Semiring + Eq](Self[A]) -> Int
 }
+impl[V : Eq] Eq for SparsePolynomial[V]
 
 // Type aliases
 
 // Traits
 trait HomomorphismNat
+
+trait Inverse
+
+trait Monoid
 
 trait Semiring
 
