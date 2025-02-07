@@ -7,6 +7,12 @@ trait Semiring {
 }
 
 ///|
+trait Inverse {
+  op_neg(Self) -> Self
+  op_sub(Self, Self) -> Self
+}
+
+///|
 impl Semiring for Int with zero() { 0 }
 
 ///|
@@ -49,3 +55,8 @@ trait HomomorphismNat {
 
 ///|
 impl HomomorphismNat for Int with from_nat(x) { x }
+
+///|
+pub fn is_zero[A : Semiring + Eq](x : A) -> Bool {
+  x == A::zero()
+}
