@@ -98,26 +98,16 @@ impl[A : Eq + Semiring] Semiring for Polynomial[A] with op_add(xs, ys) {
   }
 }
 
-///|
-impl[A : Inverse] Inverse for Polynomial[A] with op_sub(x, y) {
-  let lx = x.terms.length()
-  let ly = y.terms.length()
-  let l_max = @math.maximum(lx, ly)
-  let l_min = @math.minimum(lx, ly)
-  let larger = if ly >= lx { y } else { x }
-  {
-    terms: Array::makei(l_max, fn(i) {
-      if i < l_min {
-        x.terms[i] - y.terms[i]
-      } else {
-        -larger.terms[i]
-      }
-    }),
-  }
+///| 
+pub fn op_sub[A : Eq + Ring](
+  self : Polynomial[A],
+  other : Polynomial[A]
+) -> Polynomial[A] {
+  self + -other
 }
 
 ///|
-impl[A : Inverse] Inverse for Polynomial[A] with op_neg(x) {
+impl[A : Ring] Ring for Polynomial[A] with op_neg(x) {
   { terms: Array::makei(x.terms.length(), fn(i) { -x.terms[i] }) }
 }
 

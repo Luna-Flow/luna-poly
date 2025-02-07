@@ -2,7 +2,7 @@
 let threshold : Int = 32
 
 ///| Multiply two polynomials using the Karatsuba algorithm.
-pub fn karatsuba[A : Eq + Semiring + Inverse](
+pub fn karatsuba[A : Eq + Semiring + Ring](
   self : Polynomial[A],
   other : Polynomial[A]
 ) -> Polynomial[A] {
@@ -52,7 +52,7 @@ pub fn karatsuba[A : Eq + Semiring + Inverse](
         } else {
           A::zero()
         }
-        zs.terms[k] = z0 + (z11 - (z10 + z12)) + z2
+        zs.terms[k] = z0 + (z11 + -(z10 + z12)) + z2
       }
       zs
     }
