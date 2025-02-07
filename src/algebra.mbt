@@ -7,9 +7,8 @@ trait Semiring {
 }
 
 ///|
-trait Inverse {
+trait Ring: Semiring {
   op_neg(Self) -> Self
-  op_sub(Self, Self) -> Self
 }
 
 ///|
