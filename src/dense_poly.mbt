@@ -1,4 +1,4 @@
-///|
+///| A dense polynomial implementation.
 struct Polynomial[V] {
   terms : Array[V]
 } derive(Eq, Compare)
@@ -42,7 +42,7 @@ fn drop_while_end[A](pred : (A) -> Bool, xs : Array[A]) -> Array[A] {
 }
 
 ///| Return the leading power and coefficient of the polynomial.
-fn leading[A](self : Polynomial[A]) -> (Int, A)? {
+pub fn leading[A](self : Polynomial[A]) -> (Int, A)? {
   if self.terms.is_empty() {
     None
   } else {
@@ -131,21 +131,7 @@ pub fn Polynomial::length[A](self : Polynomial[A]) -> Int {
   self.terms.length()
 }
 
-///|
-fn Polynomial::from_array[A](terms : Array[A]) -> Polynomial[A] {
-  { terms, }
-}
-
-///| Variable `x`.
-pub fn var[A : Eq + Semiring]() -> Polynomial[A] {
-  if is_zero(A::one()) {
-    Polynomial::zero()
-  } else {
-    Polynomial::from_array([A::zero(), A::one()])
-  }
-}
-
-///|
+///| Create a monomial from a power and a coefficient.
 pub fn monomial[A : Eq + Semiring](
   power : Int,
   coefficient : A
@@ -165,12 +151,83 @@ pub fn monomial[A : Eq + Semiring](
   }
 }
 
+///| Evaluate the polynomial at a given point.
+pub fn eval[A : Semiring](self : Polynomial[A], init : A) -> A {
+  self.substitute(A::op_mul, init~)
+}
+
+///|
+pub fn substitute[A, B : Semiring](
+  self : Polynomial[A],
+  f : (B, A) -> B,
+  init~ : B
+) -> B {
+  self.fold(
+    fn { (acc, xn), cn => (acc + f(xn, cn), init * xn) },
+    init=(B::zero(), B::one()),
+  ).0
+}
+
+///| Substitute a polynomial's variable with another polynomial.
+pub fn substitute_poly[A : Eq + Semiring](
+  self : Polynomial[A],
+  x : Polynomial[A]
+) -> Polynomial[A] {
+  self.substitute(fn(poly, x) { scale(poly, 0, x) }, init=x)
+}
+
+///| Multiply a polynomial by a monomial
+pub fn scale[A : Eq + Semiring](
+  self : Polynomial[A],
+  power : Int,
+  coefficient : A
+) -> Polynomial[A] {
+  let len = self.length()
+  let terms = Array::make(power + len, A::zero())
+  for k in 0..<len {
+    terms[k + power] = coefficient * self.terms[k]
+  }
+  to_poly(terms)
+}
+
+///| Get the derivative of the polynomial.
+pub fn derivative[A : HomomorphismNat + Eq + Semiring](
+  self : Polynomial[A]
+) -> Polynomial[A] {
+  let len = self.length()
+  if len == 0 {
+    Polynomial::zero()
+  } else {
+    self.terms[1:].mapi(fn(i, x) { HomomorphismNat::from_nat(i + 1) * x })
+    |> to_poly
+  }
+}
+
+///| Fold over the polynomial.
+pub fn fold[A, B](self : Polynomial[A], f : (B, A) -> B, init~ : B) -> B {
+  self.terms.fold(f, init~)
+}
+
 ///| Coefficient `n`.
 pub fn coe[A : Eq + Semiring + HomomorphismNat](n : Int) -> Polynomial[A] {
   match n {
     0 => Polynomial::zero()
     n => { terms: [A::from_nat(n)] }
   }
+}
+
+///| Variable `x`.
+pub fn var[A : Eq + Semiring]() -> Polynomial[A] {
+  if is_zero(A::one()) {
+    Polynomial::zero()
+  } else {
+    Polynomial::from_array([A::zero(), A::one()])
+  }
+}
+
+///| Internal function to create a polynomial from an array, without dropping zeros.
+fn Polynomial::from_array[A](terms : Array[A]) -> Polynomial[A] {
+  { terms, }
 }
 
 test "dense polynomial" {
@@ -192,8 +249,43 @@ test "dense polynomial" {
 test "inverse" {
   let p1 = to_poly([1, 2, 3])
   let p2 = to_poly([4, 5, 6, 7])
-  let p1n = -p1 
+  let p1n = -p1
   inspect!(p1n, content="-1 + -2x^1 + -3x^2")
   let p3 = p1 - p2
   inspect!(p3, content="-3 + -3x^1 + -3x^2 + -7x^3")
+}
+
+test "eval" {
+  let p1 = to_poly([1, 2, 3])
+  inspect!(eval(p1, 2), content="17")
+  inspect!(eval(p1, 1), content="6")
+}
+
+test "scale" {
+  let p1 = to_poly([1, 2, 3])
+  let p2 = scale(p1, 2, 3)
+  inspect!(p1, content="1 + 2x^1 + 3x^2")
+  inspect!(p2, content="3x^2 + 6x^3 + 9x^4")
+}
+
+test "substitute polynomial" {
+  let p1 = to_poly([1, 2, 3])
+  let p2 = to_poly([2, 3])
+  let p3 = substitute_poly(p1, p2)
+  let p4 = to_poly([1])
+  let p5 = substitute_poly(p1, p4)
+  inspect!(p1, content="1 + 2x^1 + 3x^2")
+  inspect!(p2, content="2 + 3x^1")
+  inspect!(p3, content="17 + 42x^1 + 27x^2")
+  inspect!(p4, content="1")
+  inspect!(p5, content="6")
+}
+
+test "derivative" {
+  let p1 = to_poly([1, 2, 3])
+  let p2 = derivative(p1)
+  let p3 = derivative(p2)
+  inspect!(p1, content="1 + 2x^1 + 3x^2")
+  inspect!(p2, content="2 + 6x^1")
+  inspect!(p3, content="6")
 }
