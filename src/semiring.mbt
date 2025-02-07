@@ -1,5 +1,5 @@
 ///|
-trait Semiring: Show {
+trait Semiring {
   zero() -> Self
   one() -> Self
   op_add(Self, Self) -> Self
