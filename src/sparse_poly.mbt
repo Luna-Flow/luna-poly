@@ -109,6 +109,17 @@ fn SparsePolynomial::copy[A : Semiring + Eq](
 }
 
 ///|
+pub fn SparsePolynomial::from_array[A : Semiring + Eq](
+  arr : Array[(ExpVec, A)]
+) -> SparsePolynomial[A] {
+  let poly = SparsePolynomial::new()
+  for term in arr {
+    poly.add_term_inplace(term)
+  }
+  poly
+}
+
+///|
 pub fn SparsePolynomial::add_term[A : Semiring + Eq](
   self : SparsePolynomial[A],
   term : (ExpVec, A)
@@ -154,7 +165,7 @@ pub fn SparsePolynomial::add_term_inplace[A : Semiring + Eq](
   if self == SparsePolynomial::zero() {
     self.terms.remove(ExpVec::zero())
   }
-  guard self.terms.size() == 0 else { self.set(term) }
+  guard self.terms.size() != 0 else { return self.set(term) }
   let val = self.terms.get(term.0)
   match val {
     Some(curr_val) => {
@@ -178,26 +189,25 @@ pub fn SparsePolynomial::add_term_inplace[A : Semiring + Eq](
 ///|
 pub fn SparsePolynomial::mul_term_inplace[A : Semiring + Eq](
   self : SparsePolynomial[A],
-  exp_vec : ExpVec,
-  coefficient : A
+  term : (ExpVec, A)
 ) -> Unit {
   if self.terms.size() == 1 && self.terms.get([]) == Some(A::zero()) {
     return
   }
-  if coefficient == A::zero() || self.terms.size() == 0 {
+  if term.1 == A::zero() || self.terms.size() == 0 {
     self.terms.clear()
     self.terms.set([], A::zero())
-  } else if exp_vec.is_empty() {
+  } else if term.0.is_empty() {
     for x in self.terms {
       let (curr_key, curr_val) = x
-      self.terms.set(curr_key, curr_val * coefficient)
+      self.terms.set(curr_key, curr_val * term.1)
     }
   } else {
     let temp : Map[ExpVec, A] = Map::new()
     for x in self.terms {
       let (curr_key, curr_val) = x
       if curr_val != A::zero() {
-        temp.set(curr_key + exp_vec, curr_val * coefficient)
+        temp.set(curr_key + term.0, curr_val * term.1)
       }
     }
     self.terms.clear()
@@ -211,18 +221,17 @@ pub fn SparsePolynomial::mul_term_inplace[A : Semiring + Eq](
 ///|
 pub fn SparsePolynomial::mul_term[A : Semiring + Eq](
   self : SparsePolynomial[A],
-  exp_vec : ExpVec,
-  coefficient : A
+  term : (ExpVec, A)
 ) -> SparsePolynomial[A] {
-  if coefficient == A::zero() ||
+  if term.1 == A::zero() ||
     self.terms.size() == 0 ||
     (self.terms.size() == 1 && self.terms.get([]) == Some(A::zero())) {
     SparsePolynomial::zero()
-  } else if exp_vec.is_empty() {
+  } else if term.0.is_empty() {
     let new_terms : Map[ExpVec, A] = Map::new()
     for x in self.terms {
       let (curr_key, curr_val) = x
-      new_terms.set(curr_key, curr_val * coefficient)
+      new_terms.set(curr_key, curr_val * term.1)
     }
     { terms: new_terms }
   } else {
@@ -230,7 +239,7 @@ pub fn SparsePolynomial::mul_term[A : Semiring + Eq](
     for x in self.terms {
       let (curr_key, curr_val) = x
       if curr_val != A::zero() {
-        new_terms.set(curr_key + exp_vec, curr_val * coefficient)
+        new_terms.set(curr_key + term.0, curr_val * term.1)
       }
     }
     { terms: new_terms }
@@ -251,18 +260,47 @@ pub fn SparsePolynomial::op_add[A : Semiring + Eq](
 }
 
 ///|
+pub fn SparsePolynomial::add_inplace[A : Semiring + Eq](
+  self : SparsePolynomial[A],
+  other : SparsePolynomial[A]
+) -> Unit {
+  for x in other.terms {
+    let (key, val) = x
+    self.add_term_inplace((key, val))
+  }
+}
+
+///|
 pub fn SparsePolynomial::op_mul[A : Semiring + Eq](
   self : SparsePolynomial[A],
   other : SparsePolynomial[A]
 ) -> SparsePolynomial[A] {
-  let add_list : Array[Map[ExpVec, A]] = []
-  for x in other.terms {
-    add_list.push(self.add_term((x.0, x.1)).terms)
-  }
-  let mut res = SparsePolynomial::{ terms: add_list[add_list.length() - 1] }
-  let _ = add_list.pop()
-  for x in add_list {
-    res = res + { terms: x }
+  let l_self = self.terms.size()
+  let l_other = other.terms.size()
+  let larger = if l_self >= l_other { self } else { other }
+  let smaller = if l_self >= l_other { other } else { self }
+  let mut res = SparsePolynomial::new()
+  let mut fst = true
+  for x in larger.terms {
+    if fst {
+      res = smaller.mul_term(x)
+      fst = false
+    } else {
+      res.add_inplace(smaller.mul_term(x))
+    }
   }
   res
+}
+
+test "sparse polynomial" {
+  let poly = SparsePolynomial::from_array([
+    (ExpVec::zero(), 1),
+    (ExpVec::from_array([1]), 2),
+    (ExpVec::from_array([2]), 1),
+  ])
+  let x_plus_1 = SparsePolynomial::from_array([
+    (ExpVec::from_array([1]), 1),
+    (ExpVec::zero(), 1),
+  ])
+  assert_eq!(poly, x_plus_1 * x_plus_1)
 }

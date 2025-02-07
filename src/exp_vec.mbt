@@ -43,6 +43,9 @@ fn ExpVec::split_at(self : ExpVec, i : Int) -> (ExpVec, ExpVec) {
 
 ///|
 fn ExpVec::shrink(self : ExpVec) -> Unit {
+  if self.is_empty() {
+    return
+  }
   for i = self.length() - 1; self[i] == 0 && not(self.is_empty()); i = i + 1 {
     let _ = self.pop()
 
