@@ -23,11 +23,7 @@ impl Monoid for ExpVec with op_mul(self : ExpVec, other : ExpVec) -> ExpVec {
 
 ///|
 fn ExpVec::inverse(self : ExpVec) -> ExpVec {
-  let new_vec : Array[Int] = []
-  for x in self._ {
-    new_vec.push(-x)
-  }
-  new_vec
+  self._.map(fn(x : Int) -> Int { -x })
 }
 
 ///|
