@@ -20,6 +20,7 @@ impl ExpVec {
   op_get(Self, Int) -> Int
   op_set(Self, Int, Int) -> Unit
 }
+impl Show for ExpVec
 
 type Polynomial
 impl Polynomial {
@@ -41,11 +42,11 @@ impl[V : Eq] Eq for Polynomial[V]
 type SparsePolynomial
 impl SparsePolynomial {
   add_inplace[A : Semiring + Eq](Self[A], Self[A]) -> Unit
-  add_term[A : Semiring + Eq](Self[A], (ExpVec, A)) -> Self[A]
-  add_term_inplace[A : Semiring + Eq](Self[A], (ExpVec, A)) -> Unit
-  from_array[A : Semiring + Eq](Array[(ExpVec, A)]) -> Self[A]
-  mul_term[A : Semiring + Eq](Self[A], (ExpVec, A)) -> Self[A]
-  mul_term_inplace[A : Semiring + Eq](Self[A], (ExpVec, A)) -> Unit
+  add_term[A : Semiring + Eq](Self[A], Term[A]) -> Self[A]
+  add_term_inplace[A : Semiring + Eq](Self[A], Term[A]) -> Unit
+  from_array[A : Semiring + Eq](Array[Term[A]]) -> Self[A]
+  mul_term[A : Semiring + Eq](Self[A], Term[A]) -> Self[A]
+  mul_term_inplace[A : Semiring + Eq](Self[A], Term[A]) -> Unit
   new[A : Semiring + Eq]() -> Self[A]
   op_add[A : Semiring + Eq](Self[A], Self[A]) -> Self[A]
   op_get[A : Semiring + Eq](Self[A], ExpVec) -> A?
@@ -64,6 +65,7 @@ impl Term {
   pair[A : Semiring](ExpVec, A) -> Self[A]
   zero[A : Semiring + Eq]() -> Self[A]
 }
+impl[A : Show] Show for Term[A]
 
 // Type aliases
 
