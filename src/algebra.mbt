@@ -66,7 +66,7 @@ trait Monoid {
   op_mul(Self, Self) -> Self
 }
 
-trait AbelianGroup: Monoid{
+///|
+trait AbelianGroup: Monoid {
   op_neg(Self) -> Self
 }
-

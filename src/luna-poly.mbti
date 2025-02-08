@@ -27,9 +27,10 @@ impl Polynomial {
   empty[A : Semiring](cap~ : Int) -> Self[A]
   eval[A : Semiring](Self[A], A) -> A
   fold[A, B](Self[A], (B, A) -> B, init~ : B) -> B
-  karatsuba[A : Eq + Semiring + Inverse](Self[A], Self[A]) -> Self[A]
+  karatsuba[A : Eq + Semiring + Ring](Self[A], Self[A]) -> Self[A]
   leading[A](Self[A]) -> (Int, A)?
   length[A](Self[A]) -> Int
+  op_sub[A : Eq + Ring](Self[A], Self[A]) -> Self[A]
   scale[A : Eq + Semiring](Self[A], Int, A) -> Self[A]
   substitute[A, B : Semiring](Self[A], (B, A) -> B, init~ : B) -> B
   substitute_poly[A : Eq + Semiring](Self[A], Self[A]) -> Self[A]
@@ -53,14 +54,27 @@ impl SparsePolynomial {
 }
 impl[V : Eq] Eq for SparsePolynomial[V]
 
+type Term
+impl Term {
+  combine_like_terms[A : Semiring + Eq](Self[A], Self[A]) -> Self[A]
+  is_like_term[A : Semiring + Eq](Self[A], Self[A]) -> Bool
+  one[A : Semiring + Eq]() -> Self[A]
+  op_equal[A : Semiring + Eq](Self[A], Self[A]) -> Bool
+  op_mul[A : Semiring + Eq](Self[A], Self[A]) -> Self[A]
+  pair[A : Semiring](ExpVec, A) -> Self[A]
+  zero[A : Semiring + Eq]() -> Self[A]
+}
+
 // Type aliases
 
 // Traits
+trait AbelianGroup
+
 trait HomomorphismNat
 
-trait Inverse
-
 trait Monoid
+
+trait Ring
 
 trait Semiring
 
