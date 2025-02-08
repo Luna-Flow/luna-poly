@@ -293,9 +293,6 @@ test "sparse polynomial" {
   let x = x_fn()
   let x_square = x * x
   let poly = SparsePolynomial::from_array([one, two * x, x_square])
-  let x_plus_1 = SparsePolynomial::from_array([
-    (ExpVec::from_array([1]), 1),
-    (ExpVec::one(), 1),
-  ])
+  let x_plus_1 = SparsePolynomial::from_array([x, one])
   assert_eq!(poly, x_plus_1 * x_plus_1)
 }

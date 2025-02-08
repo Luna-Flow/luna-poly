@@ -20,7 +20,6 @@ impl ExpVec {
   op_get(Self, Int) -> Int
   op_set(Self, Int, Int) -> Unit
 }
-impl Show for ExpVec
 
 type Polynomial
 impl Polynomial {
@@ -65,7 +64,6 @@ impl Term {
   pair[A : Semiring](ExpVec, A) -> Self[A]
   zero[A : Semiring + Eq]() -> Self[A]
 }
-impl[A : Show] Show for Term[A]
 
 // Type aliases
 
