@@ -59,3 +59,14 @@ impl HomomorphismNat for Int with from_nat(x) { x }
 pub fn is_zero[A : Semiring + Eq](x : A) -> Bool {
   x == A::zero()
 }
+
+///|
+trait Monoid {
+  one() -> Self
+  op_mul(Self, Self) -> Self
+}
+
+trait AbelianGroup: Monoid{
+  op_neg(Self) -> Self
+}
+
