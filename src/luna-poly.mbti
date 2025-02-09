@@ -14,7 +14,6 @@ fn var[A : Eq + Semiring]() -> Polynomial[A]
 // Types and methods
 type ExpVec
 impl ExpVec {
-  is_empty(Self) -> Bool
   length(Self) -> Int
   op_equal(Self, Self) -> Bool
   op_get(Self, Int) -> Int
@@ -37,33 +36,6 @@ impl Polynomial {
 }
 impl[V : Compare] Compare for Polynomial[V]
 impl[V : Eq] Eq for Polynomial[V]
-
-type SparsePolynomial
-impl SparsePolynomial {
-  add_inplace[A : Semiring + Eq](Self[A], Self[A]) -> Unit
-  add_term[A : Semiring + Eq](Self[A], Term[A]) -> Self[A]
-  add_term_inplace[A : Semiring + Eq](Self[A], Term[A]) -> Unit
-  from_array[A : Semiring + Eq](Array[Term[A]]) -> Self[A]
-  mul_term[A : Semiring + Eq](Self[A], Term[A]) -> Self[A]
-  mul_term_inplace[A : Semiring + Eq](Self[A], Term[A]) -> Unit
-  new[A : Semiring + Eq]() -> Self[A]
-  op_add[A : Semiring + Eq](Self[A], Self[A]) -> Self[A]
-  op_get[A : Semiring + Eq](Self[A], ExpVec) -> A?
-  op_mul[A : Semiring + Eq](Self[A], Self[A]) -> Self[A]
-  size[A : Semiring + Eq](Self[A]) -> Int
-}
-impl[V : Eq] Eq for SparsePolynomial[V]
-
-type Term
-impl Term {
-  combine_like_terms[A : Semiring + Eq](Self[A], Self[A]) -> Self[A]
-  is_like_term[A : Semiring + Eq](Self[A], Self[A]) -> Bool
-  one[A : Semiring + Eq]() -> Self[A]
-  op_equal[A : Semiring + Eq](Self[A], Self[A]) -> Bool
-  op_mul[A : Semiring + Eq](Self[A], Self[A]) -> Self[A]
-  pair[A : Semiring](ExpVec, A) -> Self[A]
-  zero[A : Semiring + Eq]() -> Self[A]
-}
 
 // Type aliases
 
