@@ -123,18 +123,16 @@ impl Compare for ExpVec with compare(self : ExpVec, other : ExpVec) -> Int {
   } else if self.degree < other.degree {
     -1
   } else {
-    let mut res = 0
     for i in 0..<self.length() {
       if self[i] > other[i] {
-        res = 1
-        break
+        break 1
       }
       if self[i] < other[i] {
-        res = -1
-        break
+        break -1
       }
+    } else {
+      0
     }
-    res
   }
 }
 
