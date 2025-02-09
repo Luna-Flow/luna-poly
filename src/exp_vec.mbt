@@ -113,6 +113,32 @@ impl Show for ExpVec with output(self : ExpVec, logger) -> Unit {
 }
 
 ///|
+impl Compare for ExpVec with compare(self : ExpVec, other : ExpVec) -> Int {
+  if self.length() < other.length() {
+    -1
+  } else if self.length() > other.length() {
+    1
+  } else if self.degree > other.degree {
+    1
+  } else if self.degree < other.degree {
+    -1
+  } else {
+    let mut res = 0
+    for i in 0..<self.length() {
+      if self[i] > other[i] {
+        res = 1
+        break
+      }
+      if self[i] < other[i] {
+        res = -1
+        break
+      }
+    }
+    res
+  }
+}
+
+///|
 fn ExpVec::shrink(self : ExpVec) -> Unit {
   if self.is_empty() {
     return
