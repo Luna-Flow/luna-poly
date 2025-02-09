@@ -2,10 +2,10 @@
 type ExpVec Array[Int]
 
 ///|
-impl Monoid for ExpVec with zero() -> ExpVec { [] }
+impl Monoid for ExpVec with one() -> ExpVec { [] }
 
 ///|
-impl Monoid for ExpVec with op_add(self : ExpVec, other : ExpVec) -> ExpVec {
+impl Monoid for ExpVec with op_mul(self : ExpVec, other : ExpVec) -> ExpVec {
   let l_self = self.length()
   let l_other = other.length()
   let l_min = @math.minimum(l_self, l_other)
@@ -22,8 +22,23 @@ impl Monoid for ExpVec with op_add(self : ExpVec, other : ExpVec) -> ExpVec {
 }
 
 ///|
+fn ExpVec::inverse(self : ExpVec) -> ExpVec {
+  self._.map(fn(x : Int) -> Int { -x })
+}
+
+///|
+impl AbelianGroup for ExpVec with op_neg(self : ExpVec) -> ExpVec {
+  self.inverse()
+}
+
+///|
+fn op_div(self : ExpVec, other : ExpVec) -> ExpVec {
+  self * -other
+}
+
+///|
 fn ExpVec::new() -> ExpVec {
-  ExpVec::zero()
+  ExpVec::one()
 }
 
 ///|
