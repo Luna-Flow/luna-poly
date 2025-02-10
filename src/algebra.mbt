@@ -36,10 +36,10 @@ impl Semiring for Bool with zero() { false }
 impl Semiring for Bool with one() { true }
 
 ///|
-impl Semiring for Bool with op_add(x, y) { x && y }
+impl Semiring for Bool with op_add(x, y) { x || y }
 
 ///|
-impl Semiring for Bool with op_mul(x, y) { x || y }
+impl Semiring for Bool with op_mul(x, y) { x && y }
 
 ///|
 impl Semiring for Complex with zero() { { re: 0, im: 0 } }

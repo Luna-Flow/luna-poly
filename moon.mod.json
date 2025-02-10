@@ -2,9 +2,9 @@
   "name": "KCN-judu/luna-poly",
   "version": "0.0.1-alpha-1",
   "deps": {
-    "Kaida-Amethyst/math": "0.1.13",
-    "KCN-judu/luna-complex": "0.0.1-alpha-1",
-    "KCN-judu/luna-utils": "0.0.1-alpha-3"
+    "KCN-judu/luna-utils": "0.0.1-alpha-5",
+    "KCN-judu/luna-complex": "0.0.1-alpha-3",
+    "Kaida-Amethyst/math": "0.1.13"
   },
   "readme": "README.md",
   "repository": "https://github.com/Luna-Flow/luna-poly",

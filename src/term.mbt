@@ -2,6 +2,11 @@
 type Term[A] (ExpVec, A)
 
 ///|
+pub fn Term::degree[A : Semiring](self : Term[A]) -> Int {
+  self._.0.degree
+}
+
+///|
 pub fn Term::zero[A : Semiring + Eq]() -> Term[A] {
   (ExpVec::one(), A::zero())
 }
@@ -9,6 +14,11 @@ pub fn Term::zero[A : Semiring + Eq]() -> Term[A] {
 ///|
 pub fn Term::one[A : Semiring + Eq]() -> Term[A] {
   (ExpVec::one(), A::one())
+}
+
+///|
+pub fn Term::pair[A : Semiring](exp_vec : ExpVec, coefficient : A) -> Term[A] {
+  (exp_vec, coefficient)
 }
 
 ///|
@@ -40,17 +50,13 @@ pub fn Term::is_like_term[A : Semiring + Eq](
 }
 
 ///|
-pub fn Term::pair[A : Semiring](exp_vec : ExpVec, coefficient : A) -> Term[A] {
-  (exp_vec, coefficient)
-}
-
-///|
-pub fn Term::combine_like_terms[A : Semiring + Eq](
+pub fn Term::cancelation[A : Semiring + Eq](
   self : Term[A],
   other : Term[A]
 ) -> Term[A] {
   guard self.is_like_term(other)
-  let exp_vec = self._.0.copy()
   let coefficient = self._.1 + other._.1
+  guard coefficient != A::zero() else {Term::zero()}
+  let exp_vec = if self._.0 == ExpVec::one() { other._.0.copy() } else { self._.0.copy() }
   (exp_vec, coefficient)
 }
