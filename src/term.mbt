@@ -11,6 +11,14 @@ pub fn Term::zero[A : Semiring + Eq]() -> Term[A] {
   (ExpVec::one(), A::zero())
 }
 
+pub fn Term::is_zero[A : Semiring + Eq](self : Term[A]) -> Bool {
+  self._.1 == A::zero()
+}
+
+pub fn Term::is_one[A : Semiring + Eq](self : Term[A]) -> Bool {
+  self._.0 == ExpVec::one() && self._.1 == A::one()
+}
+
 ///|
 pub fn Term::one[A : Semiring + Eq]() -> Term[A] {
   (ExpVec::one(), A::one())
@@ -22,11 +30,20 @@ pub fn Term::pair[A : Semiring](exp_vec : ExpVec, coefficient : A) -> Term[A] {
 }
 
 ///|
+/// Compares two terms for equality in a polynomial. Returns true if either term
+/// has a zero coefficient or if the exponent vectors of both terms are equal.
+///
+/// Parameters:
+///
+/// * `self` : The first term to compare.
+/// * `other` : The second term to compare.
+///
+/// Returns `true` if the terms are considered equal, `false` otherwise.
 pub fn Term::op_equal[A : Semiring + Eq](
   self : Term[A],
   other : Term[A]
 ) -> Bool {
-  self._.0 == other._.0 && self._.1 == other._.1
+  self._.1 == A::zero() || other._.1 == A::zero() || self._.0 == other._.0
 }
 
 ///|
@@ -42,19 +59,11 @@ pub fn Term::op_mul[A : Semiring + Eq](
 }
 
 ///|
-pub fn Term::is_like_term[A : Semiring + Eq](
-  self : Term[A],
-  other : Term[A]
-) -> Bool {
-  self._.1 == A::zero() || other._.1 == A::zero() || self._.0 == other._.0
-}
-
-///|
 pub fn Term::cancelation[A : Semiring + Eq](
   self : Term[A],
   other : Term[A]
 ) -> Term[A] {
-  guard self.is_like_term(other)
+  guard self == other
   let coefficient = self._.1 + other._.1
   guard coefficient != A::zero() else { Term::zero() }
   let exp_vec = self._.0.copy()
