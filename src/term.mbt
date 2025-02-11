@@ -57,10 +57,6 @@ pub fn Term::cancelation[A : Semiring + Eq](
   guard self.is_like_term(other)
   let coefficient = self._.1 + other._.1
   guard coefficient != A::zero() else { Term::zero() }
-  let exp_vec = if self._.0 == ExpVec::one() {
-    other._.0.copy()
-  } else {
-    self._.0.copy()
-  }
+  let exp_vec = self._.0.copy()
   (exp_vec, coefficient)
 }
