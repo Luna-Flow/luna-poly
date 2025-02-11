@@ -220,6 +220,7 @@ fn Polynomial::from_array[A](terms : Array[A]) -> Polynomial[A] {
   { terms, }
 }
 
+///|
 test "dense polynomial" {
   let x = var
   let p1 = to_poly([1, 2, 3])
@@ -236,6 +237,7 @@ test "dense polynomial" {
   inspect!(p5, content="-1 + 1x^2")
 }
 
+///|
 test "inverse" {
   let p1 = to_poly([1, 2, 3])
   let p2 = to_poly([4, 5, 6, 7])
@@ -245,12 +247,14 @@ test "inverse" {
   inspect!(p3, content="-3 + -3x^1 + -3x^2 + -7x^3")
 }
 
+///|
 test "eval" {
   let p1 = to_poly([1, 2, 3])
   inspect!(eval(p1, 2), content="17")
   inspect!(eval(p1, 1), content="6")
 }
 
+///|
 test "scale" {
   let p1 = to_poly([1, 2, 3])
   let p2 = scale(p1, 2, 3)
@@ -258,6 +262,7 @@ test "scale" {
   inspect!(p2, content="3x^2 + 6x^3 + 9x^4")
 }
 
+///|
 test "substitute polynomial" {
   let p1 = to_poly([1, 2, 3])
   let p2 = to_poly([2, 3])
@@ -271,6 +276,7 @@ test "substitute polynomial" {
   inspect!(p5, content="6")
 }
 
+///|
 test "derivative" {
   let p1 = to_poly([1, 2, 3])
   let p2 = derivative(p1)
