@@ -11,17 +11,24 @@ pub fn Term::zero[A : Semiring + Eq]() -> Term[A] {
   (ExpVec::one(), A::zero())
 }
 
+///|
 pub fn Term::is_zero[A : Semiring + Eq](self : Term[A]) -> Bool {
   self._.1 == A::zero()
-}
-
-pub fn Term::is_one[A : Semiring + Eq](self : Term[A]) -> Bool {
-  self._.0 == ExpVec::one() && self._.1 == A::one()
 }
 
 ///|
 pub fn Term::one[A : Semiring + Eq]() -> Term[A] {
   (ExpVec::one(), A::one())
+}
+
+///|
+pub fn Term::is_one[A : Semiring + Eq](self : Term[A]) -> Bool {
+  self._.0 == ExpVec::one() && self._.1 == A::one()
+}
+
+///|
+impl[A : Semiring + Eq] Compare for Term[A] with compare(self, other) -> Int {
+  self._.0.compare(other._.0)
 }
 
 ///|

@@ -20,7 +20,7 @@ impl ExpVec {
   op_set(Self, Int, Int) -> Unit
 }
 
-type Polynomial
+type Polynomial[V]
 impl Polynomial {
   derivative[A : HomomorphismNat + Eq + Semiring](Self[A]) -> Self[A]
   empty[A : Semiring](cap~ : Int) -> Self[A]
@@ -36,6 +36,25 @@ impl Polynomial {
 }
 impl[V : Compare] Compare for Polynomial[V]
 impl[V : Eq] Eq for Polynomial[V]
+
+type SkipList[A]
+impl SkipList {
+  contains[A : Compare](Self[A], A) -> Bool
+  find[A : Compare](Self[A], A) -> Self[A]?
+}
+
+type Term[A]
+impl Term {
+  cancelation[A : Semiring + Eq](Self[A], Self[A]) -> Self[A]
+  degree[A : Semiring](Self[A]) -> Int
+  is_one[A : Semiring + Eq](Self[A]) -> Bool
+  is_zero[A : Semiring + Eq](Self[A]) -> Bool
+  one[A : Semiring + Eq]() -> Self[A]
+  op_equal[A : Semiring + Eq](Self[A], Self[A]) -> Bool
+  op_mul[A : Semiring + Eq](Self[A], Self[A]) -> Self[A]
+  pair[A : Semiring](ExpVec, A) -> Self[A]
+  zero[A : Semiring + Eq]() -> Self[A]
+}
 
 // Type aliases
 
