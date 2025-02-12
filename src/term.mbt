@@ -27,11 +27,6 @@ pub fn Term::is_one[A : Semiring + Eq](self : Term[A]) -> Bool {
 }
 
 ///|
-impl[A : Semiring + Eq] Compare for Term[A] with compare(self, other) -> Int {
-  self._.0.compare(other._.0)
-}
-
-///|
 pub fn Term::pair[A : Semiring](exp_vec : ExpVec, coefficient : A) -> Term[A] {
   (exp_vec, coefficient)
 }
@@ -50,7 +45,7 @@ pub fn Term::op_equal[A : Semiring + Eq](
   self : Term[A],
   other : Term[A]
 ) -> Bool {
-  self._.1 == A::zero() || other._.1 == A::zero() || self._.0 == other._.0
+  self._.0 == other._.0 && self._.1 == other._.1
 }
 
 ///|
@@ -66,11 +61,16 @@ pub fn Term::op_mul[A : Semiring + Eq](
 }
 
 ///|
+pub fn Term::like[A : Semiring + Eq](self : Term[A], other : Term[A]) -> Bool {
+  self._.0 == other._.0 || self._.1 == A::zero() || other._.1 == A::zero()
+}
+
+///|
 pub fn Term::cancelation[A : Semiring + Eq](
   self : Term[A],
   other : Term[A]
 ) -> Term[A] {
-  guard self == other
+  guard self.like(other)
   let coefficient = self._.1 + other._.1
   guard coefficient != A::zero() else { Term::zero() }
   let exp_vec = if self._.1 == A::zero() {
