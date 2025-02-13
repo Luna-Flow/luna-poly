@@ -61,6 +61,7 @@ pub fn karatsuba[A : Eq + Semiring + Ring](
   go(self, other)
 }
 
+///|
 test {
   let xs = to_poly([1, 2, 3, 4, 1, 9, 1, 9, 8, 1, 0])
   let ys = to_poly([4, 5, 6, 7, 1, 1, 4, 5, 1, 4])

@@ -179,6 +179,7 @@ fn ExpVec::from_array(vec : Array[Int]) -> ExpVec {
   { vec: vec.split_at(i + 1).0, degree: @luna_utils.arr_abs_sum(vec) }
 }
 
+///|
 test "print" {
   assert_eq!(ExpVec::new().to_string(), "C")
   assert_eq!(
