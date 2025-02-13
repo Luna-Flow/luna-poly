@@ -11,6 +11,11 @@ enum SkipList[A] {
 }
 
 ///|
+pub fn SkipList::new[A]() -> SkipList[A] {
+  SkipList::Empty
+}
+
+///|
 /// Searches for a target element in the skip list using natural ordering.
 ///
 /// Parameters:
@@ -125,6 +130,11 @@ enum SkipListRuled[A] {
   // Node(rule, value, forward, downward)
   Node((A, A) -> Ord, A, SkipListRuled[A], SkipListRuled[A])
   Empty((A, A) -> Ord)
+}
+
+///|
+pub fn SkipListRuled::new[A](rule : (A, A) -> Ord) -> SkipListRuled[A] {
+  SkipListRuled::Empty(rule)
 }
 
 ///|
