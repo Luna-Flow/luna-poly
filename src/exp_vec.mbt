@@ -58,7 +58,9 @@ fn op_div(self : ExpVec, other : ExpVec) -> ExpVec {
 }
 
 ///|
-impl Monoid for ExpVec with one() -> ExpVec { { vec: [], degree: 0 } }
+impl Monoid for ExpVec with one() -> ExpVec {
+  { vec: [], degree: 0 }
+}
 
 ///|
 impl Monoid for ExpVec with op_mul(self : ExpVec, other : ExpVec) -> ExpVec {
