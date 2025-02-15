@@ -20,6 +20,8 @@ impl ExpVec {
   op_set(Self, Int, Int) -> Unit
 }
 
+type Ord
+
 type Polynomial[V]
 impl Polynomial {
   derivative[A : HomomorphismNat + Eq + Semiring](Self[A]) -> Self[A]
@@ -41,6 +43,16 @@ type SkipList[A]
 impl SkipList {
   contains[A : Compare](Self[A], A) -> Bool
   find[A : Compare](Self[A], A) -> Self[A]?
+  insert[A : Compare](Self[A], A, probability~ : Float = ..) -> Self[A]
+  new[A]() -> Self[A]
+}
+
+type SkipListRuled[A]
+impl SkipListRuled {
+  contains[A](Self[A], A) -> Bool
+  find[A](Self[A], A) -> Self[A]?
+  insert[A : Compare](Self[A], A, probability~ : Float = ..) -> Self[A]
+  new[A]((A, A) -> Ord) -> Self[A]
 }
 
 type Term[A]
@@ -49,6 +61,7 @@ impl Term {
   degree[A : Semiring](Self[A]) -> Int
   is_one[A : Semiring + Eq](Self[A]) -> Bool
   is_zero[A : Semiring + Eq](Self[A]) -> Bool
+  like[A : Semiring + Eq](Self[A], Self[A]) -> Bool
   one[A : Semiring + Eq]() -> Self[A]
   op_equal[A : Semiring + Eq](Self[A], Self[A]) -> Bool
   op_mul[A : Semiring + Eq](Self[A], Self[A]) -> Self[A]

@@ -56,7 +56,9 @@ pub fn to_poly[A : Eq + Semiring](arr : Array[A]) -> Polynomial[A] {
 }
 
 ///|
-impl[A : Eq + Semiring] Semiring for Polynomial[A] with zero() { { terms: [] } }
+impl[A : Eq + Semiring] Semiring for Polynomial[A] with zero() {
+  { terms: [] }
+}
 
 ///|
 impl[A : Eq + Semiring] Semiring for Polynomial[A] with one() {
