@@ -66,7 +66,7 @@ pub fn Term::like[A : Semiring + Eq](self : Term[A], other : Term[A]) -> Bool {
 }
 
 ///|
-pub fn Term::cancelation[A : Semiring + Eq](
+pub fn Term::cancellation[A : Semiring + Eq](
   self : Term[A],
   other : Term[A]
 ) -> Term[A] {

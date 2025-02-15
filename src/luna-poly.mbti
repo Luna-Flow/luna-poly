@@ -57,7 +57,7 @@ impl SkipListRuled {
 
 type Term[A]
 impl Term {
-  cancelation[A : Semiring + Eq](Self[A], Self[A]) -> Self[A]
+  cancellation[A : Semiring + Eq](Self[A], Self[A]) -> Self[A]
   degree[A : Semiring](Self[A]) -> Int
   is_one[A : Semiring + Eq](Self[A]) -> Bool
   is_zero[A : Semiring + Eq](Self[A]) -> Bool
