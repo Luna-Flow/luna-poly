@@ -2,32 +2,37 @@
 type Term[A] (ExpVec, A)
 
 ///|
-pub fn Term::degree[A : Semiring](self : Term[A]) -> Int {
+pub fn Term::degree[A : @luna_generic.Semiring](self : Term[A]) -> Int {
   self._.0.degree
 }
 
 ///|
-pub fn Term::zero[A : Semiring + Eq]() -> Term[A] {
+impl[A : @luna_generic.Semiring] @luna_generic.Zero for Term[A] with zero() -> Term[
+  A,
+] {
   (ExpVec::one(), A::zero())
 }
 
 ///|
-pub fn Term::is_zero[A : Semiring + Eq](self : Term[A]) -> Bool {
+pub fn Term::is_zero[A : @luna_generic.Semiring + Eq](self : Term[A]) -> Bool {
   self._.1 == A::zero()
 }
 
 ///|
-pub fn Term::one[A : Semiring + Eq]() -> Term[A] {
+pub fn Term::one[A : @luna_generic.Semiring + Eq]() -> Term[A] {
   (ExpVec::one(), A::one())
 }
 
 ///|
-pub fn Term::is_one[A : Semiring + Eq](self : Term[A]) -> Bool {
+pub fn Term::is_one[A : @luna_generic.Semiring + Eq](self : Term[A]) -> Bool {
   self._.0 == ExpVec::one() && self._.1 == A::one()
 }
 
 ///|
-pub fn Term::pair[A : Semiring](exp_vec : ExpVec, coefficient : A) -> Term[A] {
+pub fn Term::pair[A : @luna_generic.Semiring](
+  exp_vec : ExpVec,
+  coefficient : A
+) -> Term[A] {
   (exp_vec, coefficient)
 }
 
@@ -41,7 +46,7 @@ pub fn Term::pair[A : Semiring](exp_vec : ExpVec, coefficient : A) -> Term[A] {
 /// * `other` : The second term to compare.
 ///
 /// Returns `true` if the terms are considered equal, `false` otherwise.
-pub fn Term::op_equal[A : Semiring + Eq](
+pub fn Term::op_equal[A : @luna_generic.Semiring + Eq](
   self : Term[A],
   other : Term[A]
 ) -> Bool {
@@ -49,7 +54,7 @@ pub fn Term::op_equal[A : Semiring + Eq](
 }
 
 ///|
-pub fn Term::op_mul[A : Semiring + Eq](
+pub fn Term::op_mul[A : @luna_generic.Semiring + Eq](
   self : Term[A],
   other : Term[A]
 ) -> Term[A] {
@@ -61,12 +66,15 @@ pub fn Term::op_mul[A : Semiring + Eq](
 }
 
 ///|
-pub fn Term::like[A : Semiring + Eq](self : Term[A], other : Term[A]) -> Bool {
+pub fn Term::like[A : @luna_generic.Semiring + Eq](
+  self : Term[A],
+  other : Term[A]
+) -> Bool {
   self._.0 == other._.0 || self._.1 == A::zero() || other._.1 == A::zero()
 }
 
 ///|
-pub fn Term::cancellation[A : Semiring + Eq](
+pub fn Term::cancellation[A : @luna_generic.Semiring + Eq](
   self : Term[A],
   other : Term[A]
 ) -> Term[A] {

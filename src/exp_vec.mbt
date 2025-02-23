@@ -25,7 +25,7 @@ fn ExpVec::is_empty(self : ExpVec) -> Bool {
 fn ExpVec::pop(self : ExpVec) -> Int? {
   let res = self.vec.pop()
   match res {
-    Some(x) => self.degree = self.degree - @luna_utils.abs(x)
+    Some(x) => self.degree = self.degree - x.abs()
     None => ()
   }
   res
@@ -48,7 +48,7 @@ fn ExpVec::inverse(self : ExpVec) -> ExpVec {
 }
 
 ///|
-impl AbelianGroup for ExpVec with op_neg(self : ExpVec) -> ExpVec {
+impl @luna_generic.Neg for ExpVec with op_neg(self : ExpVec) -> ExpVec {
   self.inverse()
 }
 
@@ -58,12 +58,12 @@ fn op_div(self : ExpVec, other : ExpVec) -> ExpVec {
 }
 
 ///|
-impl Monoid for ExpVec with one() -> ExpVec {
+impl @luna_generic.One for ExpVec with one() -> ExpVec {
   { vec: [], degree: 0 }
 }
 
 ///|
-impl Monoid for ExpVec with op_mul(self : ExpVec, other : ExpVec) -> ExpVec {
+impl @luna_generic.Mul for ExpVec with op_mul(self : ExpVec, other : ExpVec) -> ExpVec {
   let l_self = self.length()
   let l_other = other.length()
   let l_min = @math.minimum(l_self, l_other)

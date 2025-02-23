@@ -1,11 +1,11 @@
 {
     "import": [
       {
-        "path": "KCN-judu/luna-complex/complex",
-        "alias": "luna_complex"
+        "path": "Luna-Flow/luna-generic",
+        "alias": "luna_generic"
       },
       {
-        "path": "KCN-judu/luna-utils",
+        "path": "Luna-Flow/luna-utils",
         "alias": "luna_utils"
       }
     ]
