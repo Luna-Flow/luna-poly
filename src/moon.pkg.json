@@ -2,11 +2,11 @@
     "import": [
       {
         "path": "Luna-Flow/luna-generic",
-        "alias": "luna_generic"
+        "alias": "lg"
       },
       {
         "path": "Luna-Flow/luna-utils",
-        "alias": "luna_utils"
+        "alias": "lu"
       }
     ]
 }

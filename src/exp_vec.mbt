@@ -39,7 +39,7 @@ pub fn ExpVec::op_get(self : ExpVec, i : Int) -> Int {
 ///|
 pub fn ExpVec::op_set(self : ExpVec, i : Int, val : Int) -> Unit {
   self.vec[i] = val
-  self.degree = @luna_utils.arr_abs_sum(self.vec)
+  self.degree = @lu.arr_abs_sum(self.vec)
 }
 
 ///|
@@ -48,7 +48,7 @@ fn ExpVec::inverse(self : ExpVec) -> ExpVec {
 }
 
 ///|
-impl @luna_generic.Neg for ExpVec with op_neg(self : ExpVec) -> ExpVec {
+impl @lg.Neg for ExpVec with op_neg(self : ExpVec) -> ExpVec {
   self.inverse()
 }
 
@@ -58,12 +58,12 @@ fn op_div(self : ExpVec, other : ExpVec) -> ExpVec {
 }
 
 ///|
-impl @luna_generic.One for ExpVec with one() -> ExpVec {
+impl @lg.One for ExpVec with one() -> ExpVec {
   { vec: [], degree: 0 }
 }
 
 ///|
-impl @luna_generic.Mul for ExpVec with op_mul(self : ExpVec, other : ExpVec) -> ExpVec {
+impl @lg.Mul for ExpVec with op_mul(self : ExpVec, other : ExpVec) -> ExpVec {
   let l_self = self.length()
   let l_other = other.length()
   let l_min = @math.minimum(l_self, l_other)
@@ -75,7 +75,7 @@ impl @luna_generic.Mul for ExpVec with op_mul(self : ExpVec, other : ExpVec) -> 
       larger[i]
     }
   })
-  { vec, degree: @luna_utils.arr_abs_sum(vec) }
+  { vec, degree: @lu.arr_abs_sum(vec) }
 }
 
 ///|
@@ -178,7 +178,7 @@ fn ExpVec::from_array(vec : Array[Int]) -> ExpVec {
   while i >= 0 && vec[i] == 0 {
     i -= 1
   }
-  { vec: vec.split_at(i + 1).0, degree: @luna_utils.arr_abs_sum(vec) }
+  { vec: vec.split_at(i + 1).0, degree: @lu.arr_abs_sum(vec) }
 }
 
 ///|

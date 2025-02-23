@@ -2,7 +2,7 @@
 let threshold : Int = 32
 
 ///| Multiply two polynomials using the Karatsuba algorithm.
-pub fn karatsuba[A : Eq + @luna_generic.Ring](
+pub fn karatsuba[A : Eq + @lg.Ring](
   self : Polynomial[A],
   other : Polynomial[A]
 ) -> Polynomial[A] {

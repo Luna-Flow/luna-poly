@@ -9,6 +9,6 @@ impl HomomorphismNat for Int with from_nat(x) {
 }
 
 ///|
-pub fn is_zero[A : @luna_generic.Semiring + Eq](x : A) -> Bool {
+pub fn is_zero[A : @lg.Semiring + Eq](x : A) -> Bool {
   x == A::zero()
 }
