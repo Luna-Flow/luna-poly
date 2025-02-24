@@ -1,7 +1,7 @@
 moon update
-moon remove KCN-judu/luna-utils
-moon remove KCN-judu/luna-complex
+moon remove Luna-Flow/luna-utils
+moon remove Luna-Flow/luna-generic
 moon remove Kaida-Amethyst/math
-moon add KCN-judu/luna-utils
-moon add KCN-judu/luna-complex
+moon add Luna-Flow/luna-utils
+moon add Luna-Flow/luna-generic
 moon add Kaida-Amethyst/math

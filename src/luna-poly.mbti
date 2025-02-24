@@ -1,15 +1,17 @@
 package KCN-judu/luna-poly
 
+alias @Luna-Flow/luna-generic as @luna-generic
+
 // Values
-fn coe[A : Eq + Semiring + HomomorphismNat](Int) -> Polynomial[A]
+fn coe[A : Eq + @luna-generic.Semiring + HomomorphismNat](Int) -> Polynomial[A]
 
-fn is_zero[A : Semiring + Eq](A) -> Bool
+fn is_zero[A : @luna-generic.Semiring + Eq](A) -> Bool
 
-fn monomial[A : Eq + Semiring](Int, A) -> Polynomial[A]
+fn monomial[A : Eq + @luna-generic.Semiring](Int, A) -> Polynomial[A]
 
-fn to_poly[A : Eq + Semiring](Array[A]) -> Polynomial[A]
+fn to_poly[A : Eq + @luna-generic.Semiring](Array[A]) -> Polynomial[A]
 
-fn var[A : Eq + Semiring]() -> Polynomial[A]
+fn var[A : Eq + @luna-generic.Semiring]() -> Polynomial[A]
 
 // Types and methods
 type ExpVec
@@ -24,17 +26,17 @@ type Ord
 
 type Polynomial[V]
 impl Polynomial {
-  derivative[A : HomomorphismNat + Eq + Semiring](Self[A]) -> Self[A]
-  empty[A : Semiring](cap~ : Int) -> Self[A]
-  eval[A : Semiring](Self[A], A) -> A
+  derivative[A : HomomorphismNat + Eq + @luna-generic.Semiring](Self[A]) -> Self[A]
+  empty[A : @luna-generic.Semiring](cap~ : Int) -> Self[A]
+  eval[A : @luna-generic.Semiring](Self[A], A) -> A
   fold[A, B](Self[A], (B, A) -> B, init~ : B) -> B
-  karatsuba[A : Eq + Semiring + Ring](Self[A], Self[A]) -> Self[A]
+  karatsuba[A : Eq + @luna-generic.Ring](Self[A], Self[A]) -> Self[A]
   leading[A](Self[A]) -> (Int, A)?
   length[A](Self[A]) -> Int
-  op_sub[A : Eq + Ring](Self[A], Self[A]) -> Self[A]
-  scale[A : Eq + Semiring](Self[A], Int, A) -> Self[A]
-  substitute[A, B : Semiring](Self[A], (B, A) -> B, init~ : B) -> B
-  substitute_poly[A : Eq + Semiring](Self[A], Self[A]) -> Self[A]
+  op_sub[A : Eq + @luna-generic.Ring](Self[A], Self[A]) -> Self[A]
+  scale[A : Eq + @luna-generic.Semiring](Self[A], Int, A) -> Self[A]
+  substitute[A, B : @luna-generic.Semiring](Self[A], (B, A) -> B, init~ : B) -> B
+  substitute_poly[A : Eq + @luna-generic.Semiring](Self[A], Self[A]) -> Self[A]
 }
 impl[V : Compare] Compare for Polynomial[V]
 impl[V : Eq] Eq for Polynomial[V]
@@ -57,28 +59,19 @@ impl SkipListRuled {
 
 type Term[A]
 impl Term {
-  cancellation[A : Semiring + Eq](Self[A], Self[A]) -> Self[A]
-  degree[A : Semiring](Self[A]) -> Int
-  is_one[A : Semiring + Eq](Self[A]) -> Bool
-  is_zero[A : Semiring + Eq](Self[A]) -> Bool
-  like[A : Semiring + Eq](Self[A], Self[A]) -> Bool
-  one[A : Semiring + Eq]() -> Self[A]
-  op_equal[A : Semiring + Eq](Self[A], Self[A]) -> Bool
-  op_mul[A : Semiring + Eq](Self[A], Self[A]) -> Self[A]
-  pair[A : Semiring](ExpVec, A) -> Self[A]
-  zero[A : Semiring + Eq]() -> Self[A]
+  cancellation[A : @luna-generic.Semiring + Eq](Self[A], Self[A]) -> Self[A]
+  degree[A : @luna-generic.Semiring](Self[A]) -> Int
+  is_one[A : @luna-generic.Semiring + Eq](Self[A]) -> Bool
+  is_zero[A : @luna-generic.Semiring + Eq](Self[A]) -> Bool
+  like[A : @luna-generic.Semiring + Eq](Self[A], Self[A]) -> Bool
+  one[A : @luna-generic.Semiring + Eq]() -> Self[A]
+  op_equal[A : @luna-generic.Semiring + Eq](Self[A], Self[A]) -> Bool
+  op_mul[A : @luna-generic.Semiring + Eq](Self[A], Self[A]) -> Self[A]
+  pair[A : @luna-generic.Semiring](ExpVec, A) -> Self[A]
 }
 
 // Type aliases
 
 // Traits
-trait AbelianGroup
-
 trait HomomorphismNat
-
-trait Monoid
-
-trait Ring
-
-trait Semiring
 
