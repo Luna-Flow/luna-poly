@@ -2,14 +2,37 @@
 type Term[A] (ExpVec, A)
 
 ///|
+pub impl[A : Show + Eq + @lg.Semiring] Show for Term[A] with to_string(s) {
+  if s._.1 == A::zero() {
+    "0"
+  } else {
+    let s = s._.1.to_string() +
+      (if s._.0.to_string() == "C" { "" } else { " * " + s._.0.to_string() })
+    s
+  }
+}
+
+///|
+pub impl[A : Show + Eq + @lg.Semiring] Show for Term[A] with output(s, l) {
+  l.write_string(s.to_string())
+}
+
+///|
+test "Show" {
+  assert_true!(Term::pair(ExpVec::one(), 1).to_string() == "1")
+  assert_true!(
+    Term::pair(ExpVec::from_array([1, 2, 3]), 1).to_string() == "1 * xy^2z^3",
+  )
+  assert_true!(Term::pair(ExpVec::from_array([1, 2, 3]), 0).to_string() == "0")
+}
+
+///|
 pub fn Term::degree[A : @lg.Semiring](self : Term[A]) -> Int {
   self._.0.degree
 }
 
 ///|
-impl[A : @lg.Semiring] @lg.Zero for Term[A] with zero() -> Term[
-  A,
-] {
+impl[A : @lg.Semiring] @lg.Zero for Term[A] with zero() -> Term[A] {
   (ExpVec::one(), A::zero())
 }
 
