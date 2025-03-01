@@ -4,9 +4,7 @@ struct Polynomial[V] {
 } derive(Eq, Compare)
 
 ///|
-impl[A : Show + Eq + @lg.Semiring] Show for Polynomial[A] with to_string(
-  self
-) {
+impl[A : Show + Eq + @lg.Semiring] Show for Polynomial[A] with to_string(self) {
   let mut s = ""
   let mut first = true
   for i in 0..<self.terms.length() {
@@ -56,23 +54,17 @@ pub fn leading[A](self : Polynomial[A]) -> (Int, A)? {
 }
 
 ///| Convert an array to a polynomial.
-pub fn to_poly[A : Eq + @lg.Semiring](
-  arr : Array[A]
-) -> Polynomial[A] {
+pub fn to_poly[A : Eq + @lg.Semiring](arr : Array[A]) -> Polynomial[A] {
   { terms: drop_while_end(is_zero, arr) }
 }
 
 ///|
-impl[A : Eq + @lg.Semiring] @lg.Zero for Polynomial[A] with zero(
-
-) {
+impl[A : Eq + @lg.Semiring] @lg.Zero for Polynomial[A] with zero() {
   { terms: [] }
 }
 
 ///|
-impl[A : Eq + @lg.Semiring] @lg.One for Polynomial[A] with one(
-
-) {
+impl[A : Eq + @lg.Semiring] @lg.One for Polynomial[A] with one() {
   if is_zero(A::one()) {
     { terms: [] }
   } else {
@@ -81,10 +73,7 @@ impl[A : Eq + @lg.Semiring] @lg.One for Polynomial[A] with one(
 }
 
 ///|
-impl[A : Eq + @lg.Semiring] @lg.Mul for Polynomial[A] with op_mul(
-  xs,
-  ys
-) {
+impl[A : Eq + @lg.Semiring] @lg.Mul for Polynomial[A] with op_mul(xs, ys) {
   let lx = xs.terms.length()
   let ly = ys.terms.length()
   let poly = Array::make(lx + ly - 1, A::zero())
@@ -97,10 +86,7 @@ impl[A : Eq + @lg.Semiring] @lg.Mul for Polynomial[A] with op_mul(
 }
 
 ///|
-impl[A : Eq + @lg.Semiring] @lg.Add for Polynomial[A] with op_add(
-  xs,
-  ys
-) {
+impl[A : Eq + @lg.Semiring] @lg.Add for Polynomial[A] with op_add(xs, ys) {
   let lx = xs.terms.length()
   let ly = ys.terms.length()
   let l_max = @math.maximum(lx, ly)
@@ -131,9 +117,7 @@ impl[A : @lg.Ring] @lg.Neg for Polynomial[A] with op_neg(x) {
 }
 
 ///| Return the zero polynomial.
-pub fn Polynomial::empty[A : @lg.Semiring](
-  cap~ : Int
-) -> Polynomial[A] {
+pub fn Polynomial::empty[A : @lg.Semiring](cap~ : Int) -> Polynomial[A] {
   { terms: Array::make(cap, A::zero()) }
 }
 
@@ -220,9 +204,7 @@ pub fn fold[A, B](self : Polynomial[A], f : (B, A) -> B, init~ : B) -> B {
 }
 
 ///| Coefficient `n`.
-pub fn coe[A : Eq + @lg.Semiring + HomomorphismNat](
-  n : Int
-) -> Polynomial[A] {
+pub fn coe[A : Eq + @lg.Semiring + HomomorphismNat](n : Int) -> Polynomial[A] {
   match n {
     0 => Polynomial::zero()
     n => { terms: [A::from_nat(n)] }
