@@ -17,17 +17,9 @@ fn var[A : Eq + @luna-generic.Semiring]() -> Polynomial[A]
 type ExpVec
 impl ExpVec {
   length(Self) -> Int
-  op_equal(Self, Self) -> Bool
   op_get(Self, Int) -> Int
   op_set(Self, Int, Int) -> Unit
 }
-
-pub(all) enum Ord {
-  Less
-  Equal
-  Greater
-}
-impl Eq for Ord
 
 type Polynomial[V]
 impl Polynomial {
@@ -45,25 +37,6 @@ impl Polynomial {
 }
 impl[V : Compare] Compare for Polynomial[V]
 impl[V : Eq] Eq for Polynomial[V]
-
-type SkipList[A]
-impl SkipList {
-  bottom[A](Self[A]) -> Self[A]
-  contains[A : Compare](Self[A], A) -> Bool
-  find[A : Compare](Self[A], A) -> Self[A]?
-  insert[A : Compare](Self[A], A, probability~ : Float = ..) -> Self[A]
-  new[A]() -> Self[A]
-}
-
-type SkipListRuled[A]
-impl SkipListRuled {
-  bottom[A](Self[A]) -> Self[A]
-  contains[A](Self[A], A) -> Bool
-  find[A](Self[A], A) -> Self[A]?
-  insert[A](Self[A], A, probability~ : Float = ..) -> Self[A]
-  new[A]((A, A) -> Ord) -> Self[A]
-}
-impl[A : Show] Show for SkipListRuled[A]
 
 type Term[A]
 impl Term {
