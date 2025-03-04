@@ -5,6 +5,27 @@ struct ExpVec {
 }
 
 ///|
+impl Hash for ExpVec with hash_combine(self : ExpVec, hasher : Hasher) -> Unit {
+  let vec = self.vec
+  if vec.is_empty() {
+    hasher.combine_int(0)
+  } else {
+    hasher.combine_int(self.degree)
+    for x in vec {
+      hasher.combine_int(x)
+    }
+  }
+}
+
+///|
+test "hash" {
+  let exp = ExpVec::from_array([1, 2, 3])
+  let exp_r = ExpVec::from_array([3, 2, 1])
+  assert_eq!(exp.hash(), -533501922)
+  assert_eq!(exp_r.hash(), -1291445456)
+}
+
+///|
 pub fn ExpVec::length(self : ExpVec) -> Int {
   self.vec.length()
 }
@@ -151,7 +172,7 @@ fn ExpVec::shrink(self : ExpVec) -> Unit {
 }
 
 ///|
-pub fn ExpVec::op_equal(self : ExpVec, other : ExpVec) -> Bool {
+impl Eq for ExpVec with op_equal(self : ExpVec, other : ExpVec) -> Bool {
   guard self.length() == other.length() && self.degree == other.degree else {
     return false
   }
