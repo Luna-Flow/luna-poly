@@ -38,19 +38,31 @@ impl Polynomial {
 impl[V : Compare] Compare for Polynomial[V]
 impl[V : Eq] Eq for Polynomial[V]
 
-type Term[A]
-impl Term {
-  cancellation[A : @luna-generic.Semiring + Eq](Self[A], Self[A]) -> Self[A]
-  degree[A : @luna-generic.Semiring](Self[A]) -> Int
-  is_one[A : @luna-generic.Semiring + Eq](Self[A]) -> Bool
-  is_zero[A : @luna-generic.Semiring + Eq](Self[A]) -> Bool
-  like[A : @luna-generic.Semiring + Eq](Self[A], Self[A]) -> Bool
-  one[A : @luna-generic.Semiring + Eq]() -> Self[A]
-  op_equal[A : @luna-generic.Semiring + Eq](Self[A], Self[A]) -> Bool
-  op_mul[A : @luna-generic.Semiring + Eq](Self[A], Self[A]) -> Self[A]
-  pair[A : @luna-generic.Semiring](ExpVec, A) -> Self[A]
+type SparsePolynomial[V]
+impl SparsePolynomial {
+  add_term[V : Eq + @luna-generic.AddMonoid](Self[V], ExpVec, V) -> Unit
+  clear[V](Self[V]) -> Unit
+  contains[V](Self[V], ExpVec) -> Bool
+  copy[V : Eq + @luna-generic.AddMonoid](Self[V]) -> Self[V]
+  each[V](Self[V], (ExpVec, V) -> Unit) -> Unit
+  eachi[V](Self[V], (Int, ExpVec, V) -> Unit) -> Unit
+  from_array[V : Eq + @luna-generic.AddMonoid](Array[(ExpVec, V)]) -> Self[V]
+  from_iter[V : Eq + @luna-generic.AddMonoid](Iter[(ExpVec, V)]) -> Self[V]
+  get[V](Self[V], ExpVec) -> V?
+  is_empty[V](Self[V]) -> Bool
+  iter[V](Self[V]) -> Iter[(ExpVec, V)]
+  iter2[V](Self[V]) -> Iter2[ExpVec, V]
+  keys[V](Self[V]) -> Array[ExpVec]
+  new[V]() -> Self[V]
+  op_get[V](Self[V], ExpVec) -> V?
+  op_set[V](Self[V], ExpVec, V) -> Unit
+  range[V](Self[V], ExpVec, ExpVec) -> Iter2[ExpVec, V]
+  remove[V](Self[V], ExpVec) -> Unit
+  size[V](Self[V]) -> Int
+  to_array[V](Self[V]) -> Array[(ExpVec, V)]
+  values[V](Self[V]) -> Array[V]
 }
-impl[A : Show + Eq + @luna-generic.Semiring] Show for Term[A]
+impl[V : Eq] Eq for SparsePolynomial[V]
 
 // Type aliases
 
