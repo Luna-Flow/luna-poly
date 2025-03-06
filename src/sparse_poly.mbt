@@ -2,7 +2,7 @@
 type SparsePolynomial[V] @sorted_map.T[ExpVec, V] derive(Eq)
 
 ///|
-impl[V : Eq + Show + @lg.Semiring] Show for SparsePolynomial[V] with to_string(
+pub impl[V : Eq + Show + @lg.Semiring] Show for SparsePolynomial[V] with to_string(
   self
 ) {
   let mut s = ""
@@ -25,7 +25,7 @@ impl[V : Eq + Show + @lg.Semiring] Show for SparsePolynomial[V] with to_string(
 }
 
 ///|
-impl[V : Eq + Show + @lg.Semiring] Show for SparsePolynomial[V] with output(
+pub impl[V : Eq + Show + @lg.Semiring] Show for SparsePolynomial[V] with output(
   self,
   l
 ) {
@@ -196,7 +196,7 @@ pub fn SparsePolynomial::copy[V : Eq + @lg.AddMonoid](
 }
 
 ///|
-impl[V : @lg.Zero] @lg.Zero for SparsePolynomial[V] with zero() -> SparsePolynomial[
+pub impl[V : @lg.Zero] @lg.Zero for SparsePolynomial[V] with zero() -> SparsePolynomial[
   V,
 ] {
   SparsePolynomial::new()._..add(ExpVec::one(), V::zero())
@@ -221,6 +221,20 @@ pub fn SparsePolynomial::add_term[V : Eq + @lg.AddMonoid](
     }
   }
 }
+
+pub fn SparsePolynomial::add[V : Eq + @lg.AddMonoid](self: SparsePolynomial[V], other: SparsePolynomial[V]) -> Unit{
+  for x in other {
+    let (exp_vec, coefficient) = x
+    self.add_term(exp_vec, coefficient)
+  }
+}
+
+pub impl[V: Eq + @lg.AddMonoid] @lg.Add for SparsePolynomial[V] with op_add(self, other) {
+  let res = SparsePolynomial::copy(self)
+  res.add(other)
+  res
+}
+
 
 // ///|
 // pub fn SparsePolynomial::mul_term_inplace[A : Semiring + Eq](
@@ -277,29 +291,6 @@ pub fn SparsePolynomial::add_term[V : Eq + @lg.AddMonoid](
 //   }
 // }
 
-// ///|
-// pub fn SparsePolynomial::op_add[A : Semiring + Eq](
-//   self : SparsePolynomial[A],
-//   other : SparsePolynomial[A]
-// ) -> SparsePolynomial[A] {
-//   let res : SparsePolynomial[A] = { terms: self.terms }
-//   for x in other.terms {
-//     let (key, val) = x
-//     res.add_term_inplace((key, val))
-//   }
-//   res
-// }
-
-// ///|
-// pub fn SparsePolynomial::add_inplace[A : Semiring + Eq](
-//   self : SparsePolynomial[A],
-//   other : SparsePolynomial[A]
-// ) -> Unit {
-//   for x in other.terms {
-//     let (key, val) = x
-//     self.add_term_inplace((key, val))
-//   }
-// }
 
 // ///|
 // pub fn SparsePolynomial::op_mul[A : Semiring + Eq](
