@@ -38,7 +38,7 @@ fn ExpVec::split_at(self : ExpVec, i : Int) -> (ExpVec, ExpVec) {
 }
 
 ///|
-fn ExpVec::is_empty(self : ExpVec) -> Bool {
+fn ExpVec::is_one(self : ExpVec) -> Bool {
   self.vec.length() == 0
 }
 
@@ -186,10 +186,10 @@ impl Compare for ExpVec with compare(self : ExpVec, other : ExpVec) -> Int {
 
 ///|
 fn ExpVec::shrink(self : ExpVec) -> Unit {
-  if self.is_empty() {
+  if self.is_one() {
     return
   }
-  for i = self.length() - 1; self[i] == 0 && not(self.is_empty()); i = i + 1 {
+  for i = self.length() - 1; self[i] == 0 && not(self.is_one()); i = i + 1 {
     let _ = self.pop()
 
   }

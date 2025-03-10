@@ -40,7 +40,9 @@ impl[V : Eq] Eq for Polynomial[V]
 
 type SparsePolynomial[V]
 impl SparsePolynomial {
-  add_term[V : Eq + @luna-generic.AddMonoid](Self[V], ExpVec, V) -> Unit
+  add[V : Eq + @luna-generic.AddMonoid](Self[V], Self[V]) -> Unit
+  add_term[V : Eq + @luna-generic.AddMonoid](Self[V], ExpVec, V) -> Self[V]
+  add_term_inplace[V : Eq + @luna-generic.AddMonoid](Self[V], ExpVec, V) -> Unit
   clear[V](Self[V]) -> Unit
   contains[V](Self[V], ExpVec) -> Bool
   copy[V : Eq + @luna-generic.AddMonoid](Self[V]) -> Self[V]
@@ -53,6 +55,8 @@ impl SparsePolynomial {
   iter[V](Self[V]) -> Iter[(ExpVec, V)]
   iter2[V](Self[V]) -> Iter2[ExpVec, V]
   keys[V](Self[V]) -> Array[ExpVec]
+  mul_term[V : Eq + @luna-generic.Semiring](Self[V], ExpVec, V) -> Self[V]
+  mul_term_inplace[V : Eq + @luna-generic.Semiring](Self[V], ExpVec, V) -> Unit
   new[V]() -> Self[V]
   op_get[V](Self[V], ExpVec) -> V?
   op_set[V](Self[V], ExpVec, V) -> Unit
@@ -62,7 +66,10 @@ impl SparsePolynomial {
   to_array[V](Self[V]) -> Array[(ExpVec, V)]
   values[V](Self[V]) -> Array[V]
 }
+impl[V : Eq + @luna-generic.AddMonoid] @luna-generic.Add for SparsePolynomial[V]
+impl[V : @luna-generic.Zero] @luna-generic.Zero for SparsePolynomial[V]
 impl[V : Eq] Eq for SparsePolynomial[V]
+impl[V : Eq + Show + @luna-generic.Semiring] Show for SparsePolynomial[V]
 
 // Type aliases
 
