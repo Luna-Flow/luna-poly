@@ -326,24 +326,38 @@ pub fn SparsePolynomial::mul_term[V : Eq + @lg.Semiring](
   }
 }
 
-// ///|
-// pub fn SparsePolynomial::op_mul[A : Semiring + Eq](
-//   self : SparsePolynomial[A],
-//   other : SparsePolynomial[A]
-// ) -> SparsePolynomial[A] {
-//   let l_self = self.size()
-//   let l_other = other.size()
-//   let larger = if l_self >= l_other { self } else { other }
-//   let smaller = if l_self >= l_other { other } else { self }
-//   let mut res = SparsePolynomial::new()
-//   let mut fst = true
-//   for x in larger.terms {
-//     if fst {
-//       res = smaller.mul_term(x)
-//       fst = false
-//     } else {
-//       res.add_inplace(smaller.mul_term(x))
-//     }
-//   }
-//   res
-// }
+///|
+impl[A : @lg.Semiring + Eq] @lg.Mul for SparsePolynomial[A] with op_mul(
+  self,
+  other
+) {
+  let l_self = self.size()
+  let l_other = other.size()
+  let larger = if l_self >= l_other { self } else { other }
+  let smaller = if l_self >= l_other { other } else { self }
+  let mut res = SparsePolynomial::new()
+  let mut fst = true
+  for x in larger {
+    if fst {
+      res = smaller.mul_term(x.0, x.1)
+      fst = false
+    } else {
+      res.add(smaller.mul_term(x.0, x.1))
+    }
+  }
+  res
+}
+
+///|
+test "mul" {
+  let poly = SparsePolynomial::from_array([
+    (ExpVec::from_array([1, 2, 3]), 1),
+    (ExpVec::from_array([2, 3, 4]), 2),
+    (ExpVec::from_array([3, 4, 5]), 3),
+  ])
+  let poly_2 = poly * poly
+  assert_eq!(
+    poly_2.to_string(),
+    "x²y⁴z⁶ + 4x³y⁵z⁷ + 10x⁴y⁶z⁸ + 12x⁵y⁷z⁹ + 9x⁶y⁸z¹⁰",
+  )
+}
