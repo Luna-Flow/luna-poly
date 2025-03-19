@@ -327,7 +327,7 @@ pub fn SparsePolynomial::mul_term[V : Eq + @lg.Semiring](
 }
 
 ///|
-impl[A : @lg.Semiring + Eq] @lg.Mul for SparsePolynomial[A] with op_mul(
+pub impl[A : @lg.Semiring + Eq] @lg.Mul for SparsePolynomial[A] with op_mul(
   self,
   other
 ) {
@@ -344,6 +344,98 @@ impl[A : @lg.Semiring + Eq] @lg.Mul for SparsePolynomial[A] with op_mul(
     } else {
       res.add(smaller.mul_term(x.0, x.1))
     }
+  }
+  res
+}
+
+///|
+fn qpow[V : Eq + @lg.Semiring](b : V, e : Int) -> V {
+  if b == V::zero() {
+    return V::zero()
+  } else if e == 0 {
+    return V::one()
+  } else if e == 1 {
+    return b
+  } else {
+    let half = qpow(b, e / 2)
+    if e % 2 == 0 {
+      return half * half
+    } else {
+      return half * half * b
+    }
+  }
+}
+
+///|
+pub fn eval_at[V : Eq + @lg.Semiring](
+  self : SparsePolynomial[V],
+  var_index : Int,
+  val : V
+) -> SparsePolynomial[V] {
+  if val == V::zero() {
+    return SparsePolynomial::zero()
+  } else if val == V::one() {
+    return self.copy()
+  }
+  let calc_coe = fn(t : (ExpVec, V), vi : Int, v : V) -> (ExpVec, V) {
+    let (ev, c) = t
+    let exp = ev[vi]
+    let mul_c = qpow(v, exp)
+    if mul_c == V::one() {
+      let ev_copy = ev.copy()
+      ev_copy[vi] = 0
+      ev_copy.shrink()
+      return (ev_copy, c)
+    } else if mul_c == V::zero() {
+      return (ExpVec::one(), V::zero())
+    } else {
+      let ev_copy = ev.copy()
+      ev_copy[vi] = 0
+      ev_copy.shrink()
+      return (ev_copy, c * mul_c)
+    }
+  }
+  let res = SparsePolynomial::new()
+  for x in self {
+    let (ev_x, c_x) = x
+    let (ev, c) = calc_coe((ev_x, c_x), var_index, val)
+    res.add_term_inplace(ev, c)
+  }
+  res
+}
+
+///|
+pub fn eval_at_many[V : Eq + @lg.Semiring](
+  self : SparsePolynomial[V],
+  vars : Array[(Int, V)]
+) -> SparsePolynomial[V] {
+  if vars.length() == 1 {
+    return eval_at(self, vars[0].0, vars[0].1)
+  }
+  let calc_coe = fn(t : (ExpVec, V), vars : Array[(Int, V)]) -> (ExpVec, V) {
+    let (ev, c) = t
+    let mut mul_c_all = V::one()
+    let ev_copy = ev.copy()
+    for var in vars {
+      let (vi, v) = var
+      let exp = ev[vi]
+      mul_c_all = mul_c_all * qpow(v, exp)
+      ev_copy[vi] = 0
+    }
+    ev_copy.shrink()
+    if mul_c_all == V::one() {
+      return (ev, c)
+    } else if mul_c_all == V::zero() {
+      return (ExpVec::one(), V::zero())
+    } else {
+      return (ev_copy, c * mul_c_all)
+    }
+  }
+  let res = SparsePolynomial::new()
+  for x in self {
+    let (ev_x, c_x) = x
+    let (ev, c) = calc_coe((ev_x, c_x), vars)
+    res.add_term_inplace(ev, c)
   }
   res
 }
