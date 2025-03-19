@@ -38,7 +38,7 @@ fn ExpVec::split_at(self : ExpVec, i : Int) -> (ExpVec, ExpVec) {
 }
 
 ///|
-fn ExpVec::is_empty(self : ExpVec) -> Bool {
+fn ExpVec::is_one(self : ExpVec) -> Bool {
   self.vec.length() == 0
 }
 
@@ -106,21 +106,46 @@ impl Show for ExpVec with to_string(self : ExpVec) -> String {
     "x", "y", "z", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m",
     "n", "o", "p", "q", "r", "s", "t", "u", "v", "w",
   ]
+  let num_superscript = [
+    "\u2070", "\u00b9", "\u00b2", "\u00b3", "\u2074", "\u2075", "\u2076", "\u2077",
+    "\u2078", "\u2079",
+  ]
+  let num_subscript = [
+    "\u2080", "\u2081", "\u2082", "\u2083", "\u2084", "\u2085", "\u2086", "\u2087",
+    "\u2088", "\u2089",
+  ]
+  let minus_superscript = "\u207b"
+  let to_superscript = fn(num : Int) -> String {
+    let mut ss = ""
+    let s = num.to_string()
+    for c in s {
+      let index = c.to_int() - '0'.to_int()
+      if @lu.is_between(index, 0, 9) {
+        ss += num_superscript[index]
+      } else {
+        ss += minus_superscript
+      }
+    }
+    ss
+  }
+  let to_subscript = fn(num : Int) -> String {
+    let mut ss = ""
+    let s = num.to_string()
+    for c in s {
+      let index = c.to_int() - '0'.to_int()
+      ss += num_subscript[index]
+    }
+    ss
+  }
   for i in 0..<self.length() {
     if self[i] != 0 {
       let subscript = (i / 26).abs()
       let alphabet_index = i % 26
       let mut subscript_str = ""
       if subscript != 0 {
-        subscript_str = "_" + subscript.to_string()
+        subscript_str = to_subscript(subscript)
       }
-      let exp = if self[i] == 1 {
-        ""
-      } else if self[i] < 0 {
-        "^(" + self[i].to_string() + ")"
-      } else {
-        "^" + self[i].to_string()
-      }
+      let exp = if self[i] == 1 { "" } else { to_superscript(self[i]) }
       s = s + alphabet[alphabet_index] + subscript_str + exp
     }
   }
@@ -161,10 +186,10 @@ impl Compare for ExpVec with compare(self : ExpVec, other : ExpVec) -> Int {
 
 ///|
 fn ExpVec::shrink(self : ExpVec) -> Unit {
-  if self.is_empty() {
+  if self.is_one() {
     return
   }
-  for i = self.length() - 1; self[i] == 0 && not(self.is_empty()); i = i + 1 {
+  for i = self.length() - 1; self[i] == 0 && not(self.is_one()); i = i + 1 {
     let _ = self.pop()
 
   }
@@ -203,10 +228,8 @@ fn ExpVec::from_array(vec : Array[Int]) -> ExpVec {
 }
 
 ///|
-test "print" {
-  assert_eq!(ExpVec::new().to_string(), "C")
-  assert_eq!(
-    ExpVec::from_array([3, 1, 4, -2, 0, 5]).to_string(),
-    "x^3yz^4a^(-2)c^5",
-  )
+test "show" {
+  assert_eq!(ExpVec::from_array([2025]).to_string(), "x²⁰²⁵")
+  assert_eq!(ExpVec::from_array([1, 0, 0]).to_string(), "x")
+  assert_eq!(ExpVec::from_array([0]).to_string(), "C")
 }
