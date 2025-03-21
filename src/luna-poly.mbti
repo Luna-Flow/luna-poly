@@ -70,6 +70,9 @@ impl SparsePolynomial {
   copy[V : Eq + @luna-generic.AddMonoid](Self[V]) -> Self[V]
   each[V](Self[V], (ExpVec, V) -> Unit) -> Unit
   eachi[V](Self[V], (Int, ExpVec, V) -> Unit) -> Unit
+  eval[V : Eq + @luna-generic.Semiring](Self[V], Array[V]) -> V
+  eval_at[V : Show + Eq + @luna-generic.Semiring](Self[V], Int, V) -> Self[V]
+  eval_at_many[V : Show + Eq + @luna-generic.Semiring](Self[V], Array[(Int, V)]) -> Self[V]
   from_array[V : Eq + @luna-generic.AddMonoid](Array[(ExpVec, V)]) -> Self[V]
   from_iter[V : Eq + @luna-generic.AddMonoid](Iter[(ExpVec, V)]) -> Self[V]
   get[V](Self[V], ExpVec) -> V?
@@ -89,6 +92,7 @@ impl SparsePolynomial {
   values[V](Self[V]) -> Array[V]
 }
 impl[V : Eq + @luna-generic.AddMonoid] @luna-generic.Add for SparsePolynomial[V]
+impl[A : @luna-generic.Semiring + Eq] @luna-generic.Mul for SparsePolynomial[A]
 impl[V : @luna-generic.Zero] @luna-generic.Zero for SparsePolynomial[V]
 impl[V : Eq] Eq for SparsePolynomial[V]
 impl[V : Eq + Show + @luna-generic.Semiring] Show for SparsePolynomial[V]
