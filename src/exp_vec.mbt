@@ -189,7 +189,7 @@ fn ExpVec::shrink(self : ExpVec) -> Unit {
   if self.is_one() {
     return
   }
-  for i = self.length() - 1; not(self.is_one()) && self[i] == 0; i = i + 1 {
+  for i = self.length() - 1; not(self.is_one()) && self[i] == 0; i = i - 1 {
     let _ = self.pop()
 
   }
