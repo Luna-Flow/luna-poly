@@ -12,9 +12,14 @@ pub impl[V : Eq + Show + @lg.Semiring] Show for SparsePolynomial[V] with to_stri
       s += " + "
     }
     if coefficient == V::one() {
-      s += exp_vec.to_string()
+      if not(exp_vec.is_one()) {
+        s += exp_vec.to_string()
+      } else {
+        s += coefficient.to_string()
+      }
     } else {
-      s += coefficient.to_string() + exp_vec.to_string()
+      s += coefficient.to_string() +
+        (if not(exp_vec.is_one()) { exp_vec.to_string() } else { "" })
     }
     fst = false
   })
@@ -327,7 +332,7 @@ pub fn SparsePolynomial::mul_term[V : Eq + @lg.Semiring](
 }
 
 ///|
-impl[A : @lg.Semiring + Eq] @lg.Mul for SparsePolynomial[A] with op_mul(
+pub impl[A : @lg.Semiring + Eq] @lg.Mul for SparsePolynomial[A] with op_mul(
   self,
   other
 ) {
@@ -349,6 +354,132 @@ impl[A : @lg.Semiring + Eq] @lg.Mul for SparsePolynomial[A] with op_mul(
 }
 
 ///|
+fn qpow[V : Eq + @lg.Semiring](b : V, e : Int) -> V {
+  if b == V::zero() {
+    return V::zero()
+  } else if e == 0 {
+    return V::one()
+  } else if e == 1 {
+    return b
+  } else {
+    let half = qpow(b, e / 2)
+    if e % 2 == 0 {
+      return half * half
+    } else {
+      return half * half * b
+    }
+  }
+}
+
+///|
+pub fn SparsePolynomial::eval_at[V : Show + Eq + @lg.Semiring](
+  self : SparsePolynomial[V],
+  var_index : Int,
+  val : V
+) -> SparsePolynomial[V] {
+  if val == V::zero() {
+    return SparsePolynomial::zero()
+  }
+  let calc_coe = fn(t : (ExpVec, V), vi : Int, v : V) -> (ExpVec, V) {
+    let (ev, c) = t
+    if ev.is_one() || vi >= ev.length() {
+      return (ev, c)
+    }
+    let exp = ev[vi]
+    let mul_c = qpow(v, exp)
+    if mul_c == V::one() {
+      let ev_copy = ev.copy()
+      ev_copy[vi] = 0
+      ev_copy.shrink()
+      return (ev_copy, c)
+    } else if mul_c == V::zero() {
+      return (ExpVec::one(), V::zero())
+    } else {
+      let ev_copy = ev.copy()
+      ev_copy[vi] = 0
+      ev_copy.shrink()
+      return (ev_copy, c * mul_c)
+    }
+  }
+  let res = SparsePolynomial::new()
+  for x in self {
+    let (ev_x, c_x) = x
+    let (ev, c) = calc_coe((ev_x, c_x), var_index, val)
+    res.add_term_inplace(ev, c)
+  }
+  res
+}
+
+///|
+pub fn SparsePolynomial::eval_at_many[V : Show + Eq + @lg.Semiring](
+  self : SparsePolynomial[V],
+  vars : Array[(Int, V)]
+) -> SparsePolynomial[V] {
+  if vars.length() == 1 {
+    return SparsePolynomial::eval_at(self, vars[0].0, vars[0].1)
+  }
+  let calc_coe = fn(t : (ExpVec, V), vars : Array[(Int, V)]) -> (ExpVec, V) {
+    let (ev, c) = t
+    if ev.is_one() {
+      return (ev, c)
+    }
+    let mut mul_c_all = V::one()
+    let ev_copy = ev.copy()
+    for var in vars {
+      let (vi, v) = var
+      if vi >= ev.length() {
+        continue
+      }
+      let exp = ev[vi]
+      mul_c_all = mul_c_all * qpow(v, exp)
+      ev_copy[vi] = 0
+    }
+    ev_copy.shrink()
+    if mul_c_all == V::one() {
+      return (ev_copy, c)
+    } else if mul_c_all == V::zero() {
+      return (ExpVec::one(), V::zero())
+    } else {
+      return (ev_copy, c * mul_c_all)
+    }
+  }
+  let res = SparsePolynomial::new()
+  for x in self {
+    let (ev_x, c_x) = x
+    let (ev, c) = calc_coe((ev_x, c_x), vars)
+    res.add_term_inplace(ev, c)
+  }
+  res
+}
+
+///|
+pub fn SparsePolynomial::eval[V : Eq + @lg.Semiring](
+  self : SparsePolynomial[V],
+  vars : Array[V]
+) -> V {
+  let calc_coe = fn(t : (ExpVec, V), vars : Array[V]) -> V {
+    let (ev, c) = t
+    let mut mul_c_all = V::one()
+    if ev.is_one() {
+      return c
+    }
+    for i in 0..<vars.length() {
+      if i >= ev.length() {
+        break
+      }
+      let exp = ev[i]
+      mul_c_all = mul_c_all * qpow(vars[i], exp)
+    }
+    return mul_c_all * c
+  }
+  let mut sum = V::zero()
+  for x in self {
+    sum = sum + calc_coe(x, vars)
+  }
+  sum
+}
+
+///|
 test "mul" {
   let poly = SparsePolynomial::from_array([
     (ExpVec::from_array([1, 2, 3]), 1),
@@ -360,4 +491,40 @@ test "mul" {
     poly_2.to_string(),
     "x²y⁴z⁶ + 4x³y⁵z⁷ + 10x⁴y⁶z⁸ + 12x⁵y⁷z⁹ + 9x⁶y⁸z¹⁰",
   )
+}
+
+///|
+test "eval" {
+  let poly = SparsePolynomial::from_array([
+    (ExpVec::from_array([2]), 1),
+    (ExpVec::from_array([1]), 2),
+    (ExpVec::from_array([]), 1),
+  ])
+  assert_eq!(poly.eval([2]), 9)
+  inspect!(poly.eval_at(0, 2), content="9")
+  inspect!(poly.eval_at_many([(0, 2)]), content="9")
+  let poly_2 = SparsePolynomial::from_array([
+    (ExpVec::from_array([2]), 1),
+    (ExpVec::from_array([0, 2]), 1),
+  ])
+  inspect!(poly_2.eval_at(0, 1), content="1 + y²")
+  inspect!(poly_2.eval_at(1, 2), content="4 + x²")
+  inspect!(poly_2.eval_at_many([(0, 1), (1, 2)]), content="5")
+  assert_eq!(poly_2.eval([1, 2]), 5)
+  let poly_3 = SparsePolynomial::from_array([
+    (ExpVec::from_array([2]), 1),
+    (ExpVec::from_array([0, 2]), -1),
+  ])
+  inspect!(poly_3.eval_at(0, 1), content="1 + -1y²")
+  inspect!(poly_3.eval_at(1, 2), content="-4 + x²")
+  inspect!(poly_3.eval_at_many([(0, 1), (1, 2)]), content="-3")
+  assert_eq!(poly_3.eval([1, 2]), -3)
+  let poly_4 = SparsePolynomial::from_array([
+    (ExpVec::from_array([1, 2]), 1),
+    (ExpVec::from_array([2, 1]), 1),
+  ])
+  inspect!(poly_4.eval_at(0, 1), content="y + y²")
+  inspect!(poly_4.eval_at(1, 1), content="x + x²")
+  inspect!(poly_4.eval_at_many([(0, 2), (1, 3)]), content="30")
+  assert_eq!(poly_4.eval([2, 3]), 30)
 }

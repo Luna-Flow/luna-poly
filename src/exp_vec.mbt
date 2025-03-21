@@ -39,7 +39,7 @@ fn ExpVec::split_at(self : ExpVec, i : Int) -> (ExpVec, ExpVec) {
 
 ///|
 fn ExpVec::is_one(self : ExpVec) -> Bool {
-  self.vec.length() == 0
+  self.vec.is_empty()
 }
 
 ///|
@@ -189,7 +189,7 @@ fn ExpVec::shrink(self : ExpVec) -> Unit {
   if self.is_one() {
     return
   }
-  for i = self.length() - 1; self[i] == 0 && not(self.is_one()); i = i + 1 {
+  for i = self.length() - 1; not(self.is_one()) && self[i] == 0; i = i - 1 {
     let _ = self.pop()
 
   }
