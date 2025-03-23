@@ -480,7 +480,7 @@ pub fn SparsePolynomial::eval[V : Eq + @lg.Semiring](
 }
 
 ///|
-pub fn SparsePolynomial::const_replacement[A : @lg.Semiring + Eq](
+pub fn SparsePolynomial::replace_const[A : @lg.Semiring + Eq](
   self : SparsePolynomial[A],
   index : Int,
   coeff : A
@@ -502,7 +502,7 @@ pub fn SparsePolynomial::const_replacement[A : @lg.Semiring + Eq](
 
 ///|
 /// use index2 replace index1
-pub fn SparsePolynomial::variable_replacement[A : @lg.Semiring + Eq](
+pub fn SparsePolynomial::replace_variable[A : @lg.Semiring + Eq](
   self : SparsePolynomial[A],
   index1 : Int,
   index2 : Int
@@ -519,7 +519,7 @@ pub fn SparsePolynomial::variable_replacement[A : @lg.Semiring + Eq](
 }
 
 ///|
-pub fn SparsePolynomial::term_replacement[A : @lg.Semiring + Eq](
+pub fn SparsePolynomial::replace_term[A : @lg.Semiring + Eq](
   self : SparsePolynomial[A],
   index : Int,
   exp : ExpVec,
@@ -549,7 +549,7 @@ pub fn SparsePolynomial::term_replacement[A : @lg.Semiring + Eq](
 }
 
 ///|
-pub fn SparsePolynomial::polynomial_replacement[A : @lg.Semiring + Eq](
+pub fn SparsePolynomial::replace_poly[A : @lg.Semiring + Eq](
   self : SparsePolynomial[A],
   index : Int,
   other : SparsePolynomial[A]
@@ -604,28 +604,28 @@ test "const_replace" {
   ])
   //poly = xy²z³ + 2x²y³z⁴ + 3x³y⁴z⁵
   println(poly.to_string())
-  //const_replacement (z = 2)
+  //replace_const (z = 2)
   assert_eq!(
-    poly.const_replacement(2, 2).to_string(),
+    poly.replace_const(2, 2).to_string(),
     "8xy² + 32x²y³ + 96x³y⁴",
   )
-  //variable_replacement (y = z)
+  //replace_variable (y = z)
   assert_eq!(
-    poly.variable_replacement(1, 2).to_string(),
+    poly.replace_variable(1, 2).to_string(),
     "xz⁵ + 2x²z⁷ + 3x³z⁹",
   )
-  //term_replacement (z = x²y²z²)
+  //replace_term (z = x²y²z²)
   let expvec = ExpVec::from_array([2, 2, 2])
   assert_eq!(
-    poly.term_replacement(2, expvec, 1).to_string(),
+    poly.replace_term(2, expvec, 1).to_string(),
     "x⁷y⁸z⁶ + 2x¹⁰y¹¹z⁸ + 3x¹³y¹⁴z¹⁰",
   )
-  //polynomial_replacement (x = z + y)
+  //replace_poly (x = z + y)
   let poly_2 = SparsePolynomial::from_array([
     (ExpVec::from_array([0, 0, 1]), 1),
     (ExpVec::from_array([0, 1, 0]), 1),
   ])
-  let temp_poly = poly.polynomial_replacement(0, poly_2)
+  let temp_poly = poly.replace_poly(0, poly_2)
   assert_eq!(
     temp_poly.to_string(),
     "y²z⁴ + y³z³ + 2y³z⁶ + 4y⁴z⁵ + 2y⁵z⁴ + 3y⁴z⁸ + 9y⁵z⁷ + 9y⁶z⁶ + 3y⁷z⁵",
