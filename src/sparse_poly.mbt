@@ -487,6 +487,9 @@ pub fn SparsePolynomial::const_replacement[A : @lg.Semiring + Eq](
 ) -> SparsePolynomial[A] {
   let res = self.copy()
   for expvec, coef in res {
+    guard index >= 0 && index < expvec.length() else { 
+      abort("index out of bound in term:\{expvec.to_string()}") 
+    }
     let new_coef = loop expvec[index], coef {
       0, coef => break coef
       expon, coef => continue expon - 1, coef * coeff
@@ -506,6 +509,9 @@ pub fn SparsePolynomial::variable_replacement[A : @lg.Semiring + Eq](
 ) -> SparsePolynomial[A] {
   let res = self.copy()
   for expvec, _ in res {
+    guard index1 >= 0 && index1 < expvec.length() && index2 > 0 && index2 < expvec.length() else { 
+      abort("index out of bound in term:\{expvec.to_string()}") 
+    }
     expvec[index2] = expvec[index1] + expvec[index2]
     expvec[index1] = 0
   }
@@ -521,6 +527,9 @@ pub fn SparsePolynomial::term_replacement[A : @lg.Semiring + Eq](
 ) -> SparsePolynomial[A] {
   let res = SparsePolynomial::new()
   for expvec, coef in self {
+    guard index >= 0 && index < expvec.length() else { 
+      abort("index out of bound in term:\{expvec.to_string()}") 
+    }
     let expon = expvec[index]
     let copy_expvec = expvec.copy()
     copy_expvec[index] = 0
@@ -547,8 +556,11 @@ pub fn SparsePolynomial::polynomial_replacement[A : @lg.Semiring + Eq](
 ) -> SparsePolynomial[A] {
   let res = SparsePolynomial::new()
   for expvec, coeff in self {
+    guard index >= 0 && index < expvec.length() else { 
+      abort("index out of bound in term:\{expvec.to_string()}") 
+    }
     if expvec[index] != 0 {
-      let temp_sparse = other.pow(expvec[index])
+      let temp_sparse = other.copy().pow(expvec[index])
       let copy_expvec = expvec.copy()
       copy_expvec[index] = 0
       for temp_expvec, temp_coeff in temp_sparse {
@@ -564,15 +576,25 @@ pub fn SparsePolynomial::pow[A : @lg.Semiring + Eq](
   self : SparsePolynomial[A],
   expon : Int
 ) -> SparsePolynomial[A] {
-  guard expon > 0 else { SparsePolynomial::zero() }
-  let temp = self.copy()
-  let mut res = self.copy()
-  for i = expon; i > 1; i = i - 1 {
-    res *= temp
+  guard expon > 1 else { self }
+  let temp = self.pow(expon / 2)
+  if expon % 2 == 0 {
+    temp * temp
+  }else{
+    temp * temp * self
   }
-  res
-}
+}  
 
+test "pow" {
+  let poly_2 = SparsePolynomial::from_array([
+    (ExpVec::from_array([0, 0, 1]), 1),
+    (ExpVec::from_array([0, 1, 0]), 1),
+  ])
+  assert_eq!(
+    poly_2.pow(10).to_string(),
+    "y¹⁰ + z¹⁰ + 10yz⁹ + 45y²z⁸ + 120y³z⁷ + 210y⁴z⁶ + 252y⁵z⁵ + 210y⁶z⁴ + 120y⁷z³ + 45y⁸z² + 10y⁹z"
+  )
+}
 ///|
 test "const_replace" {
   let poly = SparsePolynomial::from_array([
