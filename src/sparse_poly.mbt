@@ -560,7 +560,7 @@ pub fn SparsePolynomial::polynomial_replacement[A : @lg.Semiring + Eq](
       abort("index out of bound in term:\{expvec.to_string()}") 
     }
     if expvec[index] != 0 {
-      let temp_sparse = other.copy().pow(expvec[index])
+      let temp_sparse = other.pow(expvec[index])
       let copy_expvec = expvec.copy()
       copy_expvec[index] = 0
       for temp_expvec, temp_coeff in temp_sparse {
