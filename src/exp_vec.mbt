@@ -100,64 +100,58 @@ impl Mul for ExpVec with op_mul(self : ExpVec, other : ExpVec) -> ExpVec {
 }
 
 ///|
-impl Show for ExpVec with to_string(self : ExpVec) -> String {
-  let mut s = ""
-  let alphabet = [
-    "x", "y", "z", "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m",
-    "n", "o", "p", "q", "r", "s", "t", "u", "v", "w",
-  ]
-  let num_superscript = [
-    "\u2070", "\u00b9", "\u00b2", "\u00b3", "\u2074", "\u2075", "\u2076", "\u2077",
-    "\u2078", "\u2079",
-  ]
-  let num_subscript = [
-    "\u2080", "\u2081", "\u2082", "\u2083", "\u2084", "\u2085", "\u2086", "\u2087",
-    "\u2088", "\u2089",
-  ]
-  let minus_superscript = "\u207b"
-  let to_superscript = fn(num : Int) -> String {
-    let mut ss = ""
-    let s = num.to_string()
-    for c in s {
-      let index = c.to_int() - '0'.to_int()
-      if @lu.is_between(index, 0, 9) {
-        ss += num_superscript[index]
-      } else {
-        ss += minus_superscript
-      }
-    }
-    ss
-  }
-  let to_subscript = fn(num : Int) -> String {
-    let mut ss = ""
-    let s = num.to_string()
-    for c in s {
-      let index = c.to_int() - '0'.to_int()
-      ss += num_subscript[index]
-    }
-    ss
-  }
-  for i in 0..<self.length() {
-    if self[i] != 0 {
-      let subscript = (i / 26).abs()
-      let alphabet_index = i % 26
-      let mut subscript_str = ""
-      if subscript != 0 {
-        subscript_str = to_subscript(subscript)
-      }
-      let exp = if self[i] == 1 { "" } else { to_superscript(self[i]) }
-      s = s + alphabet[alphabet_index] + subscript_str + exp
-    }
-  }
-  if s == "" {
-    s = "C"
-  }
-  s
-}
-
-///|
 impl Show for ExpVec with output(self : ExpVec, logger) -> Unit {
-  logger.write_string(self.to_string())
+  let write_superscript = {
+    let num_superscript = [
+      '\u2070', '\u00b9', '\u00b2', '\u00b3', '\u2074', '\u2075', '\u2076', '\u2077',
+      '\u2078', '\u2079',
+    ]
+    let minus_superscript = '\u207b'
+    fn(num : Int) -> Unit {
+      for c in num.to_string() {
+        if c == '-' {
+          logger.write_char(minus_superscript)
+        } else {
+          let index = c.to_int() - '0'.to_int()
+          logger.write_char(num_superscript[index])
+        }
+      }
+    }
+  }
+  let write_subscript = {
+    let num_subscript = [
+      '\u2080', '\u2081', '\u2082', '\u2083', '\u2084', '\u2085', '\u2086', '\u2087',
+      '\u2088', '\u2089',
+    ]
+    fn(num : Int) -> Unit {
+      for c in num.to_string() {
+        let index = c.to_int() - '0'.to_int()
+        logger.write_char(num_subscript[index])
+      }
+    }
+  }
+  let alphabet = [
+    'x', 'y', 'z', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm',
+    'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w',
+  ]
+  let mut empty = true
+  for i, x in self.vec {
+    if x != 0 {
+      empty = false
+      let alphabet_index = i % 26
+      logger.write_char(alphabet[alphabet_index])
+      let subscript = (i / 26).abs()
+      if subscript != 0 {
+        write_subscript(subscript)
+      }
+      if x != 1 {
+        write_superscript(x)
+      }
+    }
+  }
+  if empty {
+    logger.write_char('C')
+  }
 }
 
 ///|
