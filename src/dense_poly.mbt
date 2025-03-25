@@ -28,10 +28,7 @@ impl[A : Show + Eq + Semiring] Show for Polynomial[A] with to_string(self) {
 }
 
 ///|
-impl[A : Show + Eq + Semiring] Show for Polynomial[A] with output(
-  self,
-  logger
-) {
+impl[A : Show + Eq + Semiring] Show for Polynomial[A] with output(self, logger) {
   logger.write_string(self.to_string())
 }
 

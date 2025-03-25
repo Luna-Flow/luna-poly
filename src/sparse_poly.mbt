@@ -332,10 +332,7 @@ pub fn SparsePolynomial::mul_term[V : Eq + Semiring](
 }
 
 ///|
-pub impl[A : Semiring + Eq] Mul for SparsePolynomial[A] with op_mul(
-  self,
-  other
-) {
+pub impl[A : Semiring + Eq] Mul for SparsePolynomial[A] with op_mul(self, other) {
   let l_self = self.size()
   let l_other = other.size()
   let larger = if l_self >= l_other { self } else { other }
