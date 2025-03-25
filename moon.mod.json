@@ -15,6 +15,6 @@
     "numerical-methods",
     "math"
   ],
-  "description": "A numerical calculus library, a part of LunaFlow.",
+  "description": "A generic polynomial lib, a part of LunaFlow.",
   "source": "src"
 }
