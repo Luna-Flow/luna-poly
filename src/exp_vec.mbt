@@ -69,7 +69,7 @@ fn ExpVec::inverse(self : ExpVec) -> ExpVec {
 }
 
 ///|
-impl @lg.Neg for ExpVec with op_neg(self : ExpVec) -> ExpVec {
+impl Neg for ExpVec with op_neg(self : ExpVec) -> ExpVec {
   self.inverse()
 }
 
@@ -79,12 +79,12 @@ fn op_div(self : ExpVec, other : ExpVec) -> ExpVec {
 }
 
 ///|
-impl @lg.One for ExpVec with one() -> ExpVec {
+impl One for ExpVec with one() -> ExpVec {
   { vec: [], degree: 0 }
 }
 
 ///|
-impl @lg.Mul for ExpVec with op_mul(self : ExpVec, other : ExpVec) -> ExpVec {
+impl Mul for ExpVec with op_mul(self : ExpVec, other : ExpVec) -> ExpVec {
   let l_self = self.length()
   let l_other = other.length()
   let l_min = @math.minimum(l_self, l_other)
