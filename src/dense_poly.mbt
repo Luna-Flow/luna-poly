@@ -4,32 +4,21 @@ struct Polynomial[V] {
 } derive(Eq, Compare)
 
 ///|
-impl[A : Show + Eq + Semiring] Show for Polynomial[A] with to_string(self) {
-  let mut s = ""
+impl[A : Show + Eq + Semiring] Show for Polynomial[A] with output(self, logger) {
+  guard not(is_zero(self)) else { logger.write_object(A::zero()) }
   let mut first = true
-  for i in 0..<self.terms.length() {
-    let term = self.terms[i]
+  for i, term in self.terms {
     if not(is_zero(term)) {
       if not(first) {
-        s = s + " + "
-      }
-      s = s + term.to_string()
-      if i > 0 {
-        s = s + "x^" + i.to_string()
+        logger.write_string(" + ")
       }
       first = false
+      logger.write_object(term)
+      if i > 0 {
+        logger..write_string("x^").write_object(i)
+      }
     }
   }
-  if first {
-    "0"
-  } else {
-    s
-  }
-}
-
-///|
-impl[A : Show + Eq + Semiring] Show for Polynomial[A] with output(self, logger) {
-  logger.write_string(self.to_string())
 }
 
 ///|
