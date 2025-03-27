@@ -91,10 +91,10 @@ impl SparsePolynomial {
   to_array[V](Self[V]) -> Array[(ExpVec, V)]
   values[V](Self[V]) -> Array[V]
 }
-impl[V : Eq + @luna-generic.AddMonoid] @luna-generic.Add for SparsePolynomial[V]
-impl[A : @luna-generic.Semiring + Eq] @luna-generic.Mul for SparsePolynomial[A]
 impl[V : @luna-generic.Zero] @luna-generic.Zero for SparsePolynomial[V]
+impl[V : Eq + @luna-generic.AddMonoid] Add for SparsePolynomial[V]
 impl[V : Eq] Eq for SparsePolynomial[V]
+impl[A : @luna-generic.Semiring + Eq] Mul for SparsePolynomial[A]
 impl[V : Eq + Show + @luna-generic.Semiring] Show for SparsePolynomial[V]
 
 // Type aliases
