@@ -477,7 +477,7 @@ pub fn SparsePolynomial::eval[V : Eq + Semiring](
 }
 
 ///|
-pub fn SparsePolynomial::replace_const[A : @lg.Semiring + Eq](
+pub fn SparsePolynomial::replace_const[A : Semiring + Eq](
   self : SparsePolynomial[A],
   index : Int,
   coeff : A
@@ -499,7 +499,7 @@ pub fn SparsePolynomial::replace_const[A : @lg.Semiring + Eq](
 
 ///|
 /// use index2 replace index1
-pub fn SparsePolynomial::replace_variable[A : @lg.Semiring + Eq](
+pub fn SparsePolynomial::replace_variable[A : Semiring + Eq](
   self : SparsePolynomial[A],
   index1 : Int,
   index2 : Int
@@ -516,7 +516,7 @@ pub fn SparsePolynomial::replace_variable[A : @lg.Semiring + Eq](
 }
 
 ///|
-pub fn SparsePolynomial::replace_term[A : @lg.Semiring + Eq](
+pub fn SparsePolynomial::replace_term[A : Semiring + Eq](
   self : SparsePolynomial[A],
   index : Int,
   exp : ExpVec,
@@ -546,7 +546,7 @@ pub fn SparsePolynomial::replace_term[A : @lg.Semiring + Eq](
 }
 
 ///|
-pub fn SparsePolynomial::replace_poly[A : @lg.Semiring + Eq](
+pub fn SparsePolynomial::replace_poly[A : Semiring + Eq](
   self : SparsePolynomial[A],
   index : Int,
   other : SparsePolynomial[A]
@@ -569,7 +569,7 @@ pub fn SparsePolynomial::replace_poly[A : @lg.Semiring + Eq](
 }
 
 ///|
-pub fn SparsePolynomial::pow[A : @lg.Semiring + Eq](
+pub fn SparsePolynomial::pow[A : Semiring + Eq](
   self : SparsePolynomial[A],
   expon : Int
 ) -> SparsePolynomial[A] {
