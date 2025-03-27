@@ -179,7 +179,7 @@ pub fn SparsePolynomial::from_iter[V : Eq + AddMonoid](
   let m = SparsePolynomial::new()
   iter.each(fn(e) {
     let (exp_vec, coefficient) = e
-    m.add_term_inplace(exp_vec, coefficient)
+    m.add_term_inplace(exp_vec.copy(), coefficient)
   })
   m
 }
@@ -474,6 +474,159 @@ pub fn SparsePolynomial::eval[V : Eq + Semiring](
     sum = sum + calc_coe(x, vars)
   }
   sum
+}
+
+///|
+pub fn SparsePolynomial::replace_const[A : Semiring + Eq](
+  self : SparsePolynomial[A],
+  index : Int,
+  coeff : A
+) -> SparsePolynomial[A] {
+  let res = self.copy()
+  for expvec, coef in res {
+    guard index >= 0 && index < expvec.length() else { 
+      abort("index out of bound in term:\{expvec.to_string()}") 
+    }
+    let new_coef = loop expvec[index], coef {
+      0, coef => break coef
+      expon, coef => continue expon - 1, coef * coeff
+    }
+    expvec[index] = 0
+    res[expvec] = new_coef
+  }
+  res
+}
+
+///|
+/// use index2 replace index1
+pub fn SparsePolynomial::replace_variable[A : Semiring + Eq](
+  self : SparsePolynomial[A],
+  index1 : Int,
+  index2 : Int
+) -> SparsePolynomial[A] {
+  let res = self.copy()
+  for expvec, _ in res {
+    guard index1 >= 0 && index1 < expvec.length() && index2 > 0 && index2 < expvec.length() else { 
+      abort("index out of bound in term:\{expvec.to_string()}") 
+    }
+    expvec[index2] = expvec[index1] + expvec[index2]
+    expvec[index1] = 0
+  }
+  res
+}
+
+///|
+pub fn SparsePolynomial::replace_term[A : Semiring + Eq](
+  self : SparsePolynomial[A],
+  index : Int,
+  exp : ExpVec,
+  coeff : A
+) -> SparsePolynomial[A] {
+  let res = SparsePolynomial::new()
+  for expvec, coef in self {
+    guard index >= 0 && index < expvec.length() else { 
+      abort("index out of bound in term:\{expvec.to_string()}") 
+    }
+    let expon = expvec[index]
+    let copy_expvec = expvec.copy()
+    copy_expvec[index] = 0
+    let new_coeff = loop expon, coef {
+      0, coef => break coef
+      exp, coef => continue exp - 1, coef * coeff
+    }
+    let temp_exp = exp.copy()
+    /// ExpVec doesn't have iter and iter2
+    for i = 0; i < exp.length(); i = i + 1 {
+      temp_exp[i] *= expon
+    }
+    let new_expvec = copy_expvec * temp_exp
+    res.add_term_inplace(new_expvec, new_coeff)
+  }
+  res
+}
+
+///|
+pub fn SparsePolynomial::replace_poly[A : Semiring + Eq](
+  self : SparsePolynomial[A],
+  index : Int,
+  other : SparsePolynomial[A]
+) -> SparsePolynomial[A] {
+  let res = SparsePolynomial::new()
+  for expvec, coeff in self {
+    guard index >= 0 && index < expvec.length() else { 
+      abort("index out of bound in term:\{expvec.to_string()}") 
+    }
+    if expvec[index] != 0 {
+      let temp_sparse = other.pow(expvec[index])
+      let copy_expvec = expvec.copy()
+      copy_expvec[index] = 0
+      for temp_expvec, temp_coeff in temp_sparse {
+        res.add_term_inplace(copy_expvec * temp_expvec, coeff * temp_coeff)
+      }
+    }
+  }
+  res
+}
+
+///|
+pub fn SparsePolynomial::pow[A : Semiring + Eq](
+  self : SparsePolynomial[A],
+  expon : Int
+) -> SparsePolynomial[A] {
+  guard expon > 1 else { self }
+  let temp = self.pow(expon / 2)
+  if expon % 2 == 0 {
+    temp * temp
+  }else{
+    temp * temp * self
+  }
+}  
+
+test "pow" {
+  let poly_2 = SparsePolynomial::from_array([
+    (ExpVec::from_array([0, 0, 1]), 1),
+    (ExpVec::from_array([0, 1, 0]), 1),
+  ])
+  assert_eq!(
+    poly_2.pow(10).to_string(),
+    "y¹⁰ + z¹⁰ + 10yz⁹ + 45y²z⁸ + 120y³z⁷ + 210y⁴z⁶ + 252y⁵z⁵ + 210y⁶z⁴ + 120y⁷z³ + 45y⁸z² + 10y⁹z"
+  )
+}
+///|
+test "const_replace" {
+  let poly = SparsePolynomial::from_array([
+    (ExpVec::from_array([1, 2, 3]), 1),
+    (ExpVec::from_array([2, 3, 4]), 2),
+    (ExpVec::from_array([3, 4, 5]), 3),
+  ])
+  //poly = xy²z³ + 2x²y³z⁴ + 3x³y⁴z⁵
+  println(poly.to_string())
+  //replace_const (z = 2)
+  assert_eq!(
+    poly.replace_const(2, 2).to_string(),
+    "8xy² + 32x²y³ + 96x³y⁴",
+  )
+  //replace_variable (y = z)
+  assert_eq!(
+    poly.replace_variable(1, 2).to_string(),
+    "xz⁵ + 2x²z⁷ + 3x³z⁹",
+  )
+  //replace_term (z = x²y²z²)
+  let expvec = ExpVec::from_array([2, 2, 2])
+  assert_eq!(
+    poly.replace_term(2, expvec, 1).to_string(),
+    "x⁷y⁸z⁶ + 2x¹⁰y¹¹z⁸ + 3x¹³y¹⁴z¹⁰",
+  )
+  //replace_poly (x = z + y)
+  let poly_2 = SparsePolynomial::from_array([
+    (ExpVec::from_array([0, 0, 1]), 1),
+    (ExpVec::from_array([0, 1, 0]), 1),
+  ])
+  let temp_poly = poly.replace_poly(0, poly_2)
+  assert_eq!(
+    temp_poly.to_string(),
+    "y²z⁴ + y³z³ + 2y³z⁶ + 4y⁴z⁵ + 2y⁵z⁴ + 3y⁴z⁸ + 9y⁵z⁷ + 9y⁶z⁶ + 3y⁷z⁵",
+  )
 }
 
 ///|
