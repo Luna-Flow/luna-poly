@@ -2,39 +2,28 @@
 type SparsePolynomial[V] @sorted_map.T[ExpVec, V] derive(Eq)
 
 ///|
-pub impl[V : Eq + Show + Semiring] Show for SparsePolynomial[V] with to_string(
-  self
-) {
-  let mut s = ""
-  let mut fst = true
-  self.each(fn(exp_vec, coefficient) {
-    if not(fst) {
-      s += " + "
-    }
-    if coefficient == V::one() {
-      if not(exp_vec.is_one()) {
-        s += exp_vec.to_string()
-      } else {
-        s += coefficient.to_string()
-      }
-    } else {
-      s += coefficient.to_string() +
-        (if not(exp_vec.is_one()) { exp_vec.to_string() } else { "" })
-    }
-    fst = false
-  })
-  if s == "" {
-    s = "0"
-  }
-  s
-}
-
-///|
 pub impl[V : Eq + Show + Semiring] Show for SparsePolynomial[V] with output(
   self,
-  l
+  logger
 ) {
-  l.write_string(self.to_string())
+  let mut first = true
+  for exp_vec, coefficient in self {
+    if not(first) {
+      logger.write_string(" + ")
+    }
+    if exp_vec.is_one() {
+      logger.write_object(coefficient)
+    } else {
+      if coefficient != V::one() {
+        logger.write_object(coefficient)
+      }
+      logger.write_object(exp_vec)
+    }
+    first = false
+  }
+  if first {
+    logger.write_object(V::zero())
+  }
 }
 
 ///|
