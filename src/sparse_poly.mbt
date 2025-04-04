@@ -340,7 +340,7 @@ pub impl[A : Semiring + Eq] Mul for SparsePolynomial[A] with op_mul(self, other)
 }
 
 ///|
-fn qpow[V : Eq + Semiring](b : V, e : Int) -> V {
+fn qpow[V : Eq + Semiring](b : V, e : UInt) -> V {
   if b == V::zero() {
     return V::zero()
   } else if e == 0 {
@@ -473,8 +473,8 @@ pub fn SparsePolynomial::replace_const[A : Semiring + Eq](
 ) -> SparsePolynomial[A] {
   let res = self.copy()
   for expvec, coef in res {
-    guard index >= 0 && index < expvec.length() else { 
-      abort("index out of bound in term:\{expvec.to_string()}") 
+    guard index >= 0 && index < expvec.length() else {
+      abort("index out of bound in term:\{expvec.to_string()}")
     }
     let new_coef = loop expvec[index], coef {
       0, coef => break coef
@@ -495,8 +495,11 @@ pub fn SparsePolynomial::replace_variable[A : Semiring + Eq](
 ) -> SparsePolynomial[A] {
   let res = self.copy()
   for expvec, _ in res {
-    guard index1 >= 0 && index1 < expvec.length() && index2 > 0 && index2 < expvec.length() else { 
-      abort("index out of bound in term:\{expvec.to_string()}") 
+    guard index1 >= 0 &&
+      index1 < expvec.length() &&
+      index2 > 0 &&
+      index2 < expvec.length() else {
+      abort("index out of bound in term:\{expvec.to_string()}")
     }
     expvec[index2] = expvec[index1] + expvec[index2]
     expvec[index1] = 0
@@ -513,8 +516,8 @@ pub fn SparsePolynomial::replace_term[A : Semiring + Eq](
 ) -> SparsePolynomial[A] {
   let res = SparsePolynomial::new()
   for expvec, coef in self {
-    guard index >= 0 && index < expvec.length() else { 
-      abort("index out of bound in term:\{expvec.to_string()}") 
+    guard index >= 0 && index < expvec.length() else {
+      abort("index out of bound in term:\{expvec.to_string()}")
     }
     let expon = expvec[index]
     let copy_expvec = expvec.copy()
@@ -542,8 +545,8 @@ pub fn SparsePolynomial::replace_poly[A : Semiring + Eq](
 ) -> SparsePolynomial[A] {
   let res = SparsePolynomial::new()
   for expvec, coeff in self {
-    guard index >= 0 && index < expvec.length() else { 
-      abort("index out of bound in term:\{expvec.to_string()}") 
+    guard index >= 0 && index < expvec.length() else {
+      abort("index out of bound in term:\{expvec.to_string()}")
     }
     if expvec[index] != 0 {
       let temp_sparse = other.pow(expvec[index])
@@ -560,17 +563,18 @@ pub fn SparsePolynomial::replace_poly[A : Semiring + Eq](
 ///|
 pub fn SparsePolynomial::pow[A : Semiring + Eq](
   self : SparsePolynomial[A],
-  expon : Int
+  expon : UInt
 ) -> SparsePolynomial[A] {
   guard expon > 1 else { self }
   let temp = self.pow(expon / 2)
   if expon % 2 == 0 {
     temp * temp
-  }else{
+  } else {
     temp * temp * self
   }
-}  
+}
 
+///|
 test "pow" {
   let poly_2 = SparsePolynomial::from_array([
     (ExpVec::from_array([0, 0, 1]), 1),
@@ -578,9 +582,10 @@ test "pow" {
   ])
   assert_eq!(
     poly_2.pow(10).to_string(),
-    "y¹⁰ + z¹⁰ + 10yz⁹ + 45y²z⁸ + 120y³z⁷ + 210y⁴z⁶ + 252y⁵z⁵ + 210y⁶z⁴ + 120y⁷z³ + 45y⁸z² + 10y⁹z"
+    "y¹⁰ + z¹⁰ + 10yz⁹ + 45y²z⁸ + 120y³z⁷ + 210y⁴z⁶ + 252y⁵z⁵ + 210y⁶z⁴ + 120y⁷z³ + 45y⁸z² + 10y⁹z",
   )
 }
+
 ///|
 test "const_replace" {
   let poly = SparsePolynomial::from_array([
