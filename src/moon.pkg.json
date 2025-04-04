@@ -7,6 +7,10 @@
       {
         "path": "Luna-Flow/luna-utils",
         "alias": "lu"
+      },
+      {
+        "path": "moonbitlang/quickcheck",
+        "alias": "qc"
       }
     ]
 }

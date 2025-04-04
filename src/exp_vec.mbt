@@ -5,6 +5,20 @@ struct ExpVec {
 }
 
 ///|
+impl @quickcheck.Arbitrary for ExpVec with arbitrary(size, rs) {
+  @qc.Gen::spawn().fmap(ExpVec::from_array).run(size, rs)
+}
+
+///|
+test "arbitrary" {
+  let gen : @qc.Gen[ExpVec] = @qc.Gen::spawn()
+  inspect!(
+    gen.samples(size=10),
+    content="[b²c²d⁻⁴, a⁻², zab³d, 1, a⁻¹, 1, z⁻¹a⁻²c³d², z⁻¹a²c⁴e⁻², z⁻¹, z⁻¹]",
+  )
+}
+
+///|
 impl Hash for ExpVec with hash_combine(self : ExpVec, hasher : Hasher) -> Unit {
   let vec = self.vec
   if vec.is_empty() {
@@ -13,6 +27,19 @@ impl Hash for ExpVec with hash_combine(self : ExpVec, hasher : Hasher) -> Unit {
     hasher.combine_int(self.degree)
     for x in vec {
       hasher.combine_int(x)
+    }
+  }
+}
+
+///|
+test "prop hash non-conflict" {
+  let m = Map::new()
+  let g : @qc.Gen[ExpVec] = @qc.Gen::spawn()
+  for sample in g.samples(size=1999) {
+    let hashed = sample.hash()
+    match m[hashed] {
+      Some((x : ExpVec)) => assert_eq!(sample.vec, x.vec)
+      None => m[hashed] = sample
     }
   }
 }
@@ -150,7 +177,7 @@ impl Show for ExpVec with output(self : ExpVec, logger) -> Unit {
     }
   }
   if empty {
-    logger.write_char('C')
+    logger.write_char('1')
   }
 }
 
@@ -179,21 +206,43 @@ impl Compare for ExpVec with compare(self : ExpVec, other : ExpVec) -> Int {
 }
 
 ///|
-fn ExpVec::shrink(self : ExpVec) -> Unit {
-  if self.is_one() {
-    return
+test "ordering exclusive" {
+  fn exclusive(ab : (ExpVec, ExpVec)) -> Bool {
+    let (a, b) = ab
+    match (a > b, a == b, a < b) {
+      (true, false, false) | (false, false, true) | (false, true, false) => true
+      _ => false
+    }
   }
-  for i = self.length() - 1; not(self.is_one()) && self[i] == 0; i = i - 1 {
-    let _ = self.pop()
 
+  @qc.quick_check!(@qc.Arrow(exclusive) |> @qc.with_max_success(1000))
+}
+
+///|
+test "1 <= u" {
+  fn one_leq_any(a : ExpVec) -> Bool {
+    let one = ExpVec::one()
+    one <= a
   }
-  self.vec.shrink_to_fit()
+
+  @qc.quick_check!(@qc.Arrow(one_leq_any) |> @qc.with_max_success(1000))
+}
+
+///|
+fn ExpVec::shrink(self : ExpVec) -> Unit {
+  if not(self.is_one()) {
+    for i = self.length() - 1; not(self.is_one()) && self[i] == 0; i = i - 1 {
+      let _ = self.pop()
+
+    }
+    self.vec.shrink_to_fit()
+  }
 }
 
 ///|
 impl Eq for ExpVec with op_equal(self : ExpVec, other : ExpVec) -> Bool {
   guard self.length() == other.length() && self.degree == other.degree else {
-    return false
+    false
   }
   self.shrink()
   other.shrink()
@@ -225,5 +274,5 @@ fn ExpVec::from_array(vec : Array[Int]) -> ExpVec {
 test "show" {
   assert_eq!(ExpVec::from_array([2025]).to_string(), "x²⁰²⁵")
   assert_eq!(ExpVec::from_array([1, 0, 0]).to_string(), "x")
-  assert_eq!(ExpVec::from_array([0]).to_string(), "C")
+  assert_eq!(ExpVec::from_array([0]).to_string(), "1")
 }
