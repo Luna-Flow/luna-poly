@@ -30,13 +30,18 @@ fn drop_while_end[A](pred : (A) -> Bool, xs : Array[A]) -> Array[A] {
   xs.split_at(i + 1).0
 }
 
-///| Return the leading power and coefficient of the polynomial.
-pub fn leading[A](self : Polynomial[A]) -> (Int, A)? {
+///| Return the leading term of the polynomial.
+pub fn leading_term[A](self : Polynomial[A]) -> (Int, A)? {
   if self.terms.is_empty() {
     None
   } else {
     Some((self.terms.length() - 1, self.terms.last().unwrap()))
   }
+}
+
+///| Return the leading coefficient of the polynomial.
+pub fn leading_coefficient[A](self : Polynomial[A]) -> A? {
+  self.leading_term().map(@tuple.snd)
 }
 
 ///| Convert an array to a polynomial.
