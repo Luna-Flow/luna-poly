@@ -2,10 +2,8 @@
   "name": "Luna-Flow/luna-poly",
   "version": "0.1.0",
   "deps": {
-    "Luna-Flow/luna-utils": "0.1.0-alpha-4",
-    "Luna-Flow/luna-generic": "0.2.0-alpha-1",
-    "Kaida-Amethyst/math": "0.1.17",
-    "moonbitlang/quickcheck": "0.8.6"
+    "moonbitlang/quickcheck": "0.8.6",
+    "Luna-Flow/luna-generic": "0.2.0-alpha-1"
   },
   "readme": "README.md",
   "repository": "https://github.com/Luna-Flow/luna-poly",
