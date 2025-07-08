@@ -4,12 +4,12 @@ struct MultiPoly[A] {
 }
 
 ///|
-pub fn coefficients[A](self : MultiPoly[A]) -> Array[A] {
+pub fn[A] coefficients(self : MultiPoly[A]) -> Array[A] {
   self.terms.map(@tuple.snd)
 }
 
 ///|
-pub fn MultiPoly::from_array[A : Semiring + Eq](
+pub fn[A : Semiring + Eq] MultiPoly::from_array(
   arr : Array[(Array[UInt], A)]
 ) -> MultiPoly[A] {
   {
@@ -18,14 +18,14 @@ pub fn MultiPoly::from_array[A : Semiring + Eq](
 }
 
 ///|
-pub fn MultiPoly::from_terms_array[A : Semiring + Eq](
+pub fn[A : Semiring + Eq] MultiPoly::from_terms_array(
   terms : Array[(ExpVec, A)]
 ) -> MultiPoly[A] {
   terms.map(fn { (term, a) => (term.vec, a) }) |> MultiPoly::from_array
 }
 
 ///|
-pub fn normalize[A : Semiring + Eq](
+pub fn[A : Semiring + Eq] normalize(
   arr : Array[(Array[UInt], A)]
 ) -> ArrayView[(Array[UInt], A)] {
   let l = arr.length()
@@ -83,11 +83,11 @@ impl[A : Show] Show for MultiPoly[A] with output(self, logger) {
 ///|
 test "from array" {
   let a1 = [([0U, 0], 1), ([0, 0], 2), ([12, 0], 2), ([0, 1], 3)]
-  inspect!(MultiPoly::from_array(a1), content="2 * X^12 + 3 * Y + 3")
+  inspect(MultiPoly::from_array(a1), content="2 * X^12 + 3 * Y + 3")
   let a2 = [([0U, 0], 0), ([0, 1], 0), ([12, 0], 0)]
-  inspect!(MultiPoly::from_array(a2), content="0")
+  inspect(MultiPoly::from_array(a2), content="0")
   let a3 = [([0U, 0], 1), ([1, 1], 2)]
-  inspect!(MultiPoly::from_array(a3), content="2 * X * Y + 1")
+  inspect(MultiPoly::from_array(a3), content="2 * X * Y + 1")
 }
 
 ///|
@@ -140,10 +140,10 @@ test "op neg" {
   let a2 = [([0U, 0], 3), ([0, 0], 2), ([12, 0], 2), ([1, 1], 3)]
   let p1 = MultiPoly::from_array(a1)
   let p2 = MultiPoly::from_array(a2)
-  inspect!(p1, content="2 * X^12 + 3 * Y + 3")
-  inspect!(-p1, content="-2 * X^12 + -3 * Y + -3")
-  inspect!(-p2, content="-2 * X^12 + -3 * X * Y + -5")
-  inspect!(p1 + -p2, content="-3 * X * Y + 3 * Y + -2")
+  inspect(p1, content="2 * X^12 + 3 * Y + 3")
+  inspect(-p1, content="-2 * X^12 + -3 * Y + -3")
+  inspect(-p2, content="-2 * X^12 + -3 * X * Y + -5")
+  inspect(p1 + -p2, content="-3 * X * Y + 3 * Y + -2")
 }
 
 ///|
@@ -157,16 +157,16 @@ test "op add / sub" {
   let a2 = [([0U, 0], 3), ([0, 0], 2), ([12, 0], 2), ([1, 1], 3)]
   let p1 = MultiPoly::from_array(a1)
   let p2 = MultiPoly::from_array(a2)
-  inspect!(p1, content="2 * X^12 + 3 * Y + 3")
-  inspect!(p2, content="2 * X^12 + 3 * X * Y + 5")
-  inspect!(p1 + p2, content="4 * X^12 + 3 * X * Y + 3 * Y + 8")
-  inspect!(p2 + p1, content="4 * X^12 + 3 * X * Y + 3 * Y + 8")
-  inspect!(p1 - p2, content="-3 * X * Y + 3 * Y + -2")
-  inspect!(p2 - p1, content="3 * X * Y + -3 * Y + 2")
+  inspect(p1, content="2 * X^12 + 3 * Y + 3")
+  inspect(p2, content="2 * X^12 + 3 * X * Y + 5")
+  inspect(p1 + p2, content="4 * X^12 + 3 * X * Y + 3 * Y + 8")
+  inspect(p2 + p1, content="4 * X^12 + 3 * X * Y + 3 * Y + 8")
+  inspect(p1 - p2, content="-3 * X * Y + 3 * Y + -2")
+  inspect(p2 - p1, content="3 * X * Y + -3 * Y + 2")
 }
 
 ///|
-pub fn MultiPoly::scale[A : Semiring + Eq](
+pub fn[A : Semiring + Eq] MultiPoly::scale(
   self : MultiPoly[A],
   term : (ExpVec, A)
 ) -> MultiPoly[A] {
@@ -184,13 +184,13 @@ test "scale" {
   let a2 = [([0U, 0], 3), ([0, 0], 2), ([12, 0], 2), ([1, 1], 3)]
   let p1 = MultiPoly::from_array(a1)
   let p2 = MultiPoly::from_array(a2)
-  inspect!(p1, content="2 * X^12 + 3 * Y + 3")
-  inspect!(p2, content="2 * X^12 + 3 * X * Y + 5")
-  inspect!(
+  inspect(p1, content="2 * X^12 + 3 * Y + 3")
+  inspect(p2, content="2 * X^12 + 3 * X * Y + 5")
+  inspect(
     p1.scale((ExpVec::from_array([1U, 1]), -3)),
     content="-6 * X^13 * Y + -9 * X * Y^2 + -9 * X * Y",
   )
-  inspect!(
+  inspect(
     p2.scale((ExpVec::from_array([1U, 1]), 3)),
     content="6 * X^13 * Y + 9 * X^2 * Y^2 + 15 * X * Y",
   )

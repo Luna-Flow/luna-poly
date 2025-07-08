@@ -31,7 +31,7 @@ fn[A] drop_while_end(pred : (A) -> Bool, xs : Array[A]) -> Array[A] {
 }
 
 ///| Return the leading term of the polynomial.
-pub fn leading_term[A](self : Polynomial[A]) -> (Int, A)? {
+pub fn[A] leading_term(self : Polynomial[A]) -> (Int, A)? {
   if self.terms.is_empty() {
     None
   } else {
@@ -40,7 +40,7 @@ pub fn leading_term[A](self : Polynomial[A]) -> (Int, A)? {
 }
 
 ///| Return the leading coefficient of the polynomial.
-pub fn leading_coefficient[A](self : Polynomial[A]) -> A? {
+pub fn[A] leading_coefficient(self : Polynomial[A]) -> A? {
   self.leading_term().map(@tuple.snd)
 }
 
