@@ -2,7 +2,7 @@
 let threshold : Int = 32
 
 ///| Multiply two polynomials using the Karatsuba algorithm.
-pub fn karatsuba[A : Eq + Ring](
+pub fn[A : Eq + Ring] karatsuba(
   self : Polynomial[A],
   other : Polynomial[A]
 ) -> Polynomial[A] {
@@ -65,13 +65,13 @@ pub fn karatsuba[A : Eq + Ring](
 test {
   let xs = to_poly([1, 2, 3, 4, 1, 9, 1, 9, 8, 1, 0])
   let ys = to_poly([4, 5, 6, 7, 1, 1, 4, 5, 1, 4])
-  let zs = karatsuba(xs, ys)
+  let zs = xs.karatsuba(ys)
   let zs1 = xs * ys
-  inspect!(
+  inspect(
     zs,
     content="4 + 13x^1 + 28x^2 + 50x^3 + 57x^4 + 89x^5 + 92x^6 + 122x^7 + 174x^8 + 152x^9 + 161x^10 + 129x^11 + 90x^12 + 63x^13 + 115x^14 + 57x^15 + 49x^16 + 33x^17 + 4x^18",
   )
-  inspect!(
+  inspect(
     zs1,
     content="4 + 13x^1 + 28x^2 + 50x^3 + 57x^4 + 89x^5 + 92x^6 + 122x^7 + 174x^8 + 152x^9 + 161x^10 + 129x^11 + 90x^12 + 63x^13 + 115x^14 + 57x^15 + 49x^16 + 33x^17 + 4x^18",
   )

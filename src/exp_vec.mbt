@@ -12,7 +12,7 @@ impl @quickcheck.Arbitrary for ExpVec with arbitrary(size, rs) {
 ///|
 test "arbitrary" {
   let gen : @qc.Gen[ExpVec] = @qc.Gen::spawn()
-  inspect!(
+  inspect(
     gen.samples(size=10),
     content="[ab²c², a², zab³cd, 1, c, 1, za²c³d², za²c⁴d⁴e², z, z]",
   )
@@ -37,8 +37,8 @@ test "prop hash non-conflict" {
   let g : @qc.Gen[ExpVec] = @qc.Gen::spawn()
   for sample in g.samples(size=1999) {
     let hashed = sample.hash()
-    match m[hashed] {
-      Some((x : ExpVec)) => assert_eq!(sample.vec, x.vec)
+    match m.get(hashed) {
+      Some((x : ExpVec)) => assert_eq(sample.vec, x.vec)
       None => m[hashed] = sample
     }
   }
@@ -48,8 +48,8 @@ test "prop hash non-conflict" {
 test "hash" {
   let exp = ExpVec::from_array([1, 2, 3])
   let exp_r = ExpVec::from_array([3, 2, 1])
-  assert_eq!(exp.hash(), -533501922)
-  assert_eq!(exp_r.hash(), -1291445456)
+  assert_eq(exp.hash(), -533501922)
+  assert_eq(exp_r.hash(), -1291445456)
 }
 
 ///|
@@ -65,13 +65,14 @@ fn ExpVec::split_at(self : ExpVec, i : Int) -> (ExpVec, ExpVec) {
   ({ vec: head, degree: l_d }, { vec: tail, degree: degree - l_d })
 }
 
+///|
 test "split monomial" {
   let m = ExpVec::from_array([1, 2, 3])
   let (head, tail) = m.split_at(2)
-  assert_eq!(head.vec, [1, 2])
-  assert_eq!(tail.vec, [3])
-  assert_eq!(head.degree, 3)
-  assert_eq!(tail.degree, 3)
+  assert_eq(head.vec, [1, 2])
+  assert_eq(tail.vec, [3])
+  assert_eq(head.degree, 3)
+  assert_eq(tail.degree, 3)
 }
 
 ///|
@@ -149,14 +150,14 @@ test "division" {
   let m1 = ExpVec::from_array([4, 5, 3])
   let m2 = ExpVec::from_array([1, 2, 3])
   let m3 = ExpVec::from_array([3, 3, 2, 1])
-  inspect!(m1 / m2, content="x³y³")
-  inspect!(m2 / m1, content="1")
-  inspect!(m1 / m3, content="xy²z")
-  inspect!(m3 / m2, content="x²ya")
-  inspect!((m1 / m2).degree, content="6")
-  inspect!((m2 / m1).degree, content="0")
-  inspect!((m1 / m3).degree, content="4")
-  inspect!((m3 / m2).degree, content="3")
+  inspect(m1 / m2, content="x³y³")
+  inspect(m2 / m1, content="1")
+  inspect(m1 / m3, content="xy²z")
+  inspect(m3 / m2, content="x²ya")
+  inspect((m1 / m2).degree, content="6")
+  inspect((m2 / m1).degree, content="0")
+  inspect((m1 / m3).degree, content="4")
+  inspect((m3 / m2).degree, content="3")
 }
 
 ///|
@@ -248,7 +249,7 @@ test "ordering exclusive" {
     }
   }
 
-  @qc.quick_check!(@qc.Arrow(exclusive) |> @qc.with_max_success(1000))
+  @qc.quick_check(@qc.Arrow(exclusive) |> @qc.with_max_success(1000))
 }
 
 ///|
@@ -258,7 +259,7 @@ test "1 <= u" {
     one <= a
   }
 
-  @qc.quick_check!(@qc.Arrow(one_leq_any) |> @qc.with_max_success(1000))
+  @qc.quick_check(@qc.Arrow(one_leq_any) |> @qc.with_max_success(1000))
 }
 
 ///|
@@ -305,7 +306,7 @@ fn ExpVec::from_array(vec : Array[UInt]) -> ExpVec {
 
 ///|
 test "show" {
-  assert_eq!(ExpVec::from_array([2025]).to_string(), "x²⁰²⁵")
-  assert_eq!(ExpVec::from_array([1, 0, 0]).to_string(), "x")
-  assert_eq!(ExpVec::from_array([0]).to_string(), "1")
+  assert_eq(ExpVec::from_array([2025]).to_string(), "x²⁰²⁵")
+  assert_eq(ExpVec::from_array([1, 0, 0]).to_string(), "x")
+  assert_eq(ExpVec::from_array([0]).to_string(), "1")
 }

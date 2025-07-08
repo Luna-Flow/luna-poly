@@ -22,7 +22,7 @@ impl[A : Show + Eq + Semiring] Show for Polynomial[A] with output(self, logger) 
 }
 
 ///|
-fn drop_while_end[A](pred : (A) -> Bool, xs : Array[A]) -> Array[A] {
+fn[A] drop_while_end(pred : (A) -> Bool, xs : Array[A]) -> Array[A] {
   let mut i = xs.length() - 1
   while i >= 0 && pred(xs[i]) {
     i -= 1
@@ -31,7 +31,7 @@ fn drop_while_end[A](pred : (A) -> Bool, xs : Array[A]) -> Array[A] {
 }
 
 ///| Return the leading power and coefficient of the polynomial.
-pub fn leading[A](self : Polynomial[A]) -> (Int, A)? {
+pub fn[A] leading(self : Polynomial[A]) -> (Int, A)? {
   if self.terms.is_empty() {
     None
   } else {
@@ -40,7 +40,7 @@ pub fn leading[A](self : Polynomial[A]) -> (Int, A)? {
 }
 
 ///| Convert an array to a polynomial.
-pub fn to_poly[A : Eq + Semiring](arr : Array[A]) -> Polynomial[A] {
+pub fn[A : Eq + Semiring] to_poly(arr : Array[A]) -> Polynomial[A] {
   { terms: drop_while_end(is_zero, arr) }
 }
 
@@ -90,7 +90,7 @@ impl[A : Eq + Semiring] Add for Polynomial[A] with op_add(xs, ys) {
 }
 
 ///| 
-pub fn op_sub[A : Eq + Ring](
+impl[A : Eq + Ring] Sub for Polynomial[A] with op_sub(
   self : Polynomial[A],
   other : Polynomial[A]
 ) -> Polynomial[A] {
@@ -103,17 +103,17 @@ impl[A : Ring] Neg for Polynomial[A] with op_neg(x) {
 }
 
 ///| Return the zero polynomial.
-pub fn Polynomial::empty[A : Semiring](cap~ : Int) -> Polynomial[A] {
+pub fn[A : Semiring] Polynomial::empty(cap~ : Int) -> Polynomial[A] {
   { terms: Array::make(cap, A::zero()) }
 }
 
 ///| Return the length of the polynomial.
-pub fn Polynomial::length[A](self : Polynomial[A]) -> Int {
+pub fn[A] Polynomial::length(self : Polynomial[A]) -> Int {
   self.terms.length()
 }
 
 ///| Create a monomial from a power and a coefficient.
-pub fn monomial[A : Eq + Semiring](
+pub fn[A : Eq + Semiring] monomial(
   power : Int,
   coefficient : A
 ) -> Polynomial[A] {
@@ -133,12 +133,12 @@ pub fn monomial[A : Eq + Semiring](
 }
 
 ///| Evaluate the polynomial at a given point.
-pub fn eval[A : Semiring](self : Polynomial[A], init : A) -> A {
+pub fn[A : Semiring] eval(self : Polynomial[A], init : A) -> A {
   self.substitute(A::op_mul, init~)
 }
 
 ///|
-pub fn substitute[A, B : Semiring](
+pub fn[A, B : Semiring] substitute(
   self : Polynomial[A],
   f : (B, A) -> B,
   init~ : B
@@ -150,15 +150,15 @@ pub fn substitute[A, B : Semiring](
 }
 
 ///| Substitute a polynomial's variable with another polynomial.
-pub fn substitute_poly[A : Eq + Semiring](
+pub fn[A : Eq + Semiring] substitute_poly(
   self : Polynomial[A],
   x : Polynomial[A]
 ) -> Polynomial[A] {
-  self.substitute(fn(poly, x) { scale(poly, 0, x) }, init=x)
+  self.substitute(fn(poly, x) { poly.scale(0, x) }, init=x)
 }
 
 ///| Multiply a polynomial by a monomial
-pub fn scale[A : Eq + Semiring](
+pub fn[A : Eq + Semiring] scale(
   self : Polynomial[A],
   power : Int,
   coefficient : A
@@ -172,7 +172,7 @@ pub fn scale[A : Eq + Semiring](
 }
 
 ///| Get the derivative of the polynomial.
-pub fn derivative[A : HomomorphismNat + Eq + Semiring](
+pub fn[A : HomomorphismNat + Eq + Semiring] derivative(
   self : Polynomial[A]
 ) -> Polynomial[A] {
   let len = self.length()
@@ -185,12 +185,12 @@ pub fn derivative[A : HomomorphismNat + Eq + Semiring](
 }
 
 ///| Fold over the polynomial.
-pub fn fold[A, B](self : Polynomial[A], f : (B, A) -> B, init~ : B) -> B {
+pub fn[A, B] fold(self : Polynomial[A], f : (B, A) -> B, init~ : B) -> B {
   self.terms.fold(f, init~)
 }
 
 ///| Coefficient `n`.
-pub fn coe[A : Eq + Semiring + HomomorphismNat](n : Int) -> Polynomial[A] {
+pub fn[A : Eq + Semiring + HomomorphismNat] coe(n : Int) -> Polynomial[A] {
   match n {
     0 => Polynomial::zero()
     n => { terms: [A::from_nat(n)] }
@@ -198,7 +198,7 @@ pub fn coe[A : Eq + Semiring + HomomorphismNat](n : Int) -> Polynomial[A] {
 }
 
 ///| Variable `x`.
-pub fn var[A : Eq + Semiring]() -> Polynomial[A] {
+pub fn[A : Eq + Semiring] var() -> Polynomial[A] {
   if is_zero(A::one()) {
     Polynomial::zero()
   } else {
@@ -207,7 +207,7 @@ pub fn var[A : Eq + Semiring]() -> Polynomial[A] {
 }
 
 ///| Internal function to create a polynomial from an array, without dropping zeros.
-fn Polynomial::from_array[A](terms : Array[A]) -> Polynomial[A] {
+fn[A] Polynomial::from_array(terms : Array[A]) -> Polynomial[A] {
   { terms, }
 }
 
@@ -215,17 +215,17 @@ fn Polynomial::from_array[A](terms : Array[A]) -> Polynomial[A] {
 test "dense polynomial" {
   let x = var
   let p1 = to_poly([1, 2, 3])
-  inspect!(p1, content="1 + 2x^1 + 3x^2")
+  inspect(p1, content="1 + 2x^1 + 3x^2")
   let p2 = to_poly([4, 5, 6, 7])
-  inspect!(p2, content="4 + 5x^1 + 6x^2 + 7x^3")
+  inspect(p2, content="4 + 5x^1 + 6x^2 + 7x^3")
   let p5 = to_poly([-1, 0, 2])
-  inspect!(p5, content="-1 + 2x^2")
+  inspect(p5, content="-1 + 2x^2")
   let p3 = p1 + p2
-  inspect!(p3, content="5 + 7x^1 + 9x^2 + 7x^3")
+  inspect(p3, content="5 + 7x^1 + 9x^2 + 7x^3")
   let p4 = p1 * p2
-  inspect!(p4, content="4 + 13x^1 + 28x^2 + 34x^3 + 32x^4 + 21x^5")
+  inspect(p4, content="4 + 13x^1 + 28x^2 + 34x^3 + 32x^4 + 21x^5")
   let p5 : Polynomial[Int] = (x() + coe(1)) * (x() + coe(-1))
-  inspect!(p5, content="-1 + 1x^2")
+  inspect(p5, content="-1 + 1x^2")
 }
 
 ///|
@@ -233,46 +233,46 @@ test "inverse" {
   let p1 = to_poly([1, 2, 3])
   let p2 = to_poly([4, 5, 6, 7])
   let p1n = -p1
-  inspect!(p1n, content="-1 + -2x^1 + -3x^2")
+  inspect(p1n, content="-1 + -2x^1 + -3x^2")
   let p3 = p1 - p2
-  inspect!(p3, content="-3 + -3x^1 + -3x^2 + -7x^3")
+  inspect(p3, content="-3 + -3x^1 + -3x^2 + -7x^3")
 }
 
 ///|
 test "eval" {
   let p1 = to_poly([1, 2, 3])
-  inspect!(eval(p1, 2), content="17")
-  inspect!(eval(p1, 1), content="6")
+  inspect(p1.eval(2), content="17")
+  inspect(p1.eval(1), content="6")
 }
 
 ///|
 test "scale" {
   let p1 = to_poly([1, 2, 3])
-  let p2 = scale(p1, 2, 3)
-  inspect!(p1, content="1 + 2x^1 + 3x^2")
-  inspect!(p2, content="3x^2 + 6x^3 + 9x^4")
+  let p2 = p1.scale(2, 3)
+  inspect(p1, content="1 + 2x^1 + 3x^2")
+  inspect(p2, content="3x^2 + 6x^3 + 9x^4")
 }
 
 ///|
 test "substitute polynomial" {
   let p1 = to_poly([1, 2, 3])
   let p2 = to_poly([2, 3])
-  let p3 = substitute_poly(p1, p2)
+  let p3 = p1.substitute_poly(p2)
   let p4 = to_poly([1])
-  let p5 = substitute_poly(p1, p4)
-  inspect!(p1, content="1 + 2x^1 + 3x^2")
-  inspect!(p2, content="2 + 3x^1")
-  inspect!(p3, content="17 + 42x^1 + 27x^2")
-  inspect!(p4, content="1")
-  inspect!(p5, content="6")
+  let p5 = p1.substitute_poly(p4)
+  inspect(p1, content="1 + 2x^1 + 3x^2")
+  inspect(p2, content="2 + 3x^1")
+  inspect(p3, content="17 + 42x^1 + 27x^2")
+  inspect(p4, content="1")
+  inspect(p5, content="6")
 }
 
 ///|
 test "derivative" {
   let p1 = to_poly([1, 2, 3])
-  let p2 = derivative(p1)
-  let p3 = derivative(p2)
-  inspect!(p1, content="1 + 2x^1 + 3x^2")
-  inspect!(p2, content="2 + 6x^1")
-  inspect!(p3, content="6")
+  let p2 = p1.derivative()
+  let p3 = p2.derivative()
+  inspect(p1, content="1 + 2x^1 + 3x^2")
+  inspect(p2, content="2 + 6x^1")
+  inspect(p3, content="6")
 }

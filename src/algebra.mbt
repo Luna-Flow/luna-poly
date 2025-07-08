@@ -9,6 +9,6 @@ impl HomomorphismNat for Int with from_nat(x) {
 }
 
 ///|
-pub fn is_zero[A : Semiring + Eq](x : A) -> Bool {
+pub fn[A : Semiring + Eq] is_zero(x : A) -> Bool {
   x == A::zero()
 }
