@@ -41,7 +41,7 @@ pub fn[A] leading_term(self : Polynomial[A]) -> (Int, A)? {
 
 ///| Return the leading coefficient of the polynomial.
 pub fn[A] leading_coefficient(self : Polynomial[A]) -> A? {
-  self.leading_term().map(@tuple.snd)
+  self.leading_term().map(x => x.1)
 }
 
 ///| Convert an array to a polynomial.
@@ -80,8 +80,8 @@ impl[A : Eq + Semiring] Mul for Polynomial[A] with op_mul(xs, ys) {
 impl[A : Eq + Semiring] Add for Polynomial[A] with op_add(xs, ys) {
   let lx = xs.terms.length()
   let ly = ys.terms.length()
-  let l_max = @math.maximum(lx, ly)
-  let l_min = @math.minimum(lx, ly)
+  let l_max = @cmp.maximum(lx, ly)
+  let l_min = @cmp.minimum(lx, ly)
   let larger = if ly >= lx { ys } else { xs }
   {
     terms: Array::makei(l_max, fn(i) {
@@ -149,7 +149,10 @@ pub fn[A, B : Semiring] substitute(
   init~ : B
 ) -> B {
   self.fold(
-    fn { (acc, xn), cn => (acc + f(xn, cn), init * xn) },
+    (a, cn) => {
+      let (acc, xn) = a
+      (acc + f(xn, cn), init * xn)
+    },
     init=(B::zero(), B::one()),
   ).0
 }
@@ -203,7 +206,7 @@ pub fn[A : Eq + Semiring + HomomorphismNat] coe(n : Int) -> Polynomial[A] {
 }
 
 ///| Variable `x`.
-pub fn[A : Eq + Semiring] var() -> Polynomial[A] {
+pub fn[A : Eq + Semiring] vari() -> Polynomial[A] {
   if is_zero(A::one()) {
     Polynomial::zero()
   } else {
@@ -218,7 +221,7 @@ fn[A] Polynomial::from_array(terms : Array[A]) -> Polynomial[A] {
 
 ///|
 test "dense polynomial" {
-  let x = var
+  let x = vari
   let p1 = to_poly([1, 2, 3])
   inspect(p1, content="1 + 2x^1 + 3x^2")
   let p2 = to_poly([4, 5, 6, 7])

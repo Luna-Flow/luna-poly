@@ -5,7 +5,7 @@ struct MultiPoly[A] {
 
 ///|
 pub fn[A] coefficients(self : MultiPoly[A]) -> Array[A] {
-  self.terms.map(@tuple.snd)
+  self.terms.map(x => x.1)
 }
 
 ///|
@@ -13,7 +13,10 @@ pub fn[A : Semiring + Eq] MultiPoly::from_array(
   arr : Array[(Array[UInt], A)]
 ) -> MultiPoly[A] {
   {
-    terms: normalize(arr).map(fn { (term, a) => (ExpVec::from_array(term), a) }),
+    terms: normalize(arr).map(x => {
+      let (term, a) = x
+      (ExpVec::from_array(term), a)
+    }),
   }
 }
 
@@ -21,7 +24,11 @@ pub fn[A : Semiring + Eq] MultiPoly::from_array(
 pub fn[A : Semiring + Eq] MultiPoly::from_terms_array(
   terms : Array[(ExpVec, A)]
 ) -> MultiPoly[A] {
-  terms.map(fn { (term, a) => (term.vec, a) }) |> MultiPoly::from_array
+  terms.map(x => {
+    let (term, a) = x
+    (term.vec, a)
+  })
+  |> MultiPoly::from_array
 }
 
 ///|
@@ -53,25 +60,27 @@ pub fn[A : Semiring + Eq] normalize(
 ///|
 impl[A : Show] Show for MultiPoly[A] with to_string(self) {
   guard not(self.terms.is_empty()) else { "0" }
-  let s_var = fn {
+  let s_var = x => match x {
     0 => "X"
     1 => "Y"
     2 => "Z"
     n => "X_" + n.to_string()
   }
-  let show_power = fn {
+  let show_power = x => match x {
     (1U, n) => s_var(n)
     (i, n) => "\{s_var(n)}^\{i}"
   }
-  fn show_ceoff {
-    ((ev : ExpVec), (c : A)) =>
-      ev.vec
-      .mapi(fn { idx, v => (v, idx) })
-      .filter(fn { (v, _) => v != 0 })
-      .map(show_power)
-      .fold(init=c.to_string(), fn { acc, v => acc + " * " + v })
+  let show_ceoff : ((ExpVec, A)) -> String = x => {
+    let (ev, c) = x
+    ev.vec
+    .mapi((idx, v) => (v, idx))
+    .filter(a => {
+      let (v, _) = a
+      v != 0
+    })
+    .map(show_power)
+    .fold(init=c.to_string(), (acc, v) => acc + " * " + v)
   }
-
   self.terms.map(show_ceoff).join(" + ")
 }
 

@@ -110,7 +110,7 @@ impl One for ExpVec with one() -> ExpVec {
 impl Mul for ExpVec with op_mul(self : ExpVec, other : ExpVec) -> ExpVec {
   let l_self = self.length()
   let l_other = other.length()
-  let l_min = @math.minimum(l_self, l_other)
+  let l_min = @cmp.minimum(l_self, l_other)
   let larger = if l_self >= l_other { self } else { other }
   let mut degree : UInt = 0
   let vec : Array[UInt] = Array::makei(larger.length(), fn(i) {
@@ -284,7 +284,7 @@ impl Eq for ExpVec with op_equal(self : ExpVec, other : ExpVec) -> Bool {
 }
 
 ///|
-fn ExpVec::new() -> ExpVec {
+pub fn ExpVec::new() -> ExpVec {
   ExpVec::one()
 }
 
