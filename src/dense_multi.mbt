@@ -36,22 +36,26 @@ pub fn[A : Semiring + Eq] normalize(
   arr : Array[(Array[UInt], A)]
 ) -> ArrayView[(Array[UInt], A)] {
   let l = arr.length()
-  arr.sort_by(fn { (a1, _), (a2, _) => a2.compare(a1) })
-  arr[0:loop 0, 1, arr[0] {
-    i, j, (ap, ac) as acc =>
+  arr.sort_by((a, b) => {
+    let (a1, _) = a
+    let (a2, _) = b
+    a2.compare(a1)
+  })
+  arr[0:loop (0, 1, arr[0]) {
+    (i, j, (ap, ac)) =>
       if j >= l {
         guard not(is_zero(ac)) else { i }
-        arr[i] = acc
+        arr[i] = (ap, ac)
         i + 1
       } else {
         let v = arr[j]
         if v.0 == ap {
-          continue i, j + 1, (ap, ac + v.1)
+          continue (i, j + 1, (ap, ac + v.1))
         } else if not(is_zero(ac)) {
-          arr[i] = acc
-          continue i + 1, j + 1, v
+          arr[i] = (ap, ac)
+          continue (i + 1, j + 1, v)
         } else {
-          continue i, j + 1, v
+          continue (i, j + 1, v)
         }
       }
   }]
@@ -104,8 +108,8 @@ impl[A : Semiring + Eq] Add for MultiPoly[A] with op_add(xs, ys) {
   let len_xs = xs.terms.length()
   let len_ys = ys.terms.length()
   let zs = Array::make(len_xs + len_ys, (ExpVec::from_array([]), A::zero()))
-  let s = loop 0, 0, 0 {
-    ix, iy, iz =>
+  let s = loop (0, 0, 0) {
+    (ix, iy, iz) =>
       if ix == len_xs && iy == len_ys {
         iz
       } else if ix == len_xs {
@@ -119,17 +123,17 @@ impl[A : Semiring + Eq] Add for MultiPoly[A] with op_add(xs, ys) {
         let (yp, yc) = ys.terms[iy]
         if xp > yp {
           zs[iz] = (xp, xc)
-          continue ix + 1, iy, iz + 1
+          continue (ix + 1, iy, iz + 1)
         } else if xp < yp {
           zs[iz] = (yp, yc)
-          continue ix, iy + 1, iz + 1
+          continue (ix, iy + 1, iz + 1)
         } else {
           let c = xc + yc
           if is_zero(c) {
-            continue ix + 1, iy + 1, iz
+            continue (ix + 1, iy + 1, iz)
           } else {
             zs[iz] = (xp, c)
-            continue ix + 1, iy + 1, iz + 1
+            continue (ix + 1, iy + 1, iz + 1)
           }
         }
       }
@@ -140,7 +144,12 @@ impl[A : Semiring + Eq] Add for MultiPoly[A] with op_add(xs, ys) {
 
 ///|
 impl[A : Neg] Neg for MultiPoly[A] with op_neg(x) {
-  { terms: x.terms.map(fn { (e, a) => (e, -a) }) }
+  {
+    terms: x.terms.map(x => {
+      let (e, a) = x
+      (e, -a)
+    }),
+  }
 }
 
 ///|
@@ -183,7 +192,10 @@ pub fn[A : Semiring + Eq] MultiPoly::scale(
   Array::makei(self.terms.length(), fn(i) {
     let (xp, xc) = self.terms[i]
     ((xp * e).vec, xc * c)
-  }).filter(fn { (_, c) => not(is_zero(c)) })
+  }).filter(x => {
+    let (_, c) = x
+    not(is_zero(c))
+  })
   |> MultiPoly::from_array
 }
 
