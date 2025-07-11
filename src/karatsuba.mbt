@@ -13,7 +13,7 @@ pub fn[A : Eq + Ring] karatsuba(
       let xs_len = xs.length()
       let ys_len = ys.length()
       let zs_len = xs_len + ys_len - 1
-      let m = (@math.minimum(xs_len, ys_len) + 1) >> 1
+      let m = (@cmp.minimum(xs_len, ys_len) + 1) >> 1
       let zs = Polynomial::empty(cap=zs_len)
       let (xs0, xs1) = xs.terms.split_at(m)
       let (xs0, xs1) = (
