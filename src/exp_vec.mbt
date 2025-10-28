@@ -9,6 +9,7 @@ impl @quickcheck.Arbitrary for ExpVec with arbitrary(size, rs) {
   @qc.Gen::spawn().fmap(ExpVec::from_array).run(size, rs)
 }
 
+///|
 impl @qc.Shrink for ExpVec with shrink(_) -> Iter[ExpVec] {
   Iter::empty()
 }
