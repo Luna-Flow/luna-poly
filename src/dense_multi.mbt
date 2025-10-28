@@ -10,7 +10,7 @@ pub fn[A] coefficients(self : MultiPoly[A]) -> Array[A] {
 
 ///|
 pub fn[A : Semiring + Eq] MultiPoly::from_array(
-  arr : Array[(Array[UInt], A)]
+  arr : Array[(Array[UInt], A)],
 ) -> MultiPoly[A] {
   {
     terms: normalize(arr).map(x => {
@@ -22,7 +22,7 @@ pub fn[A : Semiring + Eq] MultiPoly::from_array(
 
 ///|
 pub fn[A : Semiring + Eq] MultiPoly::from_terms_array(
-  terms : Array[(ExpVec, A)]
+  terms : Array[(ExpVec, A)],
 ) -> MultiPoly[A] {
   terms.map(x => {
     let (term, a) = x
@@ -33,7 +33,7 @@ pub fn[A : Semiring + Eq] MultiPoly::from_terms_array(
 
 ///|
 pub fn[A : Semiring + Eq] normalize(
-  arr : Array[(Array[UInt], A)]
+  arr : Array[(Array[UInt], A)],
 ) -> ArrayView[(Array[UInt], A)] {
   let l = arr.length()
   arr.sort_by((a, b) => {
@@ -186,7 +186,7 @@ test "op add / sub" {
 ///|
 pub fn[A : Semiring + Eq] MultiPoly::scale(
   self : MultiPoly[A],
-  term : (ExpVec, A)
+  term : (ExpVec, A),
 ) -> MultiPoly[A] {
   let (e, c) = term
   Array::makei(self.terms.length(), fn(i) {
