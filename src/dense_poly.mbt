@@ -1,4 +1,5 @@
-///| A dense polynomial implementation.
+///|
+/// A dense polynomial implementation.
 struct Polynomial[V] {
   terms : Array[V]
 } derive(Eq, Compare)
@@ -22,7 +23,7 @@ impl[A : Show + Eq + Semiring] Show for Polynomial[A] with output(self, logger) 
 }
 
 ///|
-fn[A] drop_while_end(pred : (A) -> Bool, xs : Array[A]) -> Array[A] {
+fn[A] drwhile_end(pred : (A) -> Bool, xs : Array[A]) -> Array[A] {
   let mut i = xs.length() - 1
   while i >= 0 && pred(xs[i]) {
     i -= 1
@@ -30,7 +31,8 @@ fn[A] drop_while_end(pred : (A) -> Bool, xs : Array[A]) -> Array[A] {
   xs.split_at(i + 1).0
 }
 
-///| Return the leading term of the polynomial.
+///|
+/// Return the leading term of the polynomial.
 pub fn[A] leading_term(self : Polynomial[A]) -> (Int, A)? {
   if self.terms.is_empty() {
     None
@@ -39,18 +41,20 @@ pub fn[A] leading_term(self : Polynomial[A]) -> (Int, A)? {
   }
 }
 
-///| Return the leading coefficient of the polynomial.
+///|
+/// Return the leading coefficient of the polynomial.
 pub fn[A] leading_coefficient(self : Polynomial[A]) -> A? {
   self.leading_term().map(x => x.1)
 }
 
-///| Convert an array to a polynomial.
+///|
+/// Convert an array to a polynomial.
 pub fn[A : Eq + Semiring] to_poly(arr : Array[A]) -> Polynomial[A] {
-  { terms: drop_while_end(is_zero, arr) }
+  { terms: drwhile_end(is_zero, arr) }
 }
 
 ///|
-impl[A : Eq + Semiring] Zero for Polynomial[A] with zero() {
+impl[A] Zero for Polynomial[A] with zero() {
   { terms: [] }
 }
 
@@ -64,7 +68,7 @@ impl[A : Eq + Semiring] One for Polynomial[A] with one() {
 }
 
 ///|
-impl[A : Eq + Semiring] Mul for Polynomial[A] with op_mul(xs, ys) {
+impl[A : Semiring] Mul for Polynomial[A] with mul(xs, ys) {
   let lx = xs.terms.length()
   let ly = ys.terms.length()
   let poly = Array::make(lx + ly - 1, A::zero())
@@ -77,7 +81,7 @@ impl[A : Eq + Semiring] Mul for Polynomial[A] with op_mul(xs, ys) {
 }
 
 ///|
-impl[A : Eq + Semiring] Add for Polynomial[A] with op_add(xs, ys) {
+impl[A : Semiring] Add for Polynomial[A] with add(xs, ys) {
   let lx = xs.terms.length()
   let ly = ys.terms.length()
   let l_max = @cmp.maximum(lx, ly)
@@ -94,33 +98,36 @@ impl[A : Eq + Semiring] Add for Polynomial[A] with op_add(xs, ys) {
   }
 }
 
-///| 
-impl[A : Eq + Ring] Sub for Polynomial[A] with op_sub(
+///|
+impl[A : Ring] Sub for Polynomial[A] with sub(
   self : Polynomial[A],
-  other : Polynomial[A]
+  other : Polynomial[A],
 ) -> Polynomial[A] {
   self + -other
 }
 
 ///|
-impl[A : Ring] Neg for Polynomial[A] with op_neg(x) {
+impl[A : Ring] Neg for Polynomial[A] with neg(x) {
   { terms: Array::makei(x.terms.length(), fn(i) { -x.terms[i] }) }
 }
 
-///| Return the zero polynomial.
+///|
+/// Return the zero polynomial.
 pub fn[A : Semiring] Polynomial::empty(cap~ : Int) -> Polynomial[A] {
   { terms: Array::make(cap, A::zero()) }
 }
 
-///| Return the length of the polynomial.
+///|
+/// Return the length of the polynomial.
 pub fn[A] Polynomial::length(self : Polynomial[A]) -> Int {
   self.terms.length()
 }
 
-///| Create a monomial from a power and a coefficient.
+///|
+/// Create a monomial from a power and a coefficient.
 pub fn[A : Eq + Semiring] monomial(
   power : Int,
-  coefficient : A
+  coefficient : A,
 ) -> Polynomial[A] {
   if is_zero(coefficient) {
     Polynomial::zero()
@@ -137,16 +144,17 @@ pub fn[A : Eq + Semiring] monomial(
   }
 }
 
-///| Evaluate the polynomial at a given point.
+///|
+/// Evaluate the polynomial at a given point.
 pub fn[A : Semiring] eval(self : Polynomial[A], init : A) -> A {
-  self.substitute(A::op_mul, init~)
+  self.substitute(A::mul, init~)
 }
 
 ///|
 pub fn[A, B : Semiring] substitute(
   self : Polynomial[A],
   f : (B, A) -> B,
-  init~ : B
+  init~ : B,
 ) -> B {
   self.fold(
     (a, cn) => {
@@ -157,19 +165,21 @@ pub fn[A, B : Semiring] substitute(
   ).0
 }
 
-///| Substitute a polynomial's variable with another polynomial.
+///|
+/// Substitute a polynomial's variable with another polynomial.
 pub fn[A : Eq + Semiring] substitute_poly(
   self : Polynomial[A],
-  x : Polynomial[A]
+  x : Polynomial[A],
 ) -> Polynomial[A] {
   self.substitute(fn(poly, x) { poly.scale(0, x) }, init=x)
 }
 
-///| Multiply a polynomial by a monomial
+///|
+/// Multiply a polynomial by a monomial
 pub fn[A : Eq + Semiring] scale(
   self : Polynomial[A],
   power : Int,
-  coefficient : A
+  coefficient : A,
 ) -> Polynomial[A] {
   let len = self.length()
   let terms = Array::make(power + len, A::zero())
@@ -179,9 +189,10 @@ pub fn[A : Eq + Semiring] scale(
   to_poly(terms)
 }
 
-///| Get the derivative of the polynomial.
+///|
+/// Get the derivative of the polynomial.
 pub fn[A : HomomorphismNat + Eq + Semiring] derivative(
-  self : Polynomial[A]
+  self : Polynomial[A],
 ) -> Polynomial[A] {
   let len = self.length()
   if len == 0 {
@@ -192,20 +203,23 @@ pub fn[A : HomomorphismNat + Eq + Semiring] derivative(
   }
 }
 
-///| Fold over the polynomial.
+///|
+/// Fold over the polynomial.
 pub fn[A, B] fold(self : Polynomial[A], f : (B, A) -> B, init~ : B) -> B {
   self.terms.fold(f, init~)
 }
 
-///| Coefficient `n`.
-pub fn[A : Eq + Semiring + HomomorphismNat] coe(n : Int) -> Polynomial[A] {
+///|
+/// Coefficient `n`.
+pub fn[A : HomomorphismNat] coe(n : Int) -> Polynomial[A] {
   match n {
     0 => Polynomial::zero()
     n => { terms: [A::from_nat(n)] }
   }
 }
 
-///| Variable `x`.
+///|
+/// Variable `x`.
 pub fn[A : Eq + Semiring] vari() -> Polynomial[A] {
   if is_zero(A::one()) {
     Polynomial::zero()
@@ -214,7 +228,8 @@ pub fn[A : Eq + Semiring] vari() -> Polynomial[A] {
   }
 }
 
-///| Internal function to create a polynomial from an array, without dropping zeros.
+///|
+/// Internal function to create a polynomial from an array, without dropping zeros.
 fn[A] Polynomial::from_array(terms : Array[A]) -> Polynomial[A] {
   { terms, }
 }

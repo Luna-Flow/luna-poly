@@ -104,7 +104,7 @@ test "from array" {
 }
 
 ///|
-impl[A : Semiring + Eq] Add for MultiPoly[A] with op_add(xs, ys) {
+impl[A : Semiring + Eq] Add for MultiPoly[A] with add(xs, ys) {
   let len_xs = xs.terms.length()
   let len_ys = ys.terms.length()
   let zs = Array::make(len_xs + len_ys, (ExpVec::from_array([]), A::zero()))
@@ -143,7 +143,7 @@ impl[A : Semiring + Eq] Add for MultiPoly[A] with op_add(xs, ys) {
 }
 
 ///|
-impl[A : Neg] Neg for MultiPoly[A] with op_neg(x) {
+impl[A : Neg] Neg for MultiPoly[A] with neg(x) {
   {
     terms: x.terms.map(x => {
       let (e, a) = x
@@ -165,7 +165,7 @@ test "op neg" {
 }
 
 ///|
-impl[A : Semiring + Eq + Neg + Sub] Sub for MultiPoly[A] with op_sub(xs, ys) {
+impl[A : Semiring + Eq + Neg] Sub for MultiPoly[A] with sub(xs, ys) {
   xs + -ys
 }
 

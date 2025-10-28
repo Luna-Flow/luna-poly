@@ -1,10 +1,11 @@
 ///|
 let threshold : Int = 32
 
-///| Multiply two polynomials using the Karatsuba algorithm.
-pub fn[A : Eq + Ring] karatsuba(
+///|
+/// Multiply two polynomials using the Karatsuba algorithm.
+pub fn[A : Ring] karatsuba(
   self : Polynomial[A],
-  other : Polynomial[A]
+  other : Polynomial[A],
 ) -> Polynomial[A] {
   fn go(xs : Polynomial[A], ys : Polynomial[A]) {
     if xs.length() <= threshold || ys.length() <= threshold {

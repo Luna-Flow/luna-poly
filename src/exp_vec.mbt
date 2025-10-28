@@ -9,12 +9,16 @@ impl @quickcheck.Arbitrary for ExpVec with arbitrary(size, rs) {
   @qc.Gen::spawn().fmap(ExpVec::from_array).run(size, rs)
 }
 
+impl @qc.Shrink for ExpVec with shrink(_) -> Iter[ExpVec] {
+  Iter::empty()
+}
+
 ///|
 test "arbitrary" {
   let gen : @qc.Gen[ExpVec] = @qc.Gen::spawn()
   inspect(
     gen.samples(size=10),
-    content="[ab²c², a², zab³cd, 1, c, 1, za²c³d², za²c⁴d⁴e², z, z]",
+    content="[ab²c², zab³ce³, z, 1, ab²c⁴e²f², 1, 1, 1, a²c³d, b²cd⁴]",
   )
 }
 
@@ -61,7 +65,7 @@ pub fn ExpVec::length(self : ExpVec) -> Int {
 fn ExpVec::split_at(self : ExpVec, i : Int) -> (ExpVec, ExpVec) {
   let degree = self.degree
   let (head, tail) = self.vec.split_at(i)
-  let l_d = head.fold(init=0U, UInt::op_add)
+  let l_d = head.fold(init=0U, UInt::add)
   ({ vec: head, degree: l_d }, { vec: tail, degree: degree - l_d })
 }
 
@@ -90,12 +94,14 @@ fn ExpVec::pop(self : ExpVec) -> UInt? {
 }
 
 ///|
-pub fn ExpVec::op_get(self : ExpVec, i : Int) -> UInt {
+#alias("_[_]")
+pub fn ExpVec::get(self : ExpVec, i : Int) -> UInt {
   self.vec[i]
 }
 
 ///|
-pub fn ExpVec::op_set(self : ExpVec, i : Int, val : UInt) -> Unit {
+#alias("_[_]=_")
+pub fn ExpVec::set(self : ExpVec, i : Int, val : UInt) -> Unit {
   let old = self.vec[i]
   self.vec[i] = val
   self.degree = self.degree - old + val
@@ -107,7 +113,7 @@ impl One for ExpVec with one() -> ExpVec {
 }
 
 ///|
-impl Mul for ExpVec with op_mul(self : ExpVec, other : ExpVec) -> ExpVec {
+impl Mul for ExpVec with mul(self : ExpVec, other : ExpVec) -> ExpVec {
   let l_self = self.length()
   let l_other = other.length()
   let l_min = @cmp.minimum(l_self, l_other)
@@ -122,7 +128,7 @@ impl Mul for ExpVec with op_mul(self : ExpVec, other : ExpVec) -> ExpVec {
 }
 
 ///|
-impl Div for ExpVec with op_div(self : ExpVec, other : ExpVec) -> ExpVec {
+impl Div for ExpVec with div(self : ExpVec, other : ExpVec) -> ExpVec {
   let l_self = self.length()
   let l_other = other.length()
   let monus = fn(x : UInt, y) { if x <= y { 0U } else { x - y } }
@@ -249,7 +255,7 @@ test "ordering exclusive" {
     }
   }
 
-  @qc.quick_check(@qc.Arrow(exclusive) |> @qc.with_max_success(1000))
+  @qc.quick_check(@qc.Arrow(exclusive), max_success=1000)
 }
 
 ///|
@@ -259,7 +265,7 @@ test "1 <= u" {
     one <= a
   }
 
-  @qc.quick_check(@qc.Arrow(one_leq_any) |> @qc.with_max_success(1000))
+  @qc.quick_check(@qc.Arrow(one_leq_any), max_success=1000)
 }
 
 ///|
@@ -274,7 +280,7 @@ fn ExpVec::shrink(self : ExpVec) -> Unit {
 }
 
 ///|
-impl Eq for ExpVec with op_equal(self : ExpVec, other : ExpVec) -> Bool {
+impl Eq for ExpVec with equal(self : ExpVec, other : ExpVec) -> Bool {
   guard self.length() == other.length() && self.degree == other.degree else {
     false
   }
@@ -301,7 +307,7 @@ fn ExpVec::from_array(vec : Array[UInt]) -> ExpVec {
   while i >= 0 && vec[i] == 0 {
     i -= 1
   }
-  { vec: vec.split_at(i + 1).0, degree: vec.fold(init=0U, UInt::op_add) }
+  { vec: vec.split_at(i + 1).0, degree: vec.fold(init=0U, UInt::add) }
 }
 
 ///|
