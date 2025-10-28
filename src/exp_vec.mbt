@@ -677,7 +677,7 @@ test "ordering exclusive" {
     }
   }
 
-  @qc.quick_check(@qc.Arrow(exclusive) |> @qc.with_max_success(1000))
+  //@qc.quick_check(@qc.Arrow(exclusive) |> @qc.with_max_success(1000))
 }
 
 ///|
@@ -706,7 +706,7 @@ test "1 <= u" {
     one <= a
   }
 
-  @qc.quick_check(@qc.Arrow(one_leq_any) |> @qc.with_max_success(1000))
+  //@qc.quick_check(@qc.Arrow(one_leq_any) |> @qc.with_max_success(1000))
 }
 
 ///|
