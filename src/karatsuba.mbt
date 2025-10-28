@@ -1,40 +1,7 @@
 ///|
-/// Defines the threshold value used to determine when to switch from Karatsuba
-/// multiplication to standard polynomial multiplication.
-///
-/// When multiplying polynomials using the Karatsuba algorithm, if either
-/// polynomial has a length less than or equal to this threshold, the algorithm
-/// falls back to standard multiplication instead of continuing with the
-/// divide-and-conquer approach. This optimization helps avoid the overhead of
-/// recursive calls for small polynomials where the simpler multiplication
-/// method is more efficient.
-///
-/// The value of 32 is chosen as a balance between the computational overhead of
-/// the Karatsuba algorithm and the performance benefits it provides for larger
-/// polynomials.
-///
 let threshold : Int = 32
 
-///|
-/// Multiplies two polynomials using the Karatsuba algorithm for improved
-/// asymptotic complexity.
-///
-/// Parameters:
-///
-/// * `self` : The first polynomial to multiply.
-/// * `other` : The second polynomial to multiply.
-///
-/// Returns the product of the two polynomials.
-///
-/// Example:
-///
-/// ```moonbit
-/// let p1 = to_poly([1, 2, 3])  // 1 + 2x + 3x^2
-/// let p2 = to_poly([4, 5])     // 4 + 5x
-/// let result = p1.karatsuba(p2)
-/// inspect(result, content="4 + 13x^1 + 22x^2 + 15x^3")
-/// ```
-///
+///| Multiply two polynomials using the Karatsuba algorithm.
 pub fn[A : Eq + Ring] karatsuba(
   self : Polynomial[A],
   other : Polynomial[A]
@@ -95,31 +62,6 @@ pub fn[A : Eq + Ring] karatsuba(
 }
 
 ///|
-/// Tests the correctness of the Karatsuba multiplication algorithm by comparing
-/// its result with standard polynomial multiplication.
-///
-/// This test verifies that the Karatsuba algorithm produces the same result as
-/// the standard multiplication operator for polynomials. It creates two test
-/// polynomials from coefficient arrays, multiplies them using both the
-/// Karatsuba method and the standard multiplication operator, then checks that
-/// both results are identical.
-///
-/// The test polynomials used are:
-///
-/// * `xs`: A polynomial with coefficients \[1, 2, 3, 4, 1, 9, 1, 9, 8, 1, 0],
-///   representing 1 + 2x + 3x² + 4x³ + x⁴ + 9x⁵ + x⁶ + 9x⁷ + 8x⁸ + x⁹
-/// * `ys`: A polynomial with coefficients \[4, 5, 6, 7, 1, 1, 4, 5, 1, 4],
-///   representing 4 + 5x + 6x² + 7x³ + x⁴ + x⁵ + 4x⁶ + 5x⁷ + x⁸ + 4x⁹
-///
-/// Both multiplication methods should produce the polynomial: 4 + 13x + 28x² +
-/// 50x³ + 57x⁴ + 89x⁵ + 92x⁶ + 122x⁷ + 174x⁸ + 152x⁹ + 161x¹⁰ + 129x¹¹ + 90x¹²
-/// + 63x¹³ + 115x¹⁴ + 57x¹⁵ + 49x¹⁶ + 33x¹⁷ + 4x¹⁸
-///
-/// This test ensures that the Karatsuba algorithm, which is an optimization for
-/// polynomial multiplication with better asymptotic complexity, maintains
-/// mathematical correctness compared to the straightforward multiplication
-/// approach.
-///
 test {
   let xs = to_poly([1, 2, 3, 4, 1, 9, 1, 9, 8, 1, 0])
   let ys = to_poly([4, 5, 6, 7, 1, 1, 4, 5, 1, 4])
