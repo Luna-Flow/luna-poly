@@ -1,0 +1,9 @@
+import {
+  "Luna-Flow/luna-generic" @lg,
+  "Luna-Flow/luna-poly/core" @poly_core,
+  "Luna-Flow/luna-poly/immut/sparse",
+  "Luna-Flow/luna-poly/immut/term",
+  "Luna-Flow/luna-poly/internal",
+  "Luna-Flow/type_theory/core" @tt_core,
+  "moonbitlang/core/cmp",
+}

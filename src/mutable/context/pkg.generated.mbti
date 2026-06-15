@@ -1,0 +1,71 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "Luna-Flow/luna-poly/mutable/context"
+
+import {
+  "Luna-Flow/luna-generic",
+  "Luna-Flow/luna-poly/mutable/sparse",
+  "Luna-Flow/luna-poly/mutable/term",
+}
+
+// Values
+
+// Errors
+
+// Types and methods
+type ContextPolynomial[A]
+pub fn[A : Eq + @luna-generic.AddMonoid] ContextPolynomial::add_inplace(Self[A], Self[A]) -> Unit
+pub fn[A : Eq + @luna-generic.AddMonoid] ContextPolynomial::constant(@Luna-Flow/luna-poly/core.VariableContext, A) -> Self[A]
+pub fn[A] ContextPolynomial::context(Self[A]) -> @Luna-Flow/luna-poly/core.VariableContext
+pub fn[A] ContextPolynomial::copy(Self[A]) -> Self[A]
+pub fn[A : @luna-generic.AddMonoid + Mul + @luna-generic.One] ContextPolynomial::eval(Self[A], Array[A]) -> A
+pub fn[A : @luna-generic.AddMonoid + Mul + @luna-generic.One] ContextPolynomial::eval_checked(Self[A], Array[A]) -> A?
+pub fn[A : @luna-generic.AddMonoid + Mul + @luna-generic.One] ContextPolynomial::eval_named(Self[A], Array[(@Luna-Flow/luna-poly/core.Variable, A)]) -> A
+pub fn[A : @luna-generic.AddMonoid + Mul + @luna-generic.One] ContextPolynomial::eval_named_checked(Self[A], Array[(@Luna-Flow/luna-poly/core.Variable, A)]) -> A?
+pub fn[A : Eq + @luna-generic.AddMonoid + Mul + @luna-generic.One] ContextPolynomial::eval_partial(Self[A], Array[(@Luna-Flow/luna-poly/core.Variable, A)]) -> Self[A]
+pub fn[A : Eq + @luna-generic.AddMonoid + Mul + @luna-generic.One] ContextPolynomial::eval_partial_checked(Self[A], Array[(@Luna-Flow/luna-poly/core.Variable, A)]) -> Self[A]?
+pub fn[A : Eq + @luna-generic.AddMonoid + Mul + @luna-generic.One] ContextPolynomial::eval_partial_named(Self[A], Array[(@Luna-Flow/type_theory/core.Name, A)]) -> Self[A]
+pub fn[A : Eq + @luna-generic.AddMonoid + Mul + @luna-generic.One] ContextPolynomial::eval_partial_named_checked(Self[A], Array[(@Luna-Flow/type_theory/core.Name, A)]) -> Self[A]?
+pub fn[A] ContextPolynomial::from_immut(@Luna-Flow/luna-poly/immut/context.ContextPolynomial[A]) -> Self[A]
+pub fn[A : Eq + @luna-generic.AddMonoid] ContextPolynomial::from_named_terms_as_sparse(@Luna-Flow/luna-poly/core.VariableContext, Array[(Array[(@Luna-Flow/luna-poly/core.Variable, UInt)], A)]) -> Self[A]
+pub fn[A : Eq + @luna-generic.AddMonoid] ContextPolynomial::from_named_terms_as_sparse_checked(@Luna-Flow/luna-poly/core.VariableContext, Array[(Array[(@Luna-Flow/luna-poly/core.Variable, UInt)], A)]) -> Self[A]?
+pub fn[A : Eq + @luna-generic.AddMonoid] ContextPolynomial::from_named_terms_as_terms(@Luna-Flow/luna-poly/core.VariableContext, Array[(Array[(@Luna-Flow/luna-poly/core.Variable, UInt)], A)]) -> Self[A]
+pub fn[A : Eq + @luna-generic.AddMonoid] ContextPolynomial::from_named_terms_as_terms_checked(@Luna-Flow/luna-poly/core.VariableContext, Array[(Array[(@Luna-Flow/luna-poly/core.Variable, UInt)], A)]) -> Self[A]?
+pub fn[A : Eq + @luna-generic.AddMonoid] ContextPolynomial::from_sparse_polynomial(@Luna-Flow/luna-poly/core.VariableContext, @sparse.SparsePolynomial[A]) -> Self[A]
+pub fn[A : Eq + @luna-generic.AddMonoid] ContextPolynomial::from_term_polynomial(@Luna-Flow/luna-poly/core.VariableContext, @term.TermPolynomial[A]) -> Self[A]
+pub fn[A : Eq + @luna-generic.AddMonoid + Mul] ContextPolynomial::mul_inplace(Self[A], Self[A]) -> Unit
+pub fn[A : Eq + @luna-generic.AddMonoid + Mul + @luna-generic.One] ContextPolynomial::ops() -> @Luna-Flow/luna-poly/core.ContextOps[Self[A], A]
+pub fn[A : Eq + @luna-generic.AddMonoid + Mul + @luna-generic.One] ContextPolynomial::pow(Self[A], UInt) -> Self[A]
+pub fn[A : Eq + @luna-generic.AddMonoid + Mul + @luna-generic.One] ContextPolynomial::substitute(Self[A], Array[(@Luna-Flow/luna-poly/core.Variable, ContextSubstitutionValue[A])]) -> Self[A]
+pub fn[A : Eq + @luna-generic.AddMonoid + Mul + @luna-generic.One] ContextPolynomial::substitute_checked(Self[A], Array[(@Luna-Flow/luna-poly/core.Variable, ContextSubstitutionValue[A])]) -> Self[A]?
+pub fn[A : Eq + @luna-generic.AddMonoid + Mul + @luna-generic.One] ContextPolynomial::substitute_names(Self[A], Array[(@Luna-Flow/type_theory/core.Name, ContextSubstitutionValue[A])]) -> Self[A]
+pub fn[A : Eq + @luna-generic.AddMonoid + Mul + @luna-generic.One] ContextPolynomial::substitute_names_checked(Self[A], Array[(@Luna-Flow/type_theory/core.Name, ContextSubstitutionValue[A])]) -> Self[A]?
+pub fn[A] ContextPolynomial::to_immut(Self[A]) -> @Luna-Flow/luna-poly/immut/context.ContextPolynomial[A]
+pub fn[A : Eq + @luna-generic.AddMonoid] ContextPolynomial::to_sparse_polynomial(Self[A]) -> @sparse.SparsePolynomial[A]
+pub fn[A : Eq + @luna-generic.AddMonoid] ContextPolynomial::to_term_polynomial(Self[A]) -> @term.TermPolynomial[A]
+pub fn[A] ContextPolynomial::to_terms(Self[A]) -> Array[(@Luna-Flow/luna-poly/core.ExponentVector, A)]
+pub fn[A : Eq + @luna-generic.AddMonoid + @luna-generic.One] ContextPolynomial::variable(@Luna-Flow/luna-poly/core.VariableContext, @Luna-Flow/luna-poly/core.Variable) -> Self[A]
+pub fn[A : Eq + @luna-generic.AddMonoid + @luna-generic.One] ContextPolynomial::variable_checked(@Luna-Flow/luna-poly/core.VariableContext, @Luna-Flow/luna-poly/core.Variable) -> Self[A]?
+pub impl[A : Eq + @luna-generic.AddMonoid] @Luna-Flow/luna-poly/core.Clearable for ContextPolynomial[A]
+pub impl[A] @Luna-Flow/luna-poly/core.ContextualPolynomial for ContextPolynomial[A]
+pub impl[A] @Luna-Flow/luna-poly/core.Copyable for ContextPolynomial[A]
+pub impl[A] @Luna-Flow/luna-poly/core.HasArity for ContextPolynomial[A]
+pub impl[A] @Luna-Flow/luna-poly/core.HasContext for ContextPolynomial[A]
+pub impl[A] @Luna-Flow/luna-poly/core.HasShape for ContextPolynomial[A]
+pub impl[A] @Luna-Flow/luna-poly/core.HasTermCount for ContextPolynomial[A]
+pub impl[A] @Luna-Flow/luna-poly/core.IsZero for ContextPolynomial[A]
+pub impl[A : Eq + @luna-generic.AddMonoid] @Luna-Flow/luna-poly/core.MutablePolynomial for ContextPolynomial[A]
+pub impl[A : Eq + @luna-generic.AddMonoid] Add for ContextPolynomial[A]
+pub impl[A : Eq + @luna-generic.AddMonoid + Mul] Mul for ContextPolynomial[A]
+pub impl[A : Eq + @luna-generic.Zero + Neg] Neg for ContextPolynomial[A]
+pub impl[A : Show + @luna-generic.Zero] Show for ContextPolynomial[A]
+pub impl[A : Eq + @luna-generic.AddMonoid + Neg] Sub for ContextPolynomial[A]
+
+pub(all) enum ContextSubstitutionValue[A] {
+  Scalar(A)
+  Polynomial(ContextPolynomial[A])
+}
+
+// Type aliases
+
+// Traits
+

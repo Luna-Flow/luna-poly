@@ -1,0 +1,14 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "Luna-Flow/luna-poly/internal"
+
+// Values
+pub fn[A : Mul] pow_nat(A, UInt, one~ : A) -> A
+
+// Errors
+
+// Types and methods
+
+// Type aliases
+
+// Traits
+

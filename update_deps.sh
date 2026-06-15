@@ -1,7 +1,5 @@
-rm -rf .mooncakes.io
+#!/usr/bin/env sh
+set -eu
+
 moon update
-moon remove Luna-Flow/luna-generic
-moon add Luna-Flow/luna-generic
-moon remove moonbitlang/quickcheck
-moon add moonbitlang/quickcheck
-moon install
+moon check

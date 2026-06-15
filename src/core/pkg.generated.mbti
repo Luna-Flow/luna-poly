@@ -1,0 +1,157 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "Luna-Flow/luna-poly/core"
+
+import {
+  "Luna-Flow/luna-generic",
+}
+
+// Values
+
+// Errors
+
+// Types and methods
+type ContextOps[P, A]
+pub fn[P, A] ContextOps::add_checked(Self[P, A], P, P) -> P?
+pub fn[P, A] ContextOps::eval_named_checked(Self[P, A], P, Array[(Variable, A)]) -> A?
+pub fn[P, A] ContextOps::from_terms(Self[P, A], VariableContext, Array[(ExponentVector, A)]) -> P
+pub fn[P, A] ContextOps::mul_checked(Self[P, A], P, P) -> P?
+pub fn[P, A] ContextOps::new((VariableContext, Array[(ExponentVector, A)]) -> P, (P) -> Array[(ExponentVector, A)], (P, Array[(Variable, A)]) -> A?, (P, P) -> P?, (P, P) -> P?) -> Self[P, A]
+pub fn[P, A] ContextOps::to_terms(Self[P, A], P) -> Array[(ExponentVector, A)]
+
+type ExponentVector
+pub fn ExponentVector::degree(Self) -> UInt
+pub fn ExponentVector::from_array(Array[UInt]) -> Self
+#alias("_[_]")
+pub fn ExponentVector::get(Self, Int) -> UInt
+pub fn ExponentVector::get_checked(Self, Int) -> UInt?
+pub fn ExponentVector::is_one(Self) -> Bool
+pub fn ExponentVector::length(Self) -> Int
+pub fn ExponentVector::one() -> Self
+pub fn ExponentVector::to_array(Self) -> Array[UInt]
+pub fn ExponentVector::with_exponent(Self, Int, UInt) -> Self
+pub fn ExponentVector::with_exponent_checked(Self, Int, UInt) -> Self?
+pub impl @luna-generic.One for ExponentVector
+pub impl Compare for ExponentVector
+pub impl Eq for ExponentVector
+pub impl Hash for ExponentVector
+pub impl Mul for ExponentVector
+pub impl Show for ExponentVector
+
+type MultivariateOps[P, A]
+pub fn[P, A] MultivariateOps::add(Self[P, A], P, P) -> P
+pub fn[P, A] MultivariateOps::eval_indexed(Self[P, A], P, Array[A]) -> A
+pub fn[P, A] MultivariateOps::eval_indexed_checked(Self[P, A], P, Array[A]) -> A?
+pub fn[P, A] MultivariateOps::from_terms(Self[P, A], Array[(ExponentVector, A)]) -> P
+pub fn[P, A] MultivariateOps::mul(Self[P, A], P, P) -> P
+pub fn[P, A] MultivariateOps::new(() -> P, () -> P, (Array[(ExponentVector, A)]) -> P, (P) -> Array[(ExponentVector, A)], (P, Array[A]) -> A, (P, Array[A]) -> A?, (P, P) -> P, (P, P) -> P, (P, ExponentVector, A) -> P, (P, UInt) -> P) -> Self[P, A]
+pub fn[P, A] MultivariateOps::one(Self[P, A]) -> P
+pub fn[P, A] MultivariateOps::pow(Self[P, A], P, UInt) -> P
+pub fn[P, A] MultivariateOps::scale(Self[P, A], P, ExponentVector, A) -> P
+pub fn[P, A] MultivariateOps::to_terms(Self[P, A], P) -> Array[(ExponentVector, A)]
+pub fn[P, A] MultivariateOps::zero(Self[P, A]) -> P
+
+pub enum PolynomialShape {
+  Univariate(length~ : Int)
+  Multivariate(arity~ : Int, term_count~ : Int)
+  Contextual(context~ : VariableContext, arity~ : Int, term_count~ : Int)
+} derive(Eq)
+pub fn PolynomialShape::arity(Self) -> Int
+pub fn PolynomialShape::compatible_checked(Self, Self) -> Unit?
+pub fn PolynomialShape::contextual(VariableContext, Int, Int) -> Self
+pub fn PolynomialShape::is_compatible_with(Self, Self) -> Bool
+pub fn PolynomialShape::multivariate(Int, Int) -> Self
+pub fn PolynomialShape::term_count(Self) -> Int?
+pub fn PolynomialShape::univariate(Int) -> Self
+
+type UnivariateOps[P, A]
+pub fn[P, A] UnivariateOps::add(Self[P, A], P, P) -> P
+pub fn[P, A] UnivariateOps::coefficient(Self[P, A], P, Int) -> A
+pub fn[P, A] UnivariateOps::coefficient_checked(Self[P, A], P, Int) -> A?
+pub fn[P, A] UnivariateOps::eval(Self[P, A], P, A) -> A
+pub fn[P, A] UnivariateOps::from_coefficients(Self[P, A], Array[A]) -> P
+pub fn[P, A] UnivariateOps::mul(Self[P, A], P, P) -> P
+pub fn[P, A] UnivariateOps::new(() -> P, () -> P, (Array[A]) -> P, (P) -> Array[A], (P, Int) -> A, (P, Int) -> A?, (P, A) -> A, (P, P) -> P, (P, P) -> P, (P, Int, A) -> P, (P, Int, A) -> P?, (P, UInt) -> P) -> Self[P, A]
+pub fn[P, A] UnivariateOps::one(Self[P, A]) -> P
+pub fn[P, A] UnivariateOps::pow(Self[P, A], P, UInt) -> P
+pub fn[P, A] UnivariateOps::scale(Self[P, A], P, Int, A) -> P
+pub fn[P, A] UnivariateOps::scale_checked(Self[P, A], P, Int, A) -> P?
+pub fn[P, A] UnivariateOps::to_coefficients(Self[P, A], P) -> Array[A]
+pub fn[P, A] UnivariateOps::zero(Self[P, A]) -> P
+
+type Variable derive(Compare, Eq)
+pub fn Variable::index(Self) -> Int
+pub fn Variable::name(Self) -> String
+pub fn Variable::to_type_theory_name(Self) -> @Luna-Flow/type_theory/core.Name
+pub impl Show for Variable
+
+type VariableContext derive(Eq)
+pub fn VariableContext::contains(Self, Variable) -> Bool
+pub fn VariableContext::extend(Self, String) -> (Self, Variable)
+pub fn VariableContext::extend_checked(Self, String) -> (Self, Variable)?
+pub fn VariableContext::from_names(Array[String]) -> Self
+pub fn VariableContext::from_names_checked(Array[String]) -> Self?
+pub fn VariableContext::get(Self, Int) -> Variable?
+pub fn VariableContext::new() -> Self
+pub fn VariableContext::require_type_theory_name(Self, @Luna-Flow/type_theory/core.Name) -> Variable
+pub fn VariableContext::require_variable(Self, String) -> Variable
+pub fn VariableContext::size(Self) -> Int
+pub fn VariableContext::variable(Self, String) -> Variable?
+pub fn VariableContext::variable_by_type_theory_name(Self, @Luna-Flow/type_theory/core.Name) -> Variable?
+pub fn VariableContext::variables(Self) -> Array[Variable]
+pub impl Show for VariableContext
+
+// Type aliases
+
+// Traits
+pub(open) trait Clearable {
+  fn clear(Self) -> Unit
+}
+
+pub(open) trait ContextualPolynomial : HasShape + HasContext + HasTermCount + HasArity + IsZero {
+}
+
+pub(open) trait Copyable {
+  fn copy(Self) -> Self
+}
+
+pub(open) trait HasArity {
+  fn arity(Self) -> Int
+}
+
+pub(open) trait HasContext {
+  fn context(Self) -> VariableContext
+}
+
+pub(open) trait HasDegree {
+  fn degree(Self) -> Int?
+}
+
+pub(open) trait HasLength {
+  fn length(Self) -> Int
+}
+
+pub(open) trait HasShape {
+  fn shape(Self) -> PolynomialShape
+}
+
+pub(open) trait HasTermCount {
+  fn term_count(Self) -> Int
+}
+
+pub(open) trait HasTotalDegree {
+  fn total_degree(Self) -> UInt?
+}
+
+pub(open) trait IsZero {
+  fn is_zero(Self) -> Bool
+}
+
+pub(open) trait MultivariatePolynomial : HasShape + HasTermCount + HasArity + HasTotalDegree + IsZero {
+}
+
+pub(open) trait MutablePolynomial : Clearable + Copyable {
+}
+
+pub(open) trait UnivariatePolynomial : HasShape + HasLength + HasDegree + IsZero {
+}
+

@@ -1,3 +1,4 @@
+---
 name: Refactor Request
 about: Help users outline areas in the code that need to be refactored
 title: 'Refactor Needed: Briefly describe the part of the code to be refactored.'

@@ -1,1 +1,12 @@
-View Contribution Guidelines in [zh_CN](https://github.com/Luna-Flow/calculus-numerical/tree/main/doc/zh_CN/CONTRIBUTING.md) | [en_US](https://github.com/Luna-Flow/calculus-numerical/tree/main/doc/en_US/CONTRIBUTING.md) | [ja_JP](https://github.com/Luna-Flow/luna-poly/tree/main/doc/ja_JP/CONTRIBUTING.md) 
+View contribution guidelines in [English](./doc/en_US/CONTRIBUTING.md),
+[简体中文](./doc/zh_CN/CONTRIBUTING.md), or
+[日本語](./doc/ja_JP/CONTRIBUTING.md).
+
+Before opening a pull request, run:
+
+```bash
+moon fmt
+moon check
+moon test
+moon info
+```

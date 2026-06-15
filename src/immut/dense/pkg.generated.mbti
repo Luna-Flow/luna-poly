@@ -1,0 +1,53 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "Luna-Flow/luna-poly/immut/dense"
+
+import {
+  "Luna-Flow/arithmetic",
+  "Luna-Flow/luna-generic",
+  "Luna-Flow/luna-poly/core",
+}
+
+// Values
+
+// Errors
+
+// Types and methods
+type DensePolynomial[A] derive(Compare, Eq)
+pub fn[A : @luna-generic.Zero] DensePolynomial::coefficient(Self[A], Int) -> A
+pub fn[A : @luna-generic.Zero] DensePolynomial::coefficient_checked(Self[A], Int) -> A?
+pub fn[A : Eq + @luna-generic.Zero] DensePolynomial::constant(A) -> Self[A]
+pub fn[A] DensePolynomial::degree(Self[A]) -> Int?
+pub fn[A : @luna-generic.NatHomomorphism + Eq + @luna-generic.Zero + Mul] DensePolynomial::derivative(Self[A]) -> Self[A]
+pub fn[A : @luna-generic.AddMonoid + Mul] DensePolynomial::eval(Self[A], A) -> A
+pub fn[A : Eq + @luna-generic.Zero] DensePolynomial::from_coefficients(Array[A]) -> Self[A]
+pub fn[A : Eq + @luna-generic.AddMonoid + Mul + Neg + @luna-generic.One] DensePolynomial::karatsuba(Self[A], Self[A]) -> Self[A]
+pub fn[A] DensePolynomial::leading_coefficient(Self[A]) -> A?
+pub fn[A] DensePolynomial::leading_term(Self[A]) -> (Int, A)?
+pub fn[A] DensePolynomial::length(Self[A]) -> Int
+pub fn[A : Eq + @luna-generic.Zero] DensePolynomial::monomial(Int, A) -> Self[A]
+pub fn[A : Eq + @luna-generic.Zero] DensePolynomial::monomial_checked(Int, A) -> Self[A]?
+pub fn[A : Eq + @luna-generic.AddMonoid + Mul + @luna-generic.One] DensePolynomial::ops() -> @core.UnivariateOps[Self[A], A]
+pub fn[A : Eq + @luna-generic.AddMonoid + Mul + @luna-generic.One] DensePolynomial::pow(Self[A], UInt) -> Self[A]
+pub fn[A : Eq + @luna-generic.Zero + Mul] DensePolynomial::scale(Self[A], Int, A) -> Self[A]
+pub fn[A : Eq + @luna-generic.Zero + Mul] DensePolynomial::scale_checked(Self[A], Int, A) -> Self[A]?
+pub fn[A : Eq + @luna-generic.AddMonoid + Mul] DensePolynomial::substitute(Self[A], Self[A]) -> Self[A]
+pub fn[A] DensePolynomial::to_coefficients(Self[A]) -> Array[A]
+pub fn[A : Eq + @luna-generic.Zero + @luna-generic.One] DensePolynomial::variable() -> Self[A]
+pub impl[A : Eq + @luna-generic.AddMonoid + Mul + @luna-generic.One] @arithmetic.PowNatChecked for DensePolynomial[A]
+pub impl[A : Eq + @luna-generic.Zero + @luna-generic.One] @luna-generic.One for DensePolynomial[A]
+pub impl[A] @luna-generic.Zero for DensePolynomial[A]
+pub impl[A] @core.HasDegree for DensePolynomial[A]
+pub impl[A] @core.HasLength for DensePolynomial[A]
+pub impl[A] @core.HasShape for DensePolynomial[A]
+pub impl[A] @core.IsZero for DensePolynomial[A]
+pub impl[A] @core.UnivariatePolynomial for DensePolynomial[A]
+pub impl[A : Eq + @luna-generic.AddMonoid] Add for DensePolynomial[A]
+pub impl[A : Eq + @luna-generic.AddMonoid + Mul] Mul for DensePolynomial[A]
+pub impl[A : Eq + @luna-generic.Zero + Neg] Neg for DensePolynomial[A]
+pub impl[A : Show + Eq + @luna-generic.Zero] Show for DensePolynomial[A]
+pub impl[A : Eq + @luna-generic.AddMonoid + Neg] Sub for DensePolynomial[A]
+
+// Type aliases
+
+// Traits
+

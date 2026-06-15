@@ -1,0 +1,93 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "Luna-Flow/luna-poly/immut"
+
+import {
+  "Luna-Flow/luna-generic",
+  "Luna-Flow/luna-poly/core",
+  "Luna-Flow/luna-poly/immut/context",
+  "Luna-Flow/luna-poly/immut/dense",
+  "Luna-Flow/luna-poly/immut/sparse",
+  "Luna-Flow/luna-poly/immut/term",
+}
+
+// Values
+
+// Errors
+
+// Types and methods
+
+// Type aliases
+pub using @core {type ContextOps}
+
+pub using @context {type ContextPolynomial}
+
+pub using @context {type ContextSubstitutionValue}
+
+pub using @dense {type DensePolynomial}
+
+pub using @core {type ExponentVector}
+
+pub using @core {type MultivariateOps}
+
+pub using @core {type PolynomialShape}
+
+pub using @sparse {type SparsePolynomial}
+
+pub using @term {type TermPolynomial}
+
+pub using @core {type UnivariateOps}
+
+pub using @core {type Variable}
+
+pub using @core {type VariableContext}
+
+pub using @luna-generic {trait AddGroup}
+
+pub using @luna-generic {trait AddMonoid}
+
+pub using @core {trait Clearable}
+
+pub using @core {trait ContextualPolynomial}
+
+pub using @core {trait Copyable}
+
+pub using @luna-generic {trait Field}
+
+pub using @core {trait HasArity}
+
+pub using @core {trait HasContext}
+
+pub using @core {trait HasDegree}
+
+pub using @core {trait HasLength}
+
+pub using @core {trait HasShape}
+
+pub using @core {trait HasTermCount}
+
+pub using @core {trait HasTotalDegree}
+
+pub using @core {trait IsZero}
+
+pub using @luna-generic {trait MulGroup}
+
+pub using @luna-generic {trait MulMonoid}
+
+pub using @core {trait MultivariatePolynomial}
+
+pub using @core {trait MutablePolynomial}
+
+pub using @luna-generic {trait Num}
+
+pub using @luna-generic {trait One}
+
+pub using @luna-generic {trait Ring}
+
+pub using @luna-generic {trait Semiring}
+
+pub using @core {trait UnivariatePolynomial}
+
+pub using @luna-generic {trait Zero}
+
+// Traits
+

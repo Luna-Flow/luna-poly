@@ -1,0 +1,49 @@
+// Generated using `moon info`, DON'T EDIT IT
+package "Luna-Flow/luna-poly/immut/sparse"
+
+import {
+  "Luna-Flow/arithmetic",
+  "Luna-Flow/luna-generic",
+  "Luna-Flow/luna-poly/core",
+}
+
+// Values
+
+// Errors
+
+// Types and methods
+type SparsePolynomial[A]
+pub fn[A : Eq + @luna-generic.AddMonoid] SparsePolynomial::add_term(Self[A], @core.ExponentVector, A) -> Self[A]
+pub fn[A : @luna-generic.AddMonoid + Mul + @luna-generic.One] SparsePolynomial::eval(Self[A], Array[A]) -> A
+pub fn[A : @luna-generic.AddMonoid + Mul + @luna-generic.One] SparsePolynomial::eval_checked(Self[A], Array[A]) -> A?
+pub fn[A : Eq + @luna-generic.AddMonoid] SparsePolynomial::from_array(Array[(Array[UInt], A)]) -> Self[A]
+pub fn[A : Eq + @luna-generic.AddMonoid] SparsePolynomial::from_terms(Array[(@core.ExponentVector, A)]) -> Self[A]
+pub fn[A] SparsePolynomial::get(Self[A], @core.ExponentVector) -> A?
+pub fn[A] SparsePolynomial::get_checked(Self[A], @core.ExponentVector) -> A?
+pub fn[A] SparsePolynomial::is_empty(Self[A]) -> Bool
+pub fn[A] SparsePolynomial::new() -> Self[A]
+pub fn[A : Eq + @luna-generic.AddMonoid + Mul + @luna-generic.One] SparsePolynomial::ops() -> @core.MultivariateOps[Self[A], A]
+pub fn[A : Eq + @luna-generic.AddMonoid + Mul + @luna-generic.One] SparsePolynomial::pow(Self[A], UInt) -> Self[A]
+pub fn[A : Eq + @luna-generic.Zero + Mul] SparsePolynomial::scale(Self[A], @core.ExponentVector, A) -> Self[A]
+pub fn[A] SparsePolynomial::size(Self[A]) -> Int
+pub fn[A] SparsePolynomial::to_terms(Self[A]) -> Array[(@core.ExponentVector, A)]
+pub impl[A : Eq + @luna-generic.AddMonoid + Mul + @luna-generic.One] @arithmetic.PowNatChecked for SparsePolynomial[A]
+pub impl[A : Eq + @luna-generic.Zero + @luna-generic.One] @luna-generic.One for SparsePolynomial[A]
+pub impl[A] @luna-generic.Zero for SparsePolynomial[A]
+pub impl[A] @core.HasArity for SparsePolynomial[A]
+pub impl[A] @core.HasShape for SparsePolynomial[A]
+pub impl[A] @core.HasTermCount for SparsePolynomial[A]
+pub impl[A] @core.HasTotalDegree for SparsePolynomial[A]
+pub impl[A] @core.IsZero for SparsePolynomial[A]
+pub impl[A] @core.MultivariatePolynomial for SparsePolynomial[A]
+pub impl[A : Eq + @luna-generic.AddMonoid] Add for SparsePolynomial[A]
+pub impl[A : Eq] Eq for SparsePolynomial[A]
+pub impl[A : Eq + @luna-generic.AddMonoid + Mul] Mul for SparsePolynomial[A]
+pub impl[A : Eq + @luna-generic.Zero + Neg] Neg for SparsePolynomial[A]
+pub impl[A : Show + @luna-generic.Zero] Show for SparsePolynomial[A]
+pub impl[A : Eq + @luna-generic.AddMonoid + Neg] Sub for SparsePolynomial[A]
+
+// Type aliases
+
+// Traits
+

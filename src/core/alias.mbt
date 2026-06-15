@@ -1,0 +1,2 @@
+///|
+using @lg {trait One}

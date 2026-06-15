@@ -1,0 +1,12 @@
+import {
+  "Luna-Flow/luna-generic" @lg,
+  "Luna-Flow/luna-poly/core" @poly_core,
+  "Luna-Flow/luna-poly/mutable/context",
+  "Luna-Flow/luna-poly/mutable/dense",
+  "Luna-Flow/luna-poly/mutable/sparse",
+  "Luna-Flow/luna-poly/mutable/term",
+}
+
+import {
+  "moonbitlang/quickcheck" @qc,
+} for "wbtest"

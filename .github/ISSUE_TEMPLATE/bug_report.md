@@ -20,21 +20,16 @@ Steps to reproduce the behavior. Please try to make the steps as simple as possi
 **Expected behavior**
 Provide a clear and concise description of what you expected to happen instead of the error.
 
-**Screenshots**
-If applicable, add screenshots or screen recordings to help explain the problem.
+**Environment**
+- MoonBit toolchain version:
+- luna-poly version or commit:
+- Target backend (`wasm-gc`, `wasm`, `js`, or `native`):
+- Operating system:
 
-**Desktop (please complete the following information):**
- - OS: [e.g. iOS]
- - Browser: [e.g. Chrome, Safari]
- - Version: [e.g. 22]
-
-**Smartphone (please complete the following information):**
- - Device: [e.g. iPhone6]
- - OS: [e.g. iOS8.1]
- - Browser: [e.g. stock browser, Safari]
- - Version: [e.g. 22]
+**Minimal MoonBit example**
+Provide the smallest `.mbt` example that reproduces the problem.
 
 **Additional context**
-Add any other context about the problem here. This could include any logs, related issues, or configuration details that might help us identify the cause of the bug.
+Add compiler output, related issues, or other relevant context.
 
 **If you know who is working on this part, please cc @username here.**

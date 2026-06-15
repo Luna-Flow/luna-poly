@@ -19,8 +19,8 @@ jobs:
           moon update
       - name: moon check
         run: |
-          moon install
           moon check --target all
+          moon test
       - name: publish
         run: |
           echo $SECRET > ~/.moon/credentials.json

@@ -1,3 +1,4 @@
+---
 name: Test Request
 about: Help users submit requests for adding or improving test coverage
 title: 'Test Needed: Briefly describe the part of the code needing coverage.'
@@ -7,7 +8,7 @@ assignees: ''
 ---
 
 **What part of the code needs test coverage?**
-Describe which function, class, or module needs additional test coverage. Be specific if possible (e.g., "Add tests for the `multiply()` function in the `matrix_operations.py` module").
+Describe which package, type, or function needs additional coverage. Specify whether it belongs to `immut`, `mutable`, or cross-package consistency tests.
 
 **What kind of tests are needed?**
 Describe the type of tests that should be added, such as unit tests, integration tests, performance tests, or edge case tests. Include any specific conditions, inputs, or scenarios that should be tested.
