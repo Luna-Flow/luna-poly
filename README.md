@@ -94,9 +94,7 @@ root package. Import `/immut` or `/mutable` explicitly.
 
 ## Documentation
 
-- English: `doc/en_US/README.md`
-- Chinese: `doc/zh_CN/README.md`
-- Japanese: `doc/ja_JP/README.md`
-
-Each locale includes package-level API, tutorial, and design notes for
-`immut` and `mutable`.
+The manual is published at <https://luna-flow.github.io/en/luna-poly/>, with
+Chinese and Japanese translations. Its English source lives in
+[`doc/manual/`](doc/manual/index.md) and includes API references, tutorials,
+and design notes for `immut` and `mutable`.

@@ -1,0 +1,1027 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Luna-Flow documentation\n"
+"Report-Msgid-Bugs-To: https://github.com/Luna-Flow\n"
+"Language: ja_JP\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: conf.json:summary
+msgid "Immutable and mutable polynomial libraries for MoonBit with canonical dense, sparse, and context-aware representations."
+msgstr "正規化された密・疎・コンテキスト対応の表現を備えた、MoonBit 向けの immutable および mutable な多項式ライブラリ。"
+
+#: manual/api/immut.md:1
+msgid "immut API"
+msgstr "immut API"
+
+#: manual/api/immut.md:3
+msgid "This page documents the current public API of `Luna-Flow/luna-poly/immut`. The package provides value-oriented polynomial containers: constructors copy input arrays, algebraic operations return new values, and existing values are not mutated."
+msgstr "このページは `Luna-Flow/luna-poly/immut` の現在の公開 API を説明します。このパッケージは値セマンティクスの多項式コンテナを提供します。コンストラクタは入力配列をコピーし、代数演算は新しい値を返し、既存の値を変更しません。"
+
+#: manual/api/immut.md:5
+msgid "Use `src/immut/pkg.generated.mbti` and `moon info` as the exact signature source."
+msgstr "正確なシグネチャは `src/immut/pkg.generated.mbti` と `moon info` を基準にしてください。"
+
+#: manual/api/immut.md:7
+msgid "`immut` is a facade over `immut/dense`, `immut/term`, `immut/sparse`, and `immut/context`. It also re-exports the shared `core` capability traits: `HasLength`, `HasDegree`, `IsZero`, `HasTermCount`, `HasArity`, `HasTotalDegree`, `HasContext`, `HasShape`, `UnivariatePolynomial`, `MultivariatePolynomial`, and `ContextualPolynomial`. Concrete polynomial types expose `Type::ops()` records for generic functional algorithms."
+msgstr "`immut` は `immut/dense`、`immut/term`、`immut/sparse`、 `immut/context` の facade パッケージです。また `core` の能力 trait である `HasLength`、`HasDegree`、`IsZero`、`HasTermCount`、`HasArity`、 `HasTotalDegree`、`HasContext`、`UnivariatePolynomial`、 `HasShape`、`MultivariatePolynomial`、`ContextualPolynomial` を再エクスポートします。具体多項式型は、下位表現に依存しない関数型の汎用アルゴリズム向けに `Type::ops()` を提供します。"
+
+#: manual/api/immut.md:14
+msgid "The facade also re-exports `luna-generic` algebra traits such as `Zero`, `One`, `AddMonoid`, `MulMonoid`, `Semiring`, `Ring`, `Field`, and `Num`."
+msgstr "facade は `luna-generic` の主要な代数 trait（`Zero`、`One`、`AddMonoid`、`MulMonoid`、`Semiring`、`Ring`、`Field`、`Num`）も再エクスポートします。"
+
+#: manual/api/immut.md:17
+msgid "`PolynomialShape` is the shared dimension descriptor. Use `HasShape::shape(value)` to inspect univariate length, multivariate arity and term count, or contextual `VariableContext` compatibility."
+msgstr "`PolynomialShape` は共有の次元記述子です。`HasShape::shape(value)` を使うと、一変数の長さ、多変数の arity と項数、またはコンテキスト付きの場合の `VariableContext` 互換性を調べられます。"
+
+#: manual/api/immut.md:23
+#: manual/api/mutable.md:20
+msgid "ExponentVector"
+msgstr "ExponentVector"
+
+#: manual/api/immut.md:25
+msgid "`ExponentVector` represents the exponent vector of a multivariate monomial. For example, `[2, 0, 1]` represents `x^2 * x_2`. Trailing zero exponents are removed and the total degree is cached."
+msgstr "`ExponentVector` は多変数単項式の指数ベクトルです。例えば `[2, 0, 1]` は `x^2 * x_2` を表します。末尾のゼロ指数は削除され、総次数はキャッシュされます。"
+
+#: manual/api/immut.md:27
+#: manual/api/immut.md:77
+msgid "Construction And Queries"
+msgstr "構築と問い合わせ"
+
+#: manual/api/immut.md:31
+msgid "Builds a canonical exponent vector. The input array is copied."
+msgstr "指数配列から正規化済みの指数ベクトルを作ります。入力配列はコピーされます。"
+
+#: manual/api/immut.md:35
+msgid "Returns the multiplicative unit, represented by the empty exponent vector."
+msgstr "乗法単位元、つまり空の指数ベクトルを返します。"
+
+#: manual/api/immut.md:39
+msgid "Returns the canonical storage length, excluding trailing zeroes."
+msgstr "末尾ゼロを除いた保存長を返します。"
+
+#: manual/api/immut.md:43
+msgid "Returns the sum of all exponents."
+msgstr "すべての指数の和を返します。"
+
+#: manual/api/immut.md:47
+msgid "Checks whether the vector is the unit exponent."
+msgstr "単位指数ベクトルかどうかを返します。"
+
+#: manual/api/immut.md:51
+msgid "Supports `v[i]`. Non-negative indexes beyond the stored length return `0`; negative indexes abort."
+msgstr "`v[i]` 構文をサポートします。保存長を超える非負インデックスは `0` を返し、負インデックスは中止します。"
+
+#: manual/api/immut.md:55
+#: manual/api/immut.md:63
+msgid "Returns `None` for negative indexes."
+msgstr "負のインデックスに対しては `None` を返します。"
+
+#: manual/api/immut.md:59
+msgid "Returns a new vector with one exponent replaced and the result canonicalized."
+msgstr "指定位置の指数を置き換えた新しいベクトルを返し、結果を再正規化します。"
+
+#: manual/api/immut.md:67
+msgid "Returns a copy of the exponent array."
+msgstr "指数配列のコピーを返します。"
+
+#: manual/api/immut.md:69
+msgid "`ExponentVector` implements `One`, `Mul`, `Eq`, `Compare`, `Hash`, and `Show`. Multiplication adds exponents pointwise; comparison orders by total degree first, then by higher variable index down to lower index."
+msgstr "`ExponentVector` は `One`、`Mul`、`Eq`、`Compare`、`Hash`、`Show` を実装します。乗法は指数の位置ごとの加算です。比較は総次数を先に見て、その後高い変数インデックスから低いインデックスへ比較します。"
+
+#: manual/api/immut.md:73
+#: manual/api/mutable.md:34
+msgid "DensePolynomial[A]"
+msgstr "DensePolynomial[A]"
+
+#: manual/api/immut.md:75
+msgid "`DensePolynomial[A]` is a dense univariate polynomial. Public inputs and outputs use ascending coefficient arrays: `[1, 2, 3]` means `1 + 2x + 3x^2`. Internally, canonical coefficients are stored in a core immutable vector. Trailing zero coefficients are removed after construction and operations; the zero polynomial is stored as an empty vector."
+msgstr "`DensePolynomial[A]` は一変数の密多項式です。公開入出力では係数配列を昇冪順に使います。`[1, 2, 3]` は `1 + 2x + 3x^2` を表します。内部では正規化済み係数を core immutable vector に保存します。構築後および演算後には末尾ゼロ係数が削除され、ゼロ多項式は空ベクトルとして保存されます。"
+
+#: manual/api/immut.md:81
+msgid "Builds a polynomial from ascending coefficients, requiring `A : Eq + Zero`. Algebraic operations add only the capabilities they use; `moon info` is the source of truth for exact operation bounds."
+msgstr "昇冪順の係数配列から多項式を作ります。必要な制約は `A : Eq + Zero` です。代数演算は実際に使う能力だけを追加し、正確な境界は `moon info` の生成インターフェイスに従います。"
+
+#: manual/api/immut.md:87
+msgid "Builds a constant polynomial."
+msgstr "定数多項式を作ります。"
+
+#: manual/api/immut.md:91
+msgid "Builds the variable `x`."
+msgstr "変数 `x` を作ります。"
+
+#: manual/api/immut.md:95
+msgid "Builds `coefficient * x^power`. `power` must be non-negative; a zero coefficient returns zero."
+msgstr "`coefficient * x^power` を作ります。`power` は非負でなければなりません。ゼロ係数ならゼロ多項式を返します。"
+
+#: manual/api/immut.md:99
+#: manual/api/immut.md:121
+msgid "Returns `None` for negative powers."
+msgstr "負の次数に対しては `None` を返します。"
+
+#: manual/api/immut.md:103
+msgid "Query the canonical coefficient representation. Out-of-range non-negative coefficients read as zero."
+msgstr "正規化済みの係数表現を問い合わせます。範囲外の非負次数の係数はゼロとして読まれます。"
+
+#: manual/api/immut.md:107
+msgid "Returns `None` for negative powers and `Some(zero)` for non-negative powers beyond the canonical length."
+msgstr "負の次数に対しては `None` を、正規化済みの長さを超える非負の次数に対しては `Some(zero)` を返します。"
+
+#: manual/api/immut.md:109
+msgid "Operations"
+msgstr "演算"
+
+#: manual/api/immut.md:113
+msgid "DensePolynomial addition, subtraction, and convolution multiplication."
+msgstr "多項式の加算、減算、畳み込み乗算です。"
+
+#: manual/api/immut.md:117
+msgid "Returns `coefficient * x^power * self`."
+msgstr "`coefficient * x^power * self` を返します。"
+
+#: manual/api/immut.md:125
+msgid "Evaluates with Horner form."
+msgstr "Horner 形式で評価します。"
+
+#: manual/api/immut.md:129
+msgid "Substitutes another polynomial for `x`."
+msgstr "変数 `x` を別の多項式で置換します。"
+
+#: manual/api/immut.md:133
+msgid "Returns the formal derivative. The coefficient type must support `NatHomomorphism`."
+msgstr "形式微分を返します。係数型は `NatHomomorphism` をサポートする必要があります。"
+
+#: manual/api/immut.md:137
+msgid "Natural-number exponentiation; also exposed through `arithmetic.PowNatChecked`."
+msgstr "自然数冪です。`arithmetic.PowNatChecked` も実装します。"
+
+#: manual/api/immut.md:141
+msgid "Karatsuba multiplication. Small inputs fall back to ordinary multiplication."
+msgstr "Karatsuba 乗算です。小さい入力では通常の乗算に戻ります。"
+
+#: manual/api/immut.md:145
+#: manual/api/mutable.md:71
+msgid "TermPolynomial[A]"
+msgstr "TermPolynomial[A]"
+
+#: manual/api/immut.md:147
+msgid "`TermPolynomial[A]` is a multivariate polynomial backed by a canonical sorted term sequence stored in a core immutable vector. Each term is `(ExponentVector, A)`. Duplicate exponents are merged and zero coefficients are removed."
+msgstr "`TermPolynomial[A]` は core immutable vector に保存された正規化済みのソート済み項列を持つ多変数多項式です。各項は `(ExponentVector, A)` です。同じ指数は結合され、ゼロ係数項は削除されます。"
+
+#: manual/api/immut.md:159
+msgid "`TermPolynomial` implements `Zero`, `One`, `Add`, `Neg`, `Sub`, `Mul`, `Show`, and `arithmetic.PowNatChecked`. Evaluation aborts if a term needs a variable index missing from the `values` array."
+msgstr "`TermPolynomial` は `Zero`、`One`、`Add`、`Neg`、`Sub`、`Mul`、`Show`、`arithmetic.PowNatChecked` を実装します。評価時に必要な変数値が `values` にない場合は中止します。"
+
+#: manual/api/immut.md:161
+msgid "Convert explicitly with `SparsePolynomial::from_terms(term.to_terms())`."
+msgstr "`SparsePolynomial::from_terms(term.to_terms())` で明示的に疎表現へ変換します。"
+
+#: manual/api/immut.md:165
+#: manual/api/mutable.md:98
+msgid "SparsePolynomial[A]"
+msgstr "SparsePolynomial[A]"
+
+#: manual/api/immut.md:167
+msgid "`SparsePolynomial[A]` is another multivariate representation backed by `SortedMap[ExponentVector, A]`. It is useful when callers need lookup by exponent."
+msgstr "`SparsePolynomial[A]` は `SortedMap[ExponentVector, A]` を使う別の多変数表現です。指数による検索が必要な場面に向いています。"
+
+#: manual/api/immut.md:183
+msgid "`SparsePolynomial` implements `Zero`, `One`, `Add`, `Neg`, `Sub`, `Mul`, `Eq`, `Show`, and `arithmetic.PowNatChecked`."
+msgstr "`SparsePolynomial` は `Zero`、`One`、`Add`、`Neg`、`Sub`、`Mul`、`Eq`、`Show`、`arithmetic.PowNatChecked` を実装します。"
+
+#: manual/api/immut.md:185
+msgid "Convert explicitly with `TermPolynomial::from_terms(sparse.to_terms())`."
+msgstr "`TermPolynomial::from_terms(sparse.to_terms())` で明示的に項列表現へ変換します。"
+
+#: manual/api/immut.md:189
+#: manual/api/mutable.md:129
+msgid "VariableContext And ContextPolynomial[A]"
+msgstr "VariableContext と ContextPolynomial[A]"
+
+#: manual/api/immut.md:191
+msgid "`Variable` and `VariableContext` provide a named-variable layer over the position-indexed `ExponentVector` model. Variable names are unique inside one context, and each variable has a stable context-local index."
+msgstr "`Variable` と `VariableContext` は名前付き変数層です。同じコンテキスト内では変数名は一意で、各変数は安定したコンテキスト内インデックスを持ちます。"
+
+#: manual/api/immut.md:204
+msgid "`ContextPolynomial[A]` binds a `VariableContext` to either term-array or sparse storage."
+msgstr "`ContextPolynomial[A]` は `VariableContext` を項列表現または疎表現に束縛します。"
+
+#: manual/api/immut.md:209
+msgid "Substitution payload for context polynomials. `Scalar(value)` replaces a variable with a coefficient value; `Polynomial(value)` replaces it with a same-context polynomial."
+msgstr "コンテキスト多項式の代入ペイロードです。`Scalar(value)` は変数を係数値で置き換え、`Polynomial(value)` は同じコンテキストの多項式で置き換えます。"
+
+#: manual/api/immut.md:230
+msgid "Checked APIs return `None` for variables outside the context, duplicate or incomplete named assignments, incompatible contexts, invalid substitution targets, duplicate substitution entries, or unknown `type_theory` names. `variable_checked` also returns `None` when the variable belongs to another context."
+msgstr "checked API は、コンテキスト外の変数、重複または不足する名前付き代入、非互換のコンテキスト、不正な代入対象、重複する代入エントリ、未知の `type_theory` 名に対して `None` を返します。変数が別のコンテキストに属する場合、`variable_checked` も `None` を返します。"
+
+#: manual/api/immut.md:236
+msgid "Partial evaluation preserves the existing `VariableContext`; it does not project away assigned variables. Substitution is simultaneous and one pass: inserted replacement polynomials are not recursively substituted again in the same call. Convenience APIs abort for the same contract failures. Ordinary `+`, `-`, and `*` abort on incompatible contexts."
+msgstr "部分評価は既存の `VariableContext` を保ち、代入済みの変数を射影して取り除くことはしません。代入は同時かつ 1 パスで行われ、挿入された置換多項式が同じ呼び出しの中で再帰的に代入されることはありません。便宜 API は同じ契約違反で中止します。通常の `+`、`-`、`*` はコンテキストが非互換の場合に中止します。"
+
+#: manual/api/immut.md:242
+msgid "Substitution APIs use `Luna-Flow/type_theory` names for `*_names` variants, but canonicalization, powers, zero-term removal, and polynomial storage remain owned by `luna-poly`."
+msgstr "代入 API の `*_names` 版は `Luna-Flow/type_theory` の名前を使いますが、正規化、冪、ゼロ項の削除、多項式の保存は引き続き `luna-poly` が担います。"
+
+#: manual/api/mutable.md:1
+msgid "mutable API"
+msgstr "mutable API"
+
+#: manual/api/mutable.md:3
+msgid "This page documents the current public API of `Luna-Flow/luna-poly/mutable`. The package exposes the same core type names as `immut`, but its containers are execution-oriented: setters, `clear`, and `_inplace` methods mutate the receiver; ordinary operators still return new values."
+msgstr "このページは `Luna-Flow/luna-poly/mutable` の現在の公開 API を説明します。このパッケージは `immut` と同じ主要型名を公開しますが、コンテナは実行指向です。setter、`clear`、`_inplace` メソッドはレシーバを変更し、通常の演算子は新しい値を返します。"
+
+#: manual/api/mutable.md:5
+msgid "Use `src/mutable/pkg.generated.mbti` and `moon info` as the exact signature source."
+msgstr "正確なシグネチャは `src/mutable/pkg.generated.mbti` と `moon info` を基準にしてください。"
+
+#: manual/api/mutable.md:7
+msgid "`mutable` is a facade over `mutable/dense`, `mutable/term`, `mutable/sparse`, and `mutable/context`. It re-exports the shared `core` capability traits, including `UnivariatePolynomial`, `MultivariatePolynomial`, `ContextualPolynomial`, `HasShape`, and `MutablePolynomial`. Concrete polynomial types expose `Type::ops()` records for generic functional algorithms."
+msgstr "`mutable` は `mutable/dense`、`mutable/term`、`mutable/sparse`、 `mutable/context` の facade パッケージです。`UnivariatePolynomial`、 `MultivariatePolynomial`、`ContextualPolynomial`、`HasShape`、 `MutablePolynomial` など共有 `core` 能力 trait も再エクスポートします。具体多項式型は下位表現に依存しない関数型の汎用アルゴリズム向けに `Type::ops()` を提供します。"
+
+#: manual/api/mutable.md:13
+msgid "The facade also re-exports `luna-generic` algebra traits such as `Zero`, `One`, `AddMonoid`, `MulMonoid`, `Semiring`, `Ring`, `Field`, and `Num`. Mutable containers implement the same `PolynomialShape` metadata as immutable containers."
+msgstr "facade は `luna-generic` の代数 trait（`Zero`、`One`、`AddMonoid`、`MulMonoid`、`Semiring`、`Ring`、`Field`、`Num` など）も再エクスポートします。mutable コンテナは immutable コンテナと同じ `PolynomialShape` メタデータを実装します。"
+
+#: manual/api/mutable.md:22
+msgid "`mutable.ExponentVector` is a value wrapper around `immut.ExponentVector`. It does not provide in-place mutation; it exists as the exponent key used by mutable multivariate containers."
+msgstr "`mutable.ExponentVector` は `immut.ExponentVector` の値ラッパーです。原地変更 API はなく、可変多変数コンテナの指数キーとして使われます。"
+
+#: manual/api/mutable.md:30
+msgid "Trait implementations delegate to `immut.ExponentVector`: `One`, `Mul`, `Eq`, `Compare`, `Hash`, and `Show`."
+msgstr "`One`、`Mul`、`Eq`、`Compare`、`Hash`、`Show` は `immut.ExponentVector` に委譲されます。"
+
+#: manual/api/mutable.md:36
+msgid "`DensePolynomial[A]` is a mutable dense univariate polynomial. Coefficients are still stored in ascending degree order and trailing zeroes are removed."
+msgstr "`DensePolynomial[A]` は可変の一変数密多項式です。係数は昇冪順で保存され、末尾ゼロは削除されます。"
+
+#: manual/api/mutable.md:38
+msgid "Construction, Conversion, And Queries"
+msgstr "構築、変換、問い合わせ"
+
+#: manual/api/mutable.md:47
+msgid "Mutating Operations"
+msgstr "変更操作"
+
+#: manual/api/mutable.md:51
+msgid "Sets one coefficient, resizing when needed and canonicalizing afterward."
+msgstr "指定次数の係数を設定し、必要なら配列を拡張し、最後に正規化します。"
+
+#: manual/api/mutable.md:55
+msgid "Resets the polynomial to zero."
+msgstr "ゼロ多項式に戻します。"
+
+#: manual/api/mutable.md:59
+msgid "Returns an independent copy."
+msgstr "独立したコピーを返します。"
+
+#: manual/api/mutable.md:63
+msgid "Replace the receiver with the corresponding result."
+msgstr "レシーバを対応する結果で置き換えます。"
+
+#: manual/api/mutable.md:65
+msgid "Non-Mutating Operations"
+msgstr "非変更操作"
+
+#: manual/api/mutable.md:67
+msgid "`+`, `-`, `*`, `scale`, `scale_checked`, `eval`, `substitute`, `derivative`, `pow`, and `karatsuba` return new values or query results and do not mutate the receiver."
+msgstr "`+`、`-`、`*`、`scale`、`scale_checked`、`eval`、`substitute`、`derivative`、`pow`、`karatsuba` は新しい値または問い合わせ結果を返し、レシーバを変更しません。"
+
+#: manual/api/mutable.md:73
+msgid "`TermPolynomial[A]` is a mutable multivariate polynomial backed by a canonical sorted term array."
+msgstr "`TermPolynomial[A]` は正規化済みのソート済み項配列を持つ可変多変数多項式です。"
+
+#: manual/api/mutable.md:93
+msgid "The `_inplace` methods mutate the receiver; ordinary algebraic operators return new values. Convert explicitly with `SparsePolynomial::from_terms(term.to_terms())`."
+msgstr "`_inplace` メソッドはレシーバを変更します。通常の代数演算子は新しい値を返します。 `SparsePolynomial::from_terms(term.to_terms())` で明示的に疎表現へ変換します。"
+
+#: manual/api/mutable.md:100
+msgid "`SparsePolynomial[A]` is a mutable multivariate sparse polynomial backed by `SortedMap[ExponentVector, A]`."
+msgstr "`SparsePolynomial[A]` は `SortedMap[ExponentVector, A]` を使う可変の多変数疎多項式です。"
+
+#: manual/api/mutable.md:124
+msgid "`set_coefficient` removes a term when the coefficient is zero. Equality compares canonical term arrays. Convert explicitly with `TermPolynomial::from_terms(sparse.to_terms())`."
+msgstr "`set_coefficient` は係数がゼロのとき項を削除します。等価性は正規化済み項配列で比較されます。 `TermPolynomial::from_terms(sparse.to_terms())` で明示的に項列表現へ変換します。"
+
+#: manual/api/mutable.md:131
+msgid "`mutable` re-exports `immut.Variable` and `immut.VariableContext`, so variable identity is shared across execution models."
+msgstr "`mutable` は `immut.Variable` と `immut.VariableContext` を再エクスポートするため、両方の実行モデルで同じ変数 identity を共有します。"
+
+#: manual/api/mutable.md:134
+msgid "`mutable.ContextPolynomial[A]` is a mutable wrapper around `immut.ContextPolynomial[A]`."
+msgstr "`mutable.ContextPolynomial[A]` は `immut.ContextPolynomial[A]` の可変ラッパーです。"
+
+#: manual/api/mutable.md:139
+msgid "Mutable substitution payload. `Scalar(value)` replaces a variable with a coefficient value; `Polynomial(value)` replaces it with a same-context mutable context polynomial and delegates to the immutable substitution semantics."
+msgstr "mutable 版の代入ペイロードです。`Scalar(value)` は変数を係数値で置き換え、`Polynomial(value)` は同じコンテキストの mutable コンテキスト多項式で置き換え、immutable 版の代入セマンティクスに委譲します。"
+
+#: manual/api/mutable.md:157
+msgid "`+`, `-`, and `*` return new wrappers. `_inplace` methods replace the receiver and abort on incompatible contexts."
+msgstr "`+`、`-`、`*` は新しいラッパーを返します。`_inplace` メソッドは受信者を置き換え、コンテキストが非互換の場合は `abort` します。"
+
+#: manual/api/mutable.md:160
+msgid "Partial evaluation preserves the existing `VariableContext`; it does not project away assigned variables. Name-based variants use `Luna-Flow/type_theory/core.Name`. Checked variants delegate to the immutable implementation and return `None` for foreign variables, duplicate assignments, unknown names, or polynomial replacements from incompatible contexts."
+msgstr "部分評価は既存の `VariableContext` を保ち、代入済みの変数を射影して取り除くことはしません。名前ベースの版は `Luna-Flow/type_theory/core.Name` を使います。checked 版は immutable 実装に委譲し、外部の変数、重複した代入、未知の名前、非互換のコンテキストに属する置換多項式に対して `None` を返します。"
+
+#: manual/contributing.md:1
+msgid "Contribution Guidelines"
+msgstr "貢献ガイドライン"
+
+#: manual/contributing.md:3
+msgid "1. Code Style"
+msgstr "1. コードスタイル"
+
+#: manual/contributing.md:5
+msgid "The project follows the formatting style enforced by the MoonBit Toolchain. Format your code automatically using the following command:"
+msgstr "本プロジェクトは MoonBit ツールチェインが採用するフォーマット規則に従う。以下のコマンドを実行してコードを自動でフォーマットすること。"
+
+#: manual/contributing.md:11
+msgid "Ensure that you run `moon fmt` before committing your code to maintain consistency."
+msgstr "コードの一貫性を保つために、コミット前に `moon fmt` を実行すること。"
+
+#: manual/contributing.md:13
+msgid "Alternatively, you can use the `ready_to_pr.sh` script to automatically format the code, run checks, generate test coverage files, and create `.mbti` files."
+msgstr "また、`ready_to_pr.sh` スクリプトを実行してコードのフォーマット、チェック、テストカバレッジファイルの生成、`.mbti` ファイルの生成を行うことも可能。"
+
+#: manual/contributing.md:15
+msgid "2. Naming Conventions"
+msgstr "2. 名前の命名規則"
+
+#: manual/contributing.md:17
+msgid "2.1 Variable Naming"
+msgstr "2.1 変数の命名"
+
+#: manual/contributing.md:19
+msgid "Use **lowercase letters with underscores** as separators (e.g., `my_var`)."
+msgstr "小文字とアンダースコア（ `_` ）を使用（例: `my_var`）。"
+
+#: manual/contributing.md:20
+msgid "Variable names should be descriptive and clearly indicate their purpose."
+msgstr "変数名は意味が明確で、用途が直感的に理解できるものにする。"
+
+#: manual/contributing.md:22
+msgid "2.2 Function Naming"
+msgstr "2.2 関数の命名"
+
+#: manual/contributing.md:24
+msgid "Use **lowercase letters with underscores** as separators (e.g., `calc_total_price()`)."
+msgstr "小文字とアンダースコア（ `_` ）を使用（例: `calc_total_price()`）。"
+
+#: manual/contributing.md:25
+msgid "Function names should be concise and descriptive, clearly expressing their functionality."
+msgstr "関数名は簡潔かつ説明的にし、機能が明確に分かるようにする。"
+
+#: manual/contributing.md:27
+msgid "2.3 Struct and Trait Naming"
+msgstr "2.3 ストラクトとトレイトの命名"
+
+#: manual/contributing.md:29
+msgid "Use **PascalCase** (e.g., `MyStruct`, `MyTrait`)."
+msgstr "パスカルケース（PascalCase）を使用（例: `MyStruct`, `MyTrait`）。"
+
+#: manual/contributing.md:30
+msgid "Names should intuitively reflect the function or role of the struct or trait, avoiding overly abstract or non-descriptive names."
+msgstr "機能や役割を直感的に表す名前を使用し、抽象的すぎる名前は避ける。"
+
+#: manual/contributing.md:32
+msgid "2.4 Constant Naming"
+msgstr "2.4 定数の命名"
+
+#: manual/contributing.md:34
+msgid "**Note:** In the MoonBit context, \"variables\" are typically referred to as \"bindings\" and are immutable by default unless marked with `mut`. Thus, there is no strict distinction between constant and variable naming."
+msgstr "**注意：** MoonBit では「変数」は通常「束縛（binding）」と呼ばれ、`mut` を付けない限り既定で不変です。そのため、定数と変数の命名に厳密な区別はありません。"
+
+#: manual/contributing.md:35
+msgid "Use **lowercase letters with underscores** as separators (e.g., `machine_dbl_epsilon`)."
+msgstr "小文字とアンダースコア（ `_` ）を使用（例: `machine_dbl_epsilon`）。"
+
+#: manual/contributing.md:36
+msgid "Prefix constants with a descriptive category where applicable (e.g., `machine_dbl_epsilon`, where `machine` indicates a machine-related constant)."
+msgstr "必要に応じてカテゴリーをプレフィックスとして付与（例: `machine_dbl_epsilon` の `machine` は機械関連の定数を表す）。"
+
+#: manual/contributing.md:37
+msgid "Constant names should be concise and descriptive to facilitate understanding."
+msgstr "分かりやすく、簡潔な名前を付ける。"
+
+#: manual/contributing.md:39
+msgid "2.5 Result Err Construction and Err Code"
+msgstr "2.5 結果エラーのエラーコードの設計"
+
+#: manual/contributing.md:41
+msgid "Use **uppercase letters with underscores** as separators (e.g., `E_MAX_ITER`)."
+msgstr "大文字とアンダースコア（ `_` ）を使用（例: `E_MAX_ITER`）。"
+
+#: manual/contributing.md:42
+msgid "Err codes should be prefixed with `E` to indicate an error-related construct."
+msgstr "エラーコードには `E` をプレフィックスとして付与。"
+
+#: manual/contributing.md:43
+msgid "Err codes should be concise and descriptive for easy comprehension."
+msgstr "短く分かりやすいエラーコードを心掛ける。"
+
+#: manual/contributing.md:45
+msgid "3. Comments"
+msgstr "3. コメント"
+
+#: manual/contributing.md:47
+msgid "**Conciseness**: Comments should be clear and to the point, avoiding unnecessary verbosity."
+msgstr "簡潔さ：冗長にならず、明確に記述する。"
+
+#: manual/contributing.md:48
+msgid "**Consistency**: Use uniform terminology and style across the codebase."
+msgstr "一貫性：コード全体で統一された用語とスタイルを使用する。"
+
+#: manual/contributing.md:49
+msgid "**Clarity**: Ensure comments are easy to understand, avoiding complex jargon or ambiguous wording."
+msgstr "明確さ：分かりやすい表現を用い、曖昧な表現や専門用語の多用を避ける。"
+
+#: manual/contributing.md:50
+msgid "**Accuracy**: Comments must accurately reflect the functionality and purpose of the code."
+msgstr "正確さ：コードの動作や目的を正しく反映する。"
+
+#: manual/contributing.md:51
+msgid "**Up-to-date**: Comments should be updated alongside code changes to maintain relevance."
+msgstr "最新状態の維持：コードの変更に応じてコメントを更新する。"
+
+#: manual/contributing.md:53
+msgid "Developers are encouraged to use MoonBit LSP’s AI-generated code comments to improve efficiency, but AI-generated comments should be reviewed to ensure correctness."
+msgstr "開発者は MoonBit LSP の AI によるコードコメント生成機能を活用できるが、AI が生成したコメントは必ずレビューし、正確性を確認すること。"
+
+#: manual/contributing.md:55
+msgid "4. File Standards"
+msgstr "4. ファイルの規格"
+
+#: manual/contributing.md:57
+msgid "4.1 Folder Naming"
+msgstr "4.1 フォルダ名の命名"
+
+#: manual/contributing.md:59
+msgid "Use **lowercase letters** for folder names."
+msgstr "小文字のみを使用。"
+
+#: manual/contributing.md:60
+msgid "Folder names should be concise, descriptive, and separated using underscores (`_`). Avoid numbers and special characters."
+msgstr "フォルダ名は簡潔かつ説明的にし、アンダースコア（ `_` ）で区切る。数字や特殊文字は避ける。"
+
+#: manual/contributing.md:62
+#: manual/contributing.md:72
+#: manual/contributing.md:88
+msgid "Examples:"
+msgstr "例："
+
+#: manual/contributing.md:64
+msgid "For differentiation-related functionality: `diff`"
+msgstr "微分関連の機能：`diff`"
+
+#: manual/contributing.md:65
+msgid "For derivative-related functionality: `deriv`"
+msgstr "導関数関連の機能：`deriv`"
+
+#: manual/contributing.md:67
+msgid "4.2 File Organization"
+msgstr "4.2 ファイルの構成"
+
+#: manual/contributing.md:69
+msgid "Files should be organized based on functionality, with each file focusing on a specific feature. Use **lowercase letters with underscores** for file names."
+msgstr "ファイルは機能ごとに整理し、それぞれ特定の機能に焦点を当てる。ファイル名には**小文字とアンダースコア**を使用する。"
+
+#: manual/contributing.md:70
+msgid "File names should be descriptive and clearly indicate the core functionality they implement."
+msgstr "ファイル名は説明的にし、実装する主要な機能が明確に分かるようにする。"
+
+#: manual/contributing.md:74
+msgid "`gauss_kronrod.mbt`: Implements Gaussian quadrature with Kronrod extension."
+msgstr "`gauss_kronrod.mbt`: ガウス求積法（クロンスロッド拡張）を実装。"
+
+#: manual/contributing.md:75
+msgid "`adaptive_quadrature_gk.mbt`: Implements adaptive quadrature using Gaussian quadrature with Kronrod extension."
+msgstr "`adaptive_quadrature_gk.mbt`: ガウス求積法（クロンスロッド拡張）を用いた適応型求積法を実装。"
+
+#: manual/contributing.md:77
+msgid "**Note:** Avoid overly generic or vague file names such as `utils.mbt`. Instead, ensure file names correspond to their function or module."
+msgstr "注意：`utils.mbt` のような汎用的すぎる名前は避け、機能を明確に表す名前を使用すること。"
+
+#: manual/contributing.md:79
+msgid "5. Commit Guidelines"
+msgstr "5. コミット規則"
+
+#: manual/contributing.md:81
+msgid "5.1 Commit Messages"
+msgstr "5.1 コミットメッセージ"
+
+#: manual/contributing.md:83
+msgid "Use the `ready_to_pr.sh` script before committing to format code, run checks, generate test coverage files, and create `.mbti` files."
+msgstr "`ready_to_pr.sh` スクリプトを実行し、コードフォーマット、チェック、テストカバレッジ生成、`.mbti` ファイル生成を行うこと。"
+
+#: manual/contributing.md:84
+msgid "Each commit should have a clear description of the changes made."
+msgstr "コミットごとに変更内容を明確に記述する。"
+
+#: manual/contributing.md:85
+msgid "Commit messages should be in **English**, concise, and precise."
+msgstr "コミットメッセージは英語で、簡潔かつ明確に記述する。"
+
+#: manual/contributing.md:86
+msgid "Use prefixes such as `fix:`, `feat:`, `refactor:`, and `doc:` to indicate the type of change."
+msgstr "`fix:`, `feat:`, `refactor:`, `doc:` などのプレフィックスを使用。"
+
+#: manual/contributing.md:97
+msgid "5.2 Commit Frequency"
+msgstr "5.2 コミットの頻度"
+
+#: manual/contributing.md:99
+msgid "Keep commits small and focused on a single feature or fix."
+msgstr "コミットは小さく、一つの機能や修正に集中させる。"
+
+#: manual/contributing.md:100
+msgid "Avoid large, monolithic commits that include multiple unrelated changes."
+msgstr "複数の変更を一つの大きなコミットにまとめないこと。"
+
+#: manual/contributing.md:102
+msgid "6. Code Review"
+msgstr "6. コードレビュー"
+
+#: manual/contributing.md:104
+msgid "If you are not a maintainer or collaborator, contact them before modifying dependencies or version numbers in `moon.mod`."
+msgstr "メンテナーまたはコラボレーターでない場合は、`moon.mod` の依存関係やバージョン番号を変更する前に連絡すること。"
+
+#: manual/contributing.md:105
+msgid "All code submissions must undergo **code review**."
+msgstr "すべてのコード提出は**コードレビュー**を受けなければならない。"
+
+#: manual/contributing.md:106
+msgid "Code reviews should focus on code quality, style, performance, and security."
+msgstr "コードレビューでは、コードの品質、スタイル、性能、セキュリティに注目する。"
+
+#: manual/contributing.md:107
+msgid "Reviewers should provide constructive feedback to improve the code."
+msgstr "レビュアーはコード改善のために建設的なフィードバックを行う。"
+
+#: manual/design/immut.md:1
+msgid "immut Design"
+msgstr "immut 設計"
+
+#: manual/design/immut.md:3
+msgid "`immut` is the value-oriented layer of `luna-poly`. It models polynomials, exponent vectors, and multivariate term collections as canonical values."
+msgstr "`immut` は `luna-poly` の値セマンティクス層です。多項式、指数ベクトル、多変数項集合を正規化済みの値としてモデル化します。"
+
+#: manual/design/immut.md:5
+#: manual/design/mutable.md:5
+msgid "Responsibilities"
+msgstr "責務"
+
+#: manual/design/immut.md:7
+msgid "Re-export shared `core` capability traits through the `immut` facade."
+msgstr "`immut` facade を通じて共有 `core` 能力 trait を再エクスポートする。"
+
+#: manual/design/immut.md:8
+msgid "Provide dense univariate `DensePolynomial[A]`."
+msgstr "一変数密多項式 `DensePolynomial[A]` を提供する。"
+
+#: manual/design/immut.md:9
+msgid "Provide `ExponentVector` as a multivariate exponent key."
+msgstr "多変数指数キー `ExponentVector` を提供する。"
+
+#: manual/design/immut.md:10
+msgid "Provide two multivariate representations: sorted term sequence `TermPolynomial[A]` and ordered-map `SparsePolynomial[A]`."
+msgstr "ソート済み項列 `TermPolynomial[A]` と順序付きマップ `SparsePolynomial[A]` の 2 つの多変数表現を提供する。"
+
+#: manual/design/immut.md:11
+msgid "Implement ordinary algebraic operations and `arithmetic.PowNatChecked` for polynomial types."
+msgstr "多項式型に通常の代数演算と `arithmetic.PowNatChecked` を実装する。"
+
+#: manual/design/immut.md:13
+#: manual/design/mutable.md:47
+msgid "Canonical Form"
+msgstr "正規形"
+
+#: manual/design/immut.md:15
+msgid "`DensePolynomial` stores coefficients in a core immutable vector, removes trailing zero coefficients, and represents zero as an empty vector."
+msgstr "`DensePolynomial` は係数を core immutable vector に保存し、末尾ゼロ係数を削除し、ゼロを空ベクトルとして表す。"
+
+#: manual/design/immut.md:16
+msgid "`ExponentVector` stores exponents in a core immutable vector, removes trailing zero exponents, and caches total degree."
+msgstr "`ExponentVector` は指数を core immutable vector に保存し、末尾ゼロ指数を削除し、総次数をキャッシュする。"
+
+#: manual/design/immut.md:17
+msgid "`TermPolynomial` stores terms in a core immutable vector, merges equal exponents, removes zero coefficients, and keeps terms sorted."
+msgstr "`TermPolynomial` は項を core immutable vector に保存し、同じ指数を結合し、ゼロ係数を削除し、項をソート済みに保つ。"
+
+#: manual/design/immut.md:18
+msgid "`SparsePolynomial` stores non-zero terms in a `SortedMap`; an empty map is zero."
+msgstr "`SparsePolynomial` は非ゼロ項を `SortedMap` に保存し、空マップをゼロとする。"
+
+#: manual/design/immut.md:20
+msgid "These rules are observable through `to_coefficients`, `to_terms`, `size`, `degree`, and equality."
+msgstr "これらの規則は `to_coefficients`、`to_terms`、`size`、`degree`、等価性から観測できます。"
+
+#: manual/design/immut.md:22
+msgid "Value Semantics"
+msgstr "値セマンティクス"
+
+#: manual/design/immut.md:24
+msgid "Public constructors copy input arrays. Update-like operations return new values, including:"
+msgstr "公開コンストラクタは入力配列をコピーします。更新に見える操作は新しい値を返します。"
+
+#: manual/design/immut.md:28
+msgid "`+`, `-`, `*`, `scale`, and `pow`"
+msgstr "`+`、`-`、`*`、`scale`、`pow`"
+
+#: manual/design/immut.md:30
+msgid "Callers may safely reuse old values after any operation."
+msgstr "呼び出し側は演算後も古い値を安全に再利用できます。"
+
+#: manual/design/immut.md:32
+msgid "Representation Differences"
+msgstr "表現の違い"
+
+#: manual/design/immut.md:34
+msgid "`TermPolynomial` and `SparsePolynomial` describe the same mathematical objects but optimize different access patterns:"
+msgstr "`TermPolynomial` と `SparsePolynomial` は同じ数学的対象を表しますが、異なるアクセスパターンを重視します。"
+
+#: manual/design/immut.md:36
+msgid "`TermPolynomial` favors ordered traversal and batch algebraic operations over a canonical term sequence."
+msgstr "`TermPolynomial` は正規化済み項列の順序付き走査と一括の代数演算に向きます。"
+
+#: manual/design/immut.md:37
+msgid "`SparsePolynomial` favors lookup by `ExponentVector`."
+msgstr "`SparsePolynomial` は `ExponentVector` による検索に向きます。"
+
+#: manual/design/immut.md:38
+msgid "Convert explicitly with `SparsePolynomial::from_terms(term.to_terms())` or `TermPolynomial::from_terms(sparse.to_terms())`; conversion reapplies canonicalization without coupling implementation packages to each other."
+msgstr "`SparsePolynomial::from_terms(term.to_terms())` または `TermPolynomial::from_terms(sparse.to_terms())` で明示的に変換します。変換時には正規化が再適用され、実装サブパッケージ同士の循環依存を避けます。"
+
+#: manual/design/immut.md:42
+msgid "Capability Boundary"
+msgstr "能力境界"
+
+#: manual/design/immut.md:44
+msgid "Algorithms that only need shared behavior should use `UnivariatePolynomial`, `MultivariatePolynomial`, or `ContextualPolynomial` instead of matching on a concrete storage type. When an algorithm needs construction or algebraic operations in addition to queries, accept the corresponding `Type::ops()` record and call its function fields."
+msgstr "共有問い合わせ能力だけが必要なアルゴリズムは、具体表現ではなく `UnivariatePolynomial`、`MultivariatePolynomial`、`ContextualPolynomial` に依存します。構築、変換、代数演算も必要な場合は対応する `Type::ops()` レコードを受け取ります。"
+
+#: manual/design/immut.md:50
+msgid "`HasShape` and `PolynomialShape` provide the dimension layer expected by generic numeric code: univariate values report coefficient length, multivariate values report arity and term count, and contextual values report their `VariableContext` plus arity and term count. Shape compatibility is available through `PolynomialShape::is_compatible_with` and `compatible_checked`."
+msgstr "`HasShape` と `PolynomialShape` は汎用数値コードが期待する次元層を提供します。一変数の値は係数の長さを、多変数の値は arity と項数を、コンテキスト付きの値は `VariableContext` と arity・項数を報告します。形状の互換性は `PolynomialShape::is_compatible_with` と `compatible_checked` で判定できます。"
+
+#: manual/design/immut.md:57
+msgid "The facade re-exports common `luna-generic` algebra traits (`Zero`, `One`, `AddMonoid`, `MulMonoid`, `Semiring`, `Ring`, `Field`, and `Num`) so callers can write polynomial algorithms with the same capability vocabulary used by `Luna-Flow/linear-algebra`."
+msgstr "facade は `luna-generic` の主要な代数 trait（`Zero`、`One`、`AddMonoid`、`MulMonoid`、`Semiring`、`Ring`、`Field`、`Num`）を再エクスポートするため、`Luna-Flow/linear-algebra` と同じ能力の語彙で多項式アルゴリズムを書けます。"
+
+#: manual/design/immut.md:62
+msgid "Checked methods return `None` for caller contract failures such as negative powers, negative exponent-vector indexes, incomplete indexed evaluation, or context mismatch. Convenience methods keep the existing aborting behavior."
+msgstr "checked メソッドは、負の次数、負の指数ベクトルインデックス、不完全な添字評価、コンテキストの不一致といった呼び出し側の契約違反に対して `None` を返します。便宜メソッドは従来どおり中止します。"
+
+#: manual/design/immut.md:66
+msgid "Substitution Boundary"
+msgstr "代入の境界"
+
+#: manual/design/immut.md:68
+msgid "Context-aware substitution uses `Luna-Flow/type_theory` names as the shared semantic naming layer. `luna-poly` still owns polynomial semantics: canonicalization, coefficient arithmetic, powers, sparse/term storage, and context compatibility are handled inside `ContextPolynomial`."
+msgstr "コンテキスト対応の代入は、共有の意味的な命名層として `Luna-Flow/type_theory` の名前を使います。多項式の意味論は引き続き `luna-poly` が担い、正規化、係数演算、冪、疎/項列の保存、コンテキスト互換性は `ContextPolynomial` の内部で扱われます。"
+
+#: manual/design/immut.md:73
+msgid "Substitution is simultaneous and one pass. A variable can be replaced by a scalar coefficient or by a same-context polynomial, but inserted replacement polynomials are not recursively substituted again in the same call. Partial evaluation is the scalar-only specialization and preserves the original `VariableContext` instead of projecting away assigned variables. Checked substitution rejects foreign variables, duplicate replacement entries, unknown `type_theory` names, and polynomial replacements from incompatible contexts."
+msgstr "代入は同時かつ 1 パスで行われます。変数はスカラー係数または同じコンテキストの多項式で置き換えられますが、挿入された置換多項式が同じ呼び出しの中で再び代入されることはありません。部分評価はスカラーのみに特化した形で、代入済みの変数を射影して取り除かず、元の `VariableContext` を保ちます。checked 版の代入は、外部の変数、重複した置換エントリ、未知の `type_theory` 名、非互換のコンテキストに属する置換多項式を拒否します。"
+
+#: manual/design/immut.md:81
+msgid "Maintenance Notes"
+msgstr "保守メモ"
+
+#: manual/design/immut.md:83
+msgid "Document only APIs that exist on the current branch."
+msgstr "現在のブランチに存在する API だけを文書化する。"
+
+#: manual/design/immut.md:84
+msgid "Update this page when canonicalization, term ordering, zero handling, or evaluation abort conditions change."
+msgstr "正規化、項順序、ゼロ処理、評価時の中止条件が変わったらこのページを更新する。"
+
+#: manual/design/immut.md:85
+msgid "Document any observable divergence from `mutable` in the corresponding `mutable` pages."
+msgstr "`mutable` との観測可能な差異は対応する `mutable` ページに記録する。"
+
+#: manual/design/mutable.md:1
+msgid "mutable Design"
+msgstr "mutable 設計"
+
+#: manual/design/mutable.md:3
+msgid "`mutable` is the execution-oriented layer of `luna-poly`. It reuses the mathematical semantics and canonicalization rules of `immut`, while exposing explicitly mutating container operations."
+msgstr "`mutable` は `luna-poly` の実行指向層です。`immut` の数学的意味と正規化規則を再利用しながら、明示的に変更するコンテナ操作を公開します。"
+
+#: manual/design/mutable.md:7
+msgid "Re-export shared `core` capability traits through the `mutable` facade."
+msgstr "`mutable` facade を通じて共有 `core` 能力 trait を再エクスポートする。"
+
+#: manual/design/mutable.md:8
+msgid "Provide `DensePolynomial`, `TermPolynomial`, `SparsePolynomial`, and `ExponentVector` aligned with `immut`."
+msgstr "`immut` と対応する `DensePolynomial`、`TermPolynomial`、`SparsePolynomial`、`ExponentVector` を提供する。"
+
+#: manual/design/mutable.md:9
+msgid "Provide `from_immut` and `to_immut` conversions."
+msgstr "`from_immut` と `to_immut` の変換を提供する。"
+
+#: manual/design/mutable.md:10
+msgid "Provide setters, `clear`, `copy`, and `_inplace` operations for incremental construction and updates."
+msgstr "段階的な構築と更新のために setter、`clear`、`copy`、`_inplace` 操作を提供する。"
+
+#: manual/design/mutable.md:11
+msgid "Keep ordinary algebraic operators non-mutating."
+msgstr "通常の代数演算子は非変更操作として保つ。"
+
+#: manual/design/mutable.md:13
+msgid "Mutation Boundary"
+msgstr "変更境界"
+
+#: manual/design/mutable.md:15
+msgid "Public methods that mutate the receiver include:"
+msgstr "レシーバを変更する公開メソッドは次の通りです。"
+
+#: manual/design/mutable.md:34
+msgid "Other ordinary operators and methods such as `scale`, `pow`, and `substitute` return new values."
+msgstr "その他の通常の演算子や `scale`、`pow`、`substitute` などは新しい値を返します。"
+
+#: manual/design/mutable.md:36
+msgid "Relationship With immut"
+msgstr "immut との関係"
+
+#: manual/design/mutable.md:38
+msgid "Many mutable operations convert through `immut` and then convert back. This keeps the two layers aligned on:"
+msgstr "多くの可変操作は `immut` に変換して実装を再利用し、その後 mutable 表現に戻します。これにより次の点が一致します。"
+
+#: manual/design/mutable.md:40
+msgid "trailing-zero removal for univariate polynomials,"
+msgstr "一変数多項式の末尾ゼロ削除。"
+
+#: manual/design/mutable.md:41
+msgid "exponent-vector canonicalization and degree semantics,"
+msgstr "指数ベクトルの正規化と総次数の意味。"
+
+#: manual/design/mutable.md:42
+msgid "multivariate term merging and zero deletion,"
+msgstr "多変数項の結合とゼロ項削除。"
+
+#: manual/design/mutable.md:43
+msgid "natural-number exponentiation and `arithmetic.PowNatChecked`."
+msgstr "自然数冪と `arithmetic.PowNatChecked`。"
+
+#: manual/design/mutable.md:45
+msgid "`mutable.ExponentVector` is a wrapper around `immut.ExponentVector`; it remains value-oriented so it can be used as a stable key."
+msgstr "`mutable.ExponentVector` は `immut.ExponentVector` のラッパーです。安定したキーとして使えるよう、値セマンティクスのままです。"
+
+#: manual/design/mutable.md:49
+msgid "Mutating operations must restore canonical form before returning:"
+msgstr "変更操作は戻る前に正規形を復元しなければなりません。"
+
+#: manual/design/mutable.md:51
+msgid "`DensePolynomial` removes trailing zero coefficients."
+msgstr "`DensePolynomial` は末尾ゼロ係数を削除する。"
+
+#: manual/design/mutable.md:52
+msgid "`TermPolynomial` merges duplicate terms and removes zero coefficients."
+msgstr "`TermPolynomial` は重複項を結合し、ゼロ係数を削除する。"
+
+#: manual/design/mutable.md:53
+msgid "`SparsePolynomial` removes map entries whose coefficients become zero."
+msgstr "`SparsePolynomial` は係数がゼロになったマップ項を削除する。"
+
+#: manual/design/mutable.md:55
+msgid "New in-place operations must preserve these invariants."
+msgstr "新しい原地操作を追加する場合も、これらの不変条件を守る必要があります。"
+
+#: manual/design/mutable.md:57
+msgid "Usage Boundary"
+msgstr "使用境界"
+
+#: manual/design/mutable.md:59
+msgid "Prefer `immut` by default. Use `mutable` when code needs step-by-step updates, fewer explicit intermediate values, or integration with an existing mutable algorithm."
+msgstr "既定では `immut` を優先します。`mutable` は段階的な更新、明示的な中間値削減、既存の可変アルゴリズムとの接続が必要な場合に使います。"
+
+#: manual/design/mutable.md:61
+msgid "Generic code should depend on `UnivariatePolynomial`, `MultivariatePolynomial`, `ContextualPolynomial`, `MutablePolynomial`, or the relevant `Type::ops()` record instead of matching on a concrete mutable storage type."
+msgstr "汎用コードは具体的な可変保存形式を照合するのではなく、 `UnivariatePolynomial`、`MultivariatePolynomial`、`ContextualPolynomial`、 `MutablePolynomial`、または対応する `Type::ops()` レコードに依存します。"
+
+#: manual/design/mutable.md:65
+msgid "Mutable containers also implement `HasShape`, so execution-oriented algorithms can inspect the same `PolynomialShape` metadata as immutable code. The mutable facade re-exports the `luna-generic` algebra traits used by the linear-algebra package, and mutable `Type::ops()` records expose construction, addition, multiplication, evaluation, scaling, and powers for generic algorithms."
+msgstr "mutable コンテナも `HasShape` を実装するため、実行指向のアルゴリズムも immutable なコードと同じ `PolynomialShape` メタデータを調べられます。mutable facade は linear-algebra パッケージが使う `luna-generic` の代数 trait を再エクスポートし、mutable の `Type::ops()` レコードは汎用アルゴリズム向けに構築、加算、乗算、評価、スケーリング、冪を提供します。"
+
+#: manual/design/mutable.md:71
+msgid "Checked methods mirror the immutable layer and return `None` for contract failures. Existing convenience methods remain aborting wrappers."
+msgstr "checked メソッドは immutable 層と対応しており、契約違反に対して `None` を返します。既存の便宜メソッドは中止するラッパーのままです。"
+
+#: manual/design/mutable.md:74
+msgid "Mutable context substitution delegates to the immutable context model. Mutable wrappers expose the same scalar/polynomial substitution and partial-evaluation APIs, but the canonical result is produced by the immutable implementation and then wrapped back into `mutable.ContextPolynomial`. The same checked failure contracts apply: foreign variables, duplicate assignments, unknown `type_theory` names, and incompatible replacement polynomial contexts return `None`."
+msgstr "mutable のコンテキスト代入は immutable のコンテキストモデルに委譲します。mutable ラッパーは同じスカラー/多項式の代入と部分評価の API を提供しますが、正規化された結果は immutable 実装が生成し、それを `mutable.ContextPolynomial` に包み直します。checked 版の失敗契約も同じで、外部の変数、重複した代入、未知の `type_theory` 名、置換多項式のコンテキストが非互換な場合は `None` を返します。"
+
+#: manual/index.md:1
+msgid "luna-poly"
+msgstr "luna-poly"
+
+#: manual/index.md:3
+msgid "`luna-poly` provides canonical polynomial types for MoonBit with explicit immutable and mutable execution models. This manual describes version 0.2.0."
+msgstr "`luna-poly` は MoonBit 向けに正規化された多項式型を提供し、immutable と mutable の実行モデルを明確に分けています。このマニュアルはバージョン 0.2.0 を対象とします。"
+
+#: manual/index.md:5
+msgid "The library has one shared capability layer and two explicit execution models:"
+msgstr "このライブラリは共有能力レイヤーと 2 つの実行モデルで構成されます。"
+
+#: manual/index.md:7
+msgid "`core` provides shared types, capability traits, and functional operation records."
+msgstr "`core` は共有型、能力 trait、関数型の操作レコードを提供します。"
+
+#: manual/index.md:9
+msgid "`immut` provides persistent value semantics."
+msgstr "`immut` は永続的な値セマンティクスを提供します。"
+
+#: manual/index.md:10
+msgid "`mutable` provides explicit setters and `_inplace` operations."
+msgstr "`mutable` は setter と明示的な `_inplace` 操作を提供します。"
+
+#: manual/index.md:12
+msgid "Concrete implementations live in mirrored subpackages:"
+msgstr "具体実装は対になったサブパッケージにあります。"
+
+#: manual/index.md:17
+msgid "The top-level `immut` and `mutable` packages are facades that re-export core capabilities plus their concrete implementations. Both facades expose dense univariate, sorted-term multivariate, and ordered-map sparse polynomials. Canonical form and natural-power behavior are shared across both packages."
+msgstr "トップレベルの `immut` と `mutable` は facade パッケージで、`core` の能力と具体実装を再エクスポートします。どちらの facade も一変数の密多項式、ソート済み項列の多変数多項式、順序付きマップの疎多項式を公開します。正規形と自然数冪の振る舞いは両パッケージで共通です。"
+
+#: manual/index.md:22
+msgid "The 0.2.0 package layout is intentionally source-incompatible with the former root package. Import `/immut` or `/mutable` explicitly."
+msgstr "0.2.0 のパッケージ構成は、以前のルートパッケージとソースレベルで意図的に互換性がありません。`/immut` または `/mutable` を明示的にインポートしてください。"
+
+#: manual/index.md:24
+msgid "Representations"
+msgstr "表現"
+
+#: manual/index.md:26
+msgid "Both packages provide `DensePolynomial`, `TermPolynomial`, `SparsePolynomial`, `ExponentVector`, and context-aware polynomial helpers. Dense polynomials use ascending coefficient arrays; `TermPolynomial` uses a sorted term array; `SparsePolynomial` uses an ordered map. Every representation removes zero terms and maintains a canonical form."
+msgstr "両パッケージは `DensePolynomial`、`TermPolynomial`、`SparsePolynomial`、`ExponentVector` と、コンテキスト対応の多項式ヘルパーを提供します。密多項式は昇冪順の係数配列を、`TermPolynomial` はソート済みの項配列を、`SparsePolynomial` は順序付きマップを使います。どの表現もゼロ項を削除し、正規形を保ちます。"
+
+#: manual/index.md:28
+msgid "Natural powers implement `Luna-Flow/arithmetic.PowNatChecked`. The convenience `pow(UInt)` methods use the same semantics: exponent zero returns the multiplicative identity, including for the zero polynomial."
+msgstr "自然数冪は `Luna-Flow/arithmetic.PowNatChecked` を実装します。便宜メソッド `pow(UInt)` も同じ意味論で、指数がゼロのときはゼロ多項式であっても乗法単位元を返します。"
+
+#: manual/index.md:30
+msgid "Named variables"
+msgstr "名前付き変数"
+
+#: manual/index.md:32
+msgid "`Variable` and `VariableContext` provide the named-variable layer. A `ContextPolynomial` binds a variable context to either term-array or sparse storage, supports both indexed and named evaluation, and exposes checked variants for context or assignment failures."
+msgstr "`Variable` と `VariableContext` は名前付き変数層を提供します。`ContextPolynomial` は変数コンテキストを項配列または疎表現に束縛し、添字による評価と名前による評価の両方をサポートし、コンテキストや代入の失敗に対する checked 版を公開します。"
+
+#: manual/index.md:34
+msgid "Context-aware polynomials integrate with `Luna-Flow/type_theory` names for substitution-facing APIs. `Variable::to_type_theory_name` and `VariableContext::variable_by_type_theory_name` bridge polynomial variables to the shared semantic substrate. `ContextPolynomial::substitute_checked` replaces variables with scalars or same-context polynomials, while `eval_partial_checked` is the scalar-only partial-evaluation specialization. These operations preserve polynomial-owned canonicalization; `type_theory` provides the shared naming and substitution vocabulary, not polynomial storage or normalization."
+msgstr "コンテキスト対応の多項式は、代入に関わる API で `Luna-Flow/type_theory` の名前と連携します。`Variable::to_type_theory_name` と `VariableContext::variable_by_type_theory_name` は多項式の変数を共有の意味基盤に橋渡しします。`ContextPolynomial::substitute_checked` は変数をスカラーまたは同じコンテキストの多項式で置き換え、`eval_partial_checked` はスカラーのみに特化した部分評価です。これらの操作は多項式側が担う正規化を保ちます。`type_theory` が提供するのは共有の命名と代入の語彙であり、多項式の保存や正規化ではありません。"
+
+#: manual/index.md:36
+msgid "Generic code"
+msgstr "汎用コード"
+
+#: manual/index.md:38
+msgid "Use `UnivariatePolynomial`, `MultivariatePolynomial`, `ContextualPolynomial`, and `MutablePolynomial` when an algorithm only needs a capability boundary. Use `Type::ops()` records when functional-style generic code needs construction, conversion, or algebraic operations without matching on the storage representation."
+msgstr "アルゴリズムが能力の境界だけを必要とする場合は、`UnivariatePolynomial`、`MultivariatePolynomial`、`ContextualPolynomial`、`MutablePolynomial` を使います。関数型の汎用コードが保存表現を照合せずに構築、変換、代数演算を行う必要がある場合は、`Type::ops()` レコードを使います。"
+
+#: manual/index.md:44
+msgid "The shared `core` layer also exposes lightweight shape metadata through `PolynomialShape` and `HasShape`. Generic code can inspect univariate length, multivariate arity and term count, or context compatibility before combining values. Checked APIs such as `coefficient_checked`, `scale_checked`, `eval_checked`, substitution, and context `*_checked` methods return `None` for contract failures; the shorter convenience methods abort instead."
+msgstr "共有の `core` 層は、`PolynomialShape` と `HasShape` による軽量な形状メタデータも公開します。汎用コードは値を組み合わせる前に、一変数の長さ、多変数の arity と項数、コンテキストの互換性を調べられます。`coefficient_checked`、`scale_checked`、`eval_checked`、代入、コンテキストの `*_checked` メソッドなどの checked API は契約違反に対して `None` を返し、短い便宜メソッドは代わりに中止します。"
+
+#: manual/index.md:46
+msgid "The `immut` and `mutable` facades re-export the common algebra traits from `Luna-Flow/luna-generic`, including `Zero`, `One`, `AddMonoid`, `MulMonoid`, `Semiring`, `Ring`, `Field`, and `Num`, so polynomial APIs can be used with the same capability style as `Luna-Flow/linear-algebra`."
+msgstr "`immut` と `mutable` の facade は `Luna-Flow/luna-generic` の共通代数 trait（`Zero`、`One`、`AddMonoid`、`MulMonoid`、`Semiring`、`Ring`、`Field`、`Num` など）を再エクスポートするため、多項式 API を `Luna-Flow/linear-algebra` と同じ能力スタイルで使えます。"
+
+#: manual/index.md:48
+msgid "Example"
+msgstr "例"
+
+#: manual/index.md:76
+msgid "Where to go next"
+msgstr "次に読むもの"
+
+#: manual/index.md:78
+msgid "Start with the [`immut` tutorial](tutorial/immut.md) for value-style polynomials, or the [`mutable` tutorial](tutorial/mutable.md) for in-place updates. The design pages explain canonical form and representation invariants ([`immut`](design/immut.md)) and the mutation boundary ([`mutable`](design/mutable.md)). The generated `pkg.generated.mbti` files remain the authority for exact signatures. To work on the library itself, read the [contribution guidelines](contributing.md)."
+msgstr "値として扱う多項式は [`immut` チュートリアル](tutorial/immut.md) から、原地更新は [`mutable` チュートリアル](tutorial/mutable.md) から始めてください。設計ページでは、正規形と表現の不変条件（[`immut`](design/immut.md)）および変更の境界（[`mutable`](design/mutable.md)）を説明しています。正確なシグネチャは生成された `pkg.generated.mbti` ファイルが基準です。ライブラリ自体の開発に参加する場合は、[貢献ガイドライン](contributing.md)を読んでください。"
+
+#: manual/tutorial/immut.md:1
+msgid "immut Tutorial"
+msgstr "immut チュートリアル"
+
+#: manual/tutorial/immut.md:3
+msgid "Use `immut` when polynomials should behave like ordinary values. Constructors copy input arrays, updates return new values, and old values remain unchanged."
+msgstr "`immut` は多項式を通常の値として扱いたい場合に使います。コンストラクタは入力配列をコピーし、更新は新しい値を返し、古い値は変わりません。"
+
+#: manual/tutorial/immut.md:5
+#: manual/tutorial/mutable.md:5
+msgid "Dense Univariate DensePolynomial"
+msgstr "一変数密多項式"
+
+#: manual/tutorial/immut.md:14
+msgid "`p` represents `1 + 2x + 3x^2`, so `value` is `17`. `substitute` does not mutate `p`."
+msgstr "`p` は `1 + 2x + 3x^2` を表し、`value` は `17` です。`substitute` は `p` を変更しません。"
+
+#: manual/tutorial/immut.md:16
+msgid "Constructors keep canonical form:"
+msgstr "正規形は構築時に保たれます。"
+
+#: manual/tutorial/immut.md:23
+msgid "`coefficients` is `[1, 2]`."
+msgstr "`coefficients` は `[1, 2]` です。"
+
+#: manual/tutorial/immut.md:25
+msgid "Exponent Vectors"
+msgstr "指数ベクトル"
+
+#: manual/tutorial/immut.md:33
+msgid "`xy2` represents `x * x_1^2`; its total degree is `3`. `x` is a new value."
+msgstr "`xy2` は `x * x_1^2` を表し、総次数は `3` です。`x` は新しい値です。"
+
+#: manual/tutorial/immut.md:35
+#: manual/tutorial/mutable.md:38
+msgid "Multivariate Term Arrays"
+msgstr "多変数の項配列表現"
+
+#: manual/tutorial/immut.md:46
+msgid "The first two terms have equivalent exponents and cancel out. The remaining term is `3 * x_1`, so `value` is `6`."
+msgstr "最初の 2 項は同じ指数に正規化されて打ち消し合います。残る項は `3 * x_1` なので、`value` は `6` です。"
+
+#: manual/tutorial/immut.md:48
+#: manual/tutorial/mutable.md:48
+msgid "Sparse Map Representation"
+msgstr "疎なマップ表現"
+
+#: manual/tutorial/immut.md:60
+msgid "`p` represents `x^2 + 2x + 1`; `coeff` is `Some(2)` and `value` is `9`."
+msgstr "`p` は `x^2 + 2x + 1` を表します。`coeff` は `Some(2)`、`value` は `9` です。"
+
+#: manual/tutorial/immut.md:62
+msgid "Choosing A Representation"
+msgstr "表現の選び方"
+
+#: manual/tutorial/immut.md:64
+msgid "Use `DensePolynomial` for dense univariate polynomials."
+msgstr "一変数密多項式には `DensePolynomial` を使います。"
+
+#: manual/tutorial/immut.md:65
+msgid "Use `TermPolynomial` for sequential multivariate term processing."
+msgstr "多変数項を順に処理する場合は `TermPolynomial` を使います。"
+
+#: manual/tutorial/immut.md:66
+msgid "Use `SparsePolynomial` when exponent lookup matters."
+msgstr "指数による検索が重要な場合は `SparsePolynomial` を使います。"
+
+#: manual/tutorial/immut.md:67
+msgid "Convert between multivariate representations explicitly: `SparsePolynomial::from_terms(term.to_terms())` or `TermPolynomial::from_terms(sparse.to_terms())`."
+msgstr "`SparsePolynomial::from_terms(term.to_terms())` または `TermPolynomial::from_terms(sparse.to_terms())` で 2 つの多変数表現を明示的に変換します。"
+
+#: manual/tutorial/immut.md:70
+msgid "Use `UnivariatePolynomial`, `MultivariatePolynomial`, `ContextualPolynomial`, or `Type::ops()` when generic code should not depend on the storage representation."
+msgstr "汎用コードが下位表現を意識すべきでない場合は `UnivariatePolynomial`、`MultivariatePolynomial`、`ContextualPolynomial`、または `Type::ops()` を使います。"
+
+#: manual/tutorial/mutable.md:1
+msgid "mutable Tutorial"
+msgstr "mutable チュートリアル"
+
+#: manual/tutorial/mutable.md:3
+msgid "Use `mutable` when code needs explicit control over intermediate allocation or step-by-step construction. The mathematical semantics match `immut`, but mutation is limited to setters, `clear`, and `_inplace` methods."
+msgstr "`mutable` は中間確保を明示的に制御したい場合や、段階的に結果を構築したい場合に使います。数学的な意味は `immut` と一致しますが、変更は setter、`clear`、`_inplace` メソッドに限定されます。"
+
+#: manual/tutorial/mutable.md:15
+msgid "`snapshot` still represents `1 + 2x + 3x^2`. `p` is updated and then canonicalized to zero."
+msgstr "`snapshot` は `1 + 2x + 3x^2` のままです。`p` は更新され、その後ゼロ多項式に正規化されます。"
+
+#: manual/tutorial/mutable.md:17
+msgid "Ordinary operators do not mutate the receiver:"
+msgstr "通常の演算子はレシーバを変更しません。"
+
+#: manual/tutorial/mutable.md:25
+msgid "`q` is a new polynomial and `unchanged` is `[1, 2]`."
+msgstr "`q` は新しい多項式で、`unchanged` は `[1, 2]` です。"
+
+#: manual/tutorial/mutable.md:27
+msgid "Converting To And From immut"
+msgstr "immut との変換"
+
+#: manual/tutorial/mutable.md:36
+msgid "Conversions produce independent values."
+msgstr "変換結果は独立した値です。"
+
+#: manual/tutorial/mutable.md:46
+msgid "The two exponent vectors canonicalize to the same key, so the terms cancel."
+msgstr "2 つの指数ベクトルは同じキーに正規化されるため、項は打ち消し合います。"
+
+#: manual/tutorial/mutable.md:58
+msgid "`coeff` is `Some(2)`. Setting a coefficient to zero removes the term."
+msgstr "`coeff` は `Some(2)` です。係数をゼロに設定すると、その項は削除されます。"
+
+#: manual/tutorial/mutable.md:60
+msgid "Guidance"
+msgstr "指針"
+
+#: manual/tutorial/mutable.md:62
+msgid "Use `_inplace` only when mutating the receiver is intentional."
+msgstr "レシーバを変更する意図が明確な場合だけ `_inplace` を使います。"
+
+#: manual/tutorial/mutable.md:63
+msgid "Prefer `immut` when code relies on sharing old values."
+msgstr "古い値の共有に依存するコードでは `immut` を優先します。"
+
+#: manual/tutorial/mutable.md:64
+msgid "Use `to_immut` and `from_immut` at API boundaries to isolate mutable state."
+msgstr "API 境界では `to_immut` と `from_immut` を使い、可変状態を隔離します。"

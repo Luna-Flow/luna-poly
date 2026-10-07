@@ -1,6 +1,6 @@
-View contribution guidelines in [English](./doc/en_US/CONTRIBUTING.md),
-[简体中文](./doc/zh_CN/CONTRIBUTING.md), or
-[日本語](./doc/ja_JP/CONTRIBUTING.md).
+See the [contribution guidelines](./doc/manual/contributing.md), also
+available on the [documentation site](https://luna-flow.github.io/en/luna-poly/)
+in English, Chinese, and Japanese.
 
 Before opening a pull request, run:
 

@@ -1,0 +1,1027 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Luna-Flow documentation\n"
+"Report-Msgid-Bugs-To: https://github.com/Luna-Flow\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: conf.json:summary
+msgid "Immutable and mutable polynomial libraries for MoonBit with canonical dense, sparse, and context-aware representations."
+msgstr ""
+
+#: manual/api/immut.md:1
+msgid "immut API"
+msgstr ""
+
+#: manual/api/immut.md:3
+msgid "This page documents the current public API of `Luna-Flow/luna-poly/immut`. The package provides value-oriented polynomial containers: constructors copy input arrays, algebraic operations return new values, and existing values are not mutated."
+msgstr ""
+
+#: manual/api/immut.md:5
+msgid "Use `src/immut/pkg.generated.mbti` and `moon info` as the exact signature source."
+msgstr ""
+
+#: manual/api/immut.md:7
+msgid "`immut` is a facade over `immut/dense`, `immut/term`, `immut/sparse`, and `immut/context`. It also re-exports the shared `core` capability traits: `HasLength`, `HasDegree`, `IsZero`, `HasTermCount`, `HasArity`, `HasTotalDegree`, `HasContext`, `HasShape`, `UnivariatePolynomial`, `MultivariatePolynomial`, and `ContextualPolynomial`. Concrete polynomial types expose `Type::ops()` records for generic functional algorithms."
+msgstr ""
+
+#: manual/api/immut.md:14
+msgid "The facade also re-exports `luna-generic` algebra traits such as `Zero`, `One`, `AddMonoid`, `MulMonoid`, `Semiring`, `Ring`, `Field`, and `Num`."
+msgstr ""
+
+#: manual/api/immut.md:17
+msgid "`PolynomialShape` is the shared dimension descriptor. Use `HasShape::shape(value)` to inspect univariate length, multivariate arity and term count, or contextual `VariableContext` compatibility."
+msgstr ""
+
+#: manual/api/immut.md:23
+#: manual/api/mutable.md:20
+msgid "ExponentVector"
+msgstr ""
+
+#: manual/api/immut.md:25
+msgid "`ExponentVector` represents the exponent vector of a multivariate monomial. For example, `[2, 0, 1]` represents `x^2 * x_2`. Trailing zero exponents are removed and the total degree is cached."
+msgstr ""
+
+#: manual/api/immut.md:27
+#: manual/api/immut.md:77
+msgid "Construction And Queries"
+msgstr ""
+
+#: manual/api/immut.md:31
+msgid "Builds a canonical exponent vector. The input array is copied."
+msgstr ""
+
+#: manual/api/immut.md:35
+msgid "Returns the multiplicative unit, represented by the empty exponent vector."
+msgstr ""
+
+#: manual/api/immut.md:39
+msgid "Returns the canonical storage length, excluding trailing zeroes."
+msgstr ""
+
+#: manual/api/immut.md:43
+msgid "Returns the sum of all exponents."
+msgstr ""
+
+#: manual/api/immut.md:47
+msgid "Checks whether the vector is the unit exponent."
+msgstr ""
+
+#: manual/api/immut.md:51
+msgid "Supports `v[i]`. Non-negative indexes beyond the stored length return `0`; negative indexes abort."
+msgstr ""
+
+#: manual/api/immut.md:55
+#: manual/api/immut.md:63
+msgid "Returns `None` for negative indexes."
+msgstr ""
+
+#: manual/api/immut.md:59
+msgid "Returns a new vector with one exponent replaced and the result canonicalized."
+msgstr ""
+
+#: manual/api/immut.md:67
+msgid "Returns a copy of the exponent array."
+msgstr ""
+
+#: manual/api/immut.md:69
+msgid "`ExponentVector` implements `One`, `Mul`, `Eq`, `Compare`, `Hash`, and `Show`. Multiplication adds exponents pointwise; comparison orders by total degree first, then by higher variable index down to lower index."
+msgstr ""
+
+#: manual/api/immut.md:73
+#: manual/api/mutable.md:34
+msgid "DensePolynomial[A]"
+msgstr ""
+
+#: manual/api/immut.md:75
+msgid "`DensePolynomial[A]` is a dense univariate polynomial. Public inputs and outputs use ascending coefficient arrays: `[1, 2, 3]` means `1 + 2x + 3x^2`. Internally, canonical coefficients are stored in a core immutable vector. Trailing zero coefficients are removed after construction and operations; the zero polynomial is stored as an empty vector."
+msgstr ""
+
+#: manual/api/immut.md:81
+msgid "Builds a polynomial from ascending coefficients, requiring `A : Eq + Zero`. Algebraic operations add only the capabilities they use; `moon info` is the source of truth for exact operation bounds."
+msgstr ""
+
+#: manual/api/immut.md:87
+msgid "Builds a constant polynomial."
+msgstr ""
+
+#: manual/api/immut.md:91
+msgid "Builds the variable `x`."
+msgstr ""
+
+#: manual/api/immut.md:95
+msgid "Builds `coefficient * x^power`. `power` must be non-negative; a zero coefficient returns zero."
+msgstr ""
+
+#: manual/api/immut.md:99
+#: manual/api/immut.md:121
+msgid "Returns `None` for negative powers."
+msgstr ""
+
+#: manual/api/immut.md:103
+msgid "Query the canonical coefficient representation. Out-of-range non-negative coefficients read as zero."
+msgstr ""
+
+#: manual/api/immut.md:107
+msgid "Returns `None` for negative powers and `Some(zero)` for non-negative powers beyond the canonical length."
+msgstr ""
+
+#: manual/api/immut.md:109
+msgid "Operations"
+msgstr ""
+
+#: manual/api/immut.md:113
+msgid "DensePolynomial addition, subtraction, and convolution multiplication."
+msgstr ""
+
+#: manual/api/immut.md:117
+msgid "Returns `coefficient * x^power * self`."
+msgstr ""
+
+#: manual/api/immut.md:125
+msgid "Evaluates with Horner form."
+msgstr ""
+
+#: manual/api/immut.md:129
+msgid "Substitutes another polynomial for `x`."
+msgstr ""
+
+#: manual/api/immut.md:133
+msgid "Returns the formal derivative. The coefficient type must support `NatHomomorphism`."
+msgstr ""
+
+#: manual/api/immut.md:137
+msgid "Natural-number exponentiation; also exposed through `arithmetic.PowNatChecked`."
+msgstr ""
+
+#: manual/api/immut.md:141
+msgid "Karatsuba multiplication. Small inputs fall back to ordinary multiplication."
+msgstr ""
+
+#: manual/api/immut.md:145
+#: manual/api/mutable.md:71
+msgid "TermPolynomial[A]"
+msgstr ""
+
+#: manual/api/immut.md:147
+msgid "`TermPolynomial[A]` is a multivariate polynomial backed by a canonical sorted term sequence stored in a core immutable vector. Each term is `(ExponentVector, A)`. Duplicate exponents are merged and zero coefficients are removed."
+msgstr ""
+
+#: manual/api/immut.md:159
+msgid "`TermPolynomial` implements `Zero`, `One`, `Add`, `Neg`, `Sub`, `Mul`, `Show`, and `arithmetic.PowNatChecked`. Evaluation aborts if a term needs a variable index missing from the `values` array."
+msgstr ""
+
+#: manual/api/immut.md:161
+msgid "Convert explicitly with `SparsePolynomial::from_terms(term.to_terms())`."
+msgstr ""
+
+#: manual/api/immut.md:165
+#: manual/api/mutable.md:98
+msgid "SparsePolynomial[A]"
+msgstr ""
+
+#: manual/api/immut.md:167
+msgid "`SparsePolynomial[A]` is another multivariate representation backed by `SortedMap[ExponentVector, A]`. It is useful when callers need lookup by exponent."
+msgstr ""
+
+#: manual/api/immut.md:183
+msgid "`SparsePolynomial` implements `Zero`, `One`, `Add`, `Neg`, `Sub`, `Mul`, `Eq`, `Show`, and `arithmetic.PowNatChecked`."
+msgstr ""
+
+#: manual/api/immut.md:185
+msgid "Convert explicitly with `TermPolynomial::from_terms(sparse.to_terms())`."
+msgstr ""
+
+#: manual/api/immut.md:189
+#: manual/api/mutable.md:129
+msgid "VariableContext And ContextPolynomial[A]"
+msgstr ""
+
+#: manual/api/immut.md:191
+msgid "`Variable` and `VariableContext` provide a named-variable layer over the position-indexed `ExponentVector` model. Variable names are unique inside one context, and each variable has a stable context-local index."
+msgstr ""
+
+#: manual/api/immut.md:204
+msgid "`ContextPolynomial[A]` binds a `VariableContext` to either term-array or sparse storage."
+msgstr ""
+
+#: manual/api/immut.md:209
+msgid "Substitution payload for context polynomials. `Scalar(value)` replaces a variable with a coefficient value; `Polynomial(value)` replaces it with a same-context polynomial."
+msgstr ""
+
+#: manual/api/immut.md:230
+msgid "Checked APIs return `None` for variables outside the context, duplicate or incomplete named assignments, incompatible contexts, invalid substitution targets, duplicate substitution entries, or unknown `type_theory` names. `variable_checked` also returns `None` when the variable belongs to another context."
+msgstr ""
+
+#: manual/api/immut.md:236
+msgid "Partial evaluation preserves the existing `VariableContext`; it does not project away assigned variables. Substitution is simultaneous and one pass: inserted replacement polynomials are not recursively substituted again in the same call. Convenience APIs abort for the same contract failures. Ordinary `+`, `-`, and `*` abort on incompatible contexts."
+msgstr ""
+
+#: manual/api/immut.md:242
+msgid "Substitution APIs use `Luna-Flow/type_theory` names for `*_names` variants, but canonicalization, powers, zero-term removal, and polynomial storage remain owned by `luna-poly`."
+msgstr ""
+
+#: manual/api/mutable.md:1
+msgid "mutable API"
+msgstr ""
+
+#: manual/api/mutable.md:3
+msgid "This page documents the current public API of `Luna-Flow/luna-poly/mutable`. The package exposes the same core type names as `immut`, but its containers are execution-oriented: setters, `clear`, and `_inplace` methods mutate the receiver; ordinary operators still return new values."
+msgstr ""
+
+#: manual/api/mutable.md:5
+msgid "Use `src/mutable/pkg.generated.mbti` and `moon info` as the exact signature source."
+msgstr ""
+
+#: manual/api/mutable.md:7
+msgid "`mutable` is a facade over `mutable/dense`, `mutable/term`, `mutable/sparse`, and `mutable/context`. It re-exports the shared `core` capability traits, including `UnivariatePolynomial`, `MultivariatePolynomial`, `ContextualPolynomial`, `HasShape`, and `MutablePolynomial`. Concrete polynomial types expose `Type::ops()` records for generic functional algorithms."
+msgstr ""
+
+#: manual/api/mutable.md:13
+msgid "The facade also re-exports `luna-generic` algebra traits such as `Zero`, `One`, `AddMonoid`, `MulMonoid`, `Semiring`, `Ring`, `Field`, and `Num`. Mutable containers implement the same `PolynomialShape` metadata as immutable containers."
+msgstr ""
+
+#: manual/api/mutable.md:22
+msgid "`mutable.ExponentVector` is a value wrapper around `immut.ExponentVector`. It does not provide in-place mutation; it exists as the exponent key used by mutable multivariate containers."
+msgstr ""
+
+#: manual/api/mutable.md:30
+msgid "Trait implementations delegate to `immut.ExponentVector`: `One`, `Mul`, `Eq`, `Compare`, `Hash`, and `Show`."
+msgstr ""
+
+#: manual/api/mutable.md:36
+msgid "`DensePolynomial[A]` is a mutable dense univariate polynomial. Coefficients are still stored in ascending degree order and trailing zeroes are removed."
+msgstr ""
+
+#: manual/api/mutable.md:38
+msgid "Construction, Conversion, And Queries"
+msgstr ""
+
+#: manual/api/mutable.md:47
+msgid "Mutating Operations"
+msgstr ""
+
+#: manual/api/mutable.md:51
+msgid "Sets one coefficient, resizing when needed and canonicalizing afterward."
+msgstr ""
+
+#: manual/api/mutable.md:55
+msgid "Resets the polynomial to zero."
+msgstr ""
+
+#: manual/api/mutable.md:59
+msgid "Returns an independent copy."
+msgstr ""
+
+#: manual/api/mutable.md:63
+msgid "Replace the receiver with the corresponding result."
+msgstr ""
+
+#: manual/api/mutable.md:65
+msgid "Non-Mutating Operations"
+msgstr ""
+
+#: manual/api/mutable.md:67
+msgid "`+`, `-`, `*`, `scale`, `scale_checked`, `eval`, `substitute`, `derivative`, `pow`, and `karatsuba` return new values or query results and do not mutate the receiver."
+msgstr ""
+
+#: manual/api/mutable.md:73
+msgid "`TermPolynomial[A]` is a mutable multivariate polynomial backed by a canonical sorted term array."
+msgstr ""
+
+#: manual/api/mutable.md:93
+msgid "The `_inplace` methods mutate the receiver; ordinary algebraic operators return new values. Convert explicitly with `SparsePolynomial::from_terms(term.to_terms())`."
+msgstr ""
+
+#: manual/api/mutable.md:100
+msgid "`SparsePolynomial[A]` is a mutable multivariate sparse polynomial backed by `SortedMap[ExponentVector, A]`."
+msgstr ""
+
+#: manual/api/mutable.md:124
+msgid "`set_coefficient` removes a term when the coefficient is zero. Equality compares canonical term arrays. Convert explicitly with `TermPolynomial::from_terms(sparse.to_terms())`."
+msgstr ""
+
+#: manual/api/mutable.md:131
+msgid "`mutable` re-exports `immut.Variable` and `immut.VariableContext`, so variable identity is shared across execution models."
+msgstr ""
+
+#: manual/api/mutable.md:134
+msgid "`mutable.ContextPolynomial[A]` is a mutable wrapper around `immut.ContextPolynomial[A]`."
+msgstr ""
+
+#: manual/api/mutable.md:139
+msgid "Mutable substitution payload. `Scalar(value)` replaces a variable with a coefficient value; `Polynomial(value)` replaces it with a same-context mutable context polynomial and delegates to the immutable substitution semantics."
+msgstr ""
+
+#: manual/api/mutable.md:157
+msgid "`+`, `-`, and `*` return new wrappers. `_inplace` methods replace the receiver and abort on incompatible contexts."
+msgstr ""
+
+#: manual/api/mutable.md:160
+msgid "Partial evaluation preserves the existing `VariableContext`; it does not project away assigned variables. Name-based variants use `Luna-Flow/type_theory/core.Name`. Checked variants delegate to the immutable implementation and return `None` for foreign variables, duplicate assignments, unknown names, or polynomial replacements from incompatible contexts."
+msgstr ""
+
+#: manual/contributing.md:1
+msgid "Contribution Guidelines"
+msgstr ""
+
+#: manual/contributing.md:3
+msgid "1. Code Style"
+msgstr ""
+
+#: manual/contributing.md:5
+msgid "The project follows the formatting style enforced by the MoonBit Toolchain. Format your code automatically using the following command:"
+msgstr ""
+
+#: manual/contributing.md:11
+msgid "Ensure that you run `moon fmt` before committing your code to maintain consistency."
+msgstr ""
+
+#: manual/contributing.md:13
+msgid "Alternatively, you can use the `ready_to_pr.sh` script to automatically format the code, run checks, generate test coverage files, and create `.mbti` files."
+msgstr ""
+
+#: manual/contributing.md:15
+msgid "2. Naming Conventions"
+msgstr ""
+
+#: manual/contributing.md:17
+msgid "2.1 Variable Naming"
+msgstr ""
+
+#: manual/contributing.md:19
+msgid "Use **lowercase letters with underscores** as separators (e.g., `my_var`)."
+msgstr ""
+
+#: manual/contributing.md:20
+msgid "Variable names should be descriptive and clearly indicate their purpose."
+msgstr ""
+
+#: manual/contributing.md:22
+msgid "2.2 Function Naming"
+msgstr ""
+
+#: manual/contributing.md:24
+msgid "Use **lowercase letters with underscores** as separators (e.g., `calc_total_price()`)."
+msgstr ""
+
+#: manual/contributing.md:25
+msgid "Function names should be concise and descriptive, clearly expressing their functionality."
+msgstr ""
+
+#: manual/contributing.md:27
+msgid "2.3 Struct and Trait Naming"
+msgstr ""
+
+#: manual/contributing.md:29
+msgid "Use **PascalCase** (e.g., `MyStruct`, `MyTrait`)."
+msgstr ""
+
+#: manual/contributing.md:30
+msgid "Names should intuitively reflect the function or role of the struct or trait, avoiding overly abstract or non-descriptive names."
+msgstr ""
+
+#: manual/contributing.md:32
+msgid "2.4 Constant Naming"
+msgstr ""
+
+#: manual/contributing.md:34
+msgid "**Note:** In the MoonBit context, \"variables\" are typically referred to as \"bindings\" and are immutable by default unless marked with `mut`. Thus, there is no strict distinction between constant and variable naming."
+msgstr ""
+
+#: manual/contributing.md:35
+msgid "Use **lowercase letters with underscores** as separators (e.g., `machine_dbl_epsilon`)."
+msgstr ""
+
+#: manual/contributing.md:36
+msgid "Prefix constants with a descriptive category where applicable (e.g., `machine_dbl_epsilon`, where `machine` indicates a machine-related constant)."
+msgstr ""
+
+#: manual/contributing.md:37
+msgid "Constant names should be concise and descriptive to facilitate understanding."
+msgstr ""
+
+#: manual/contributing.md:39
+msgid "2.5 Result Err Construction and Err Code"
+msgstr ""
+
+#: manual/contributing.md:41
+msgid "Use **uppercase letters with underscores** as separators (e.g., `E_MAX_ITER`)."
+msgstr ""
+
+#: manual/contributing.md:42
+msgid "Err codes should be prefixed with `E` to indicate an error-related construct."
+msgstr ""
+
+#: manual/contributing.md:43
+msgid "Err codes should be concise and descriptive for easy comprehension."
+msgstr ""
+
+#: manual/contributing.md:45
+msgid "3. Comments"
+msgstr ""
+
+#: manual/contributing.md:47
+msgid "**Conciseness**: Comments should be clear and to the point, avoiding unnecessary verbosity."
+msgstr ""
+
+#: manual/contributing.md:48
+msgid "**Consistency**: Use uniform terminology and style across the codebase."
+msgstr ""
+
+#: manual/contributing.md:49
+msgid "**Clarity**: Ensure comments are easy to understand, avoiding complex jargon or ambiguous wording."
+msgstr ""
+
+#: manual/contributing.md:50
+msgid "**Accuracy**: Comments must accurately reflect the functionality and purpose of the code."
+msgstr ""
+
+#: manual/contributing.md:51
+msgid "**Up-to-date**: Comments should be updated alongside code changes to maintain relevance."
+msgstr ""
+
+#: manual/contributing.md:53
+msgid "Developers are encouraged to use MoonBit LSP’s AI-generated code comments to improve efficiency, but AI-generated comments should be reviewed to ensure correctness."
+msgstr ""
+
+#: manual/contributing.md:55
+msgid "4. File Standards"
+msgstr ""
+
+#: manual/contributing.md:57
+msgid "4.1 Folder Naming"
+msgstr ""
+
+#: manual/contributing.md:59
+msgid "Use **lowercase letters** for folder names."
+msgstr ""
+
+#: manual/contributing.md:60
+msgid "Folder names should be concise, descriptive, and separated using underscores (`_`). Avoid numbers and special characters."
+msgstr ""
+
+#: manual/contributing.md:62
+#: manual/contributing.md:72
+#: manual/contributing.md:88
+msgid "Examples:"
+msgstr ""
+
+#: manual/contributing.md:64
+msgid "For differentiation-related functionality: `diff`"
+msgstr ""
+
+#: manual/contributing.md:65
+msgid "For derivative-related functionality: `deriv`"
+msgstr ""
+
+#: manual/contributing.md:67
+msgid "4.2 File Organization"
+msgstr ""
+
+#: manual/contributing.md:69
+msgid "Files should be organized based on functionality, with each file focusing on a specific feature. Use **lowercase letters with underscores** for file names."
+msgstr ""
+
+#: manual/contributing.md:70
+msgid "File names should be descriptive and clearly indicate the core functionality they implement."
+msgstr ""
+
+#: manual/contributing.md:74
+msgid "`gauss_kronrod.mbt`: Implements Gaussian quadrature with Kronrod extension."
+msgstr ""
+
+#: manual/contributing.md:75
+msgid "`adaptive_quadrature_gk.mbt`: Implements adaptive quadrature using Gaussian quadrature with Kronrod extension."
+msgstr ""
+
+#: manual/contributing.md:77
+msgid "**Note:** Avoid overly generic or vague file names such as `utils.mbt`. Instead, ensure file names correspond to their function or module."
+msgstr ""
+
+#: manual/contributing.md:79
+msgid "5. Commit Guidelines"
+msgstr ""
+
+#: manual/contributing.md:81
+msgid "5.1 Commit Messages"
+msgstr ""
+
+#: manual/contributing.md:83
+msgid "Use the `ready_to_pr.sh` script before committing to format code, run checks, generate test coverage files, and create `.mbti` files."
+msgstr ""
+
+#: manual/contributing.md:84
+msgid "Each commit should have a clear description of the changes made."
+msgstr ""
+
+#: manual/contributing.md:85
+msgid "Commit messages should be in **English**, concise, and precise."
+msgstr ""
+
+#: manual/contributing.md:86
+msgid "Use prefixes such as `fix:`, `feat:`, `refactor:`, and `doc:` to indicate the type of change."
+msgstr ""
+
+#: manual/contributing.md:97
+msgid "5.2 Commit Frequency"
+msgstr ""
+
+#: manual/contributing.md:99
+msgid "Keep commits small and focused on a single feature or fix."
+msgstr ""
+
+#: manual/contributing.md:100
+msgid "Avoid large, monolithic commits that include multiple unrelated changes."
+msgstr ""
+
+#: manual/contributing.md:102
+msgid "6. Code Review"
+msgstr ""
+
+#: manual/contributing.md:104
+msgid "If you are not a maintainer or collaborator, contact them before modifying dependencies or version numbers in `moon.mod`."
+msgstr ""
+
+#: manual/contributing.md:105
+msgid "All code submissions must undergo **code review**."
+msgstr ""
+
+#: manual/contributing.md:106
+msgid "Code reviews should focus on code quality, style, performance, and security."
+msgstr ""
+
+#: manual/contributing.md:107
+msgid "Reviewers should provide constructive feedback to improve the code."
+msgstr ""
+
+#: manual/design/immut.md:1
+msgid "immut Design"
+msgstr ""
+
+#: manual/design/immut.md:3
+msgid "`immut` is the value-oriented layer of `luna-poly`. It models polynomials, exponent vectors, and multivariate term collections as canonical values."
+msgstr ""
+
+#: manual/design/immut.md:5
+#: manual/design/mutable.md:5
+msgid "Responsibilities"
+msgstr ""
+
+#: manual/design/immut.md:7
+msgid "Re-export shared `core` capability traits through the `immut` facade."
+msgstr ""
+
+#: manual/design/immut.md:8
+msgid "Provide dense univariate `DensePolynomial[A]`."
+msgstr ""
+
+#: manual/design/immut.md:9
+msgid "Provide `ExponentVector` as a multivariate exponent key."
+msgstr ""
+
+#: manual/design/immut.md:10
+msgid "Provide two multivariate representations: sorted term sequence `TermPolynomial[A]` and ordered-map `SparsePolynomial[A]`."
+msgstr ""
+
+#: manual/design/immut.md:11
+msgid "Implement ordinary algebraic operations and `arithmetic.PowNatChecked` for polynomial types."
+msgstr ""
+
+#: manual/design/immut.md:13
+#: manual/design/mutable.md:47
+msgid "Canonical Form"
+msgstr ""
+
+#: manual/design/immut.md:15
+msgid "`DensePolynomial` stores coefficients in a core immutable vector, removes trailing zero coefficients, and represents zero as an empty vector."
+msgstr ""
+
+#: manual/design/immut.md:16
+msgid "`ExponentVector` stores exponents in a core immutable vector, removes trailing zero exponents, and caches total degree."
+msgstr ""
+
+#: manual/design/immut.md:17
+msgid "`TermPolynomial` stores terms in a core immutable vector, merges equal exponents, removes zero coefficients, and keeps terms sorted."
+msgstr ""
+
+#: manual/design/immut.md:18
+msgid "`SparsePolynomial` stores non-zero terms in a `SortedMap`; an empty map is zero."
+msgstr ""
+
+#: manual/design/immut.md:20
+msgid "These rules are observable through `to_coefficients`, `to_terms`, `size`, `degree`, and equality."
+msgstr ""
+
+#: manual/design/immut.md:22
+msgid "Value Semantics"
+msgstr ""
+
+#: manual/design/immut.md:24
+msgid "Public constructors copy input arrays. Update-like operations return new values, including:"
+msgstr ""
+
+#: manual/design/immut.md:28
+msgid "`+`, `-`, `*`, `scale`, and `pow`"
+msgstr ""
+
+#: manual/design/immut.md:30
+msgid "Callers may safely reuse old values after any operation."
+msgstr ""
+
+#: manual/design/immut.md:32
+msgid "Representation Differences"
+msgstr ""
+
+#: manual/design/immut.md:34
+msgid "`TermPolynomial` and `SparsePolynomial` describe the same mathematical objects but optimize different access patterns:"
+msgstr ""
+
+#: manual/design/immut.md:36
+msgid "`TermPolynomial` favors ordered traversal and batch algebraic operations over a canonical term sequence."
+msgstr ""
+
+#: manual/design/immut.md:37
+msgid "`SparsePolynomial` favors lookup by `ExponentVector`."
+msgstr ""
+
+#: manual/design/immut.md:38
+msgid "Convert explicitly with `SparsePolynomial::from_terms(term.to_terms())` or `TermPolynomial::from_terms(sparse.to_terms())`; conversion reapplies canonicalization without coupling implementation packages to each other."
+msgstr ""
+
+#: manual/design/immut.md:42
+msgid "Capability Boundary"
+msgstr ""
+
+#: manual/design/immut.md:44
+msgid "Algorithms that only need shared behavior should use `UnivariatePolynomial`, `MultivariatePolynomial`, or `ContextualPolynomial` instead of matching on a concrete storage type. When an algorithm needs construction or algebraic operations in addition to queries, accept the corresponding `Type::ops()` record and call its function fields."
+msgstr ""
+
+#: manual/design/immut.md:50
+msgid "`HasShape` and `PolynomialShape` provide the dimension layer expected by generic numeric code: univariate values report coefficient length, multivariate values report arity and term count, and contextual values report their `VariableContext` plus arity and term count. Shape compatibility is available through `PolynomialShape::is_compatible_with` and `compatible_checked`."
+msgstr ""
+
+#: manual/design/immut.md:57
+msgid "The facade re-exports common `luna-generic` algebra traits (`Zero`, `One`, `AddMonoid`, `MulMonoid`, `Semiring`, `Ring`, `Field`, and `Num`) so callers can write polynomial algorithms with the same capability vocabulary used by `Luna-Flow/linear-algebra`."
+msgstr ""
+
+#: manual/design/immut.md:62
+msgid "Checked methods return `None` for caller contract failures such as negative powers, negative exponent-vector indexes, incomplete indexed evaluation, or context mismatch. Convenience methods keep the existing aborting behavior."
+msgstr ""
+
+#: manual/design/immut.md:66
+msgid "Substitution Boundary"
+msgstr ""
+
+#: manual/design/immut.md:68
+msgid "Context-aware substitution uses `Luna-Flow/type_theory` names as the shared semantic naming layer. `luna-poly` still owns polynomial semantics: canonicalization, coefficient arithmetic, powers, sparse/term storage, and context compatibility are handled inside `ContextPolynomial`."
+msgstr ""
+
+#: manual/design/immut.md:73
+msgid "Substitution is simultaneous and one pass. A variable can be replaced by a scalar coefficient or by a same-context polynomial, but inserted replacement polynomials are not recursively substituted again in the same call. Partial evaluation is the scalar-only specialization and preserves the original `VariableContext` instead of projecting away assigned variables. Checked substitution rejects foreign variables, duplicate replacement entries, unknown `type_theory` names, and polynomial replacements from incompatible contexts."
+msgstr ""
+
+#: manual/design/immut.md:81
+msgid "Maintenance Notes"
+msgstr ""
+
+#: manual/design/immut.md:83
+msgid "Document only APIs that exist on the current branch."
+msgstr ""
+
+#: manual/design/immut.md:84
+msgid "Update this page when canonicalization, term ordering, zero handling, or evaluation abort conditions change."
+msgstr ""
+
+#: manual/design/immut.md:85
+msgid "Document any observable divergence from `mutable` in the corresponding `mutable` pages."
+msgstr ""
+
+#: manual/design/mutable.md:1
+msgid "mutable Design"
+msgstr ""
+
+#: manual/design/mutable.md:3
+msgid "`mutable` is the execution-oriented layer of `luna-poly`. It reuses the mathematical semantics and canonicalization rules of `immut`, while exposing explicitly mutating container operations."
+msgstr ""
+
+#: manual/design/mutable.md:7
+msgid "Re-export shared `core` capability traits through the `mutable` facade."
+msgstr ""
+
+#: manual/design/mutable.md:8
+msgid "Provide `DensePolynomial`, `TermPolynomial`, `SparsePolynomial`, and `ExponentVector` aligned with `immut`."
+msgstr ""
+
+#: manual/design/mutable.md:9
+msgid "Provide `from_immut` and `to_immut` conversions."
+msgstr ""
+
+#: manual/design/mutable.md:10
+msgid "Provide setters, `clear`, `copy`, and `_inplace` operations for incremental construction and updates."
+msgstr ""
+
+#: manual/design/mutable.md:11
+msgid "Keep ordinary algebraic operators non-mutating."
+msgstr ""
+
+#: manual/design/mutable.md:13
+msgid "Mutation Boundary"
+msgstr ""
+
+#: manual/design/mutable.md:15
+msgid "Public methods that mutate the receiver include:"
+msgstr ""
+
+#: manual/design/mutable.md:34
+msgid "Other ordinary operators and methods such as `scale`, `pow`, and `substitute` return new values."
+msgstr ""
+
+#: manual/design/mutable.md:36
+msgid "Relationship With immut"
+msgstr ""
+
+#: manual/design/mutable.md:38
+msgid "Many mutable operations convert through `immut` and then convert back. This keeps the two layers aligned on:"
+msgstr ""
+
+#: manual/design/mutable.md:40
+msgid "trailing-zero removal for univariate polynomials,"
+msgstr ""
+
+#: manual/design/mutable.md:41
+msgid "exponent-vector canonicalization and degree semantics,"
+msgstr ""
+
+#: manual/design/mutable.md:42
+msgid "multivariate term merging and zero deletion,"
+msgstr ""
+
+#: manual/design/mutable.md:43
+msgid "natural-number exponentiation and `arithmetic.PowNatChecked`."
+msgstr ""
+
+#: manual/design/mutable.md:45
+msgid "`mutable.ExponentVector` is a wrapper around `immut.ExponentVector`; it remains value-oriented so it can be used as a stable key."
+msgstr ""
+
+#: manual/design/mutable.md:49
+msgid "Mutating operations must restore canonical form before returning:"
+msgstr ""
+
+#: manual/design/mutable.md:51
+msgid "`DensePolynomial` removes trailing zero coefficients."
+msgstr ""
+
+#: manual/design/mutable.md:52
+msgid "`TermPolynomial` merges duplicate terms and removes zero coefficients."
+msgstr ""
+
+#: manual/design/mutable.md:53
+msgid "`SparsePolynomial` removes map entries whose coefficients become zero."
+msgstr ""
+
+#: manual/design/mutable.md:55
+msgid "New in-place operations must preserve these invariants."
+msgstr ""
+
+#: manual/design/mutable.md:57
+msgid "Usage Boundary"
+msgstr ""
+
+#: manual/design/mutable.md:59
+msgid "Prefer `immut` by default. Use `mutable` when code needs step-by-step updates, fewer explicit intermediate values, or integration with an existing mutable algorithm."
+msgstr ""
+
+#: manual/design/mutable.md:61
+msgid "Generic code should depend on `UnivariatePolynomial`, `MultivariatePolynomial`, `ContextualPolynomial`, `MutablePolynomial`, or the relevant `Type::ops()` record instead of matching on a concrete mutable storage type."
+msgstr ""
+
+#: manual/design/mutable.md:65
+msgid "Mutable containers also implement `HasShape`, so execution-oriented algorithms can inspect the same `PolynomialShape` metadata as immutable code. The mutable facade re-exports the `luna-generic` algebra traits used by the linear-algebra package, and mutable `Type::ops()` records expose construction, addition, multiplication, evaluation, scaling, and powers for generic algorithms."
+msgstr ""
+
+#: manual/design/mutable.md:71
+msgid "Checked methods mirror the immutable layer and return `None` for contract failures. Existing convenience methods remain aborting wrappers."
+msgstr ""
+
+#: manual/design/mutable.md:74
+msgid "Mutable context substitution delegates to the immutable context model. Mutable wrappers expose the same scalar/polynomial substitution and partial-evaluation APIs, but the canonical result is produced by the immutable implementation and then wrapped back into `mutable.ContextPolynomial`. The same checked failure contracts apply: foreign variables, duplicate assignments, unknown `type_theory` names, and incompatible replacement polynomial contexts return `None`."
+msgstr ""
+
+#: manual/index.md:1
+msgid "luna-poly"
+msgstr ""
+
+#: manual/index.md:3
+msgid "`luna-poly` provides canonical polynomial types for MoonBit with explicit immutable and mutable execution models. This manual describes version 0.2.0."
+msgstr ""
+
+#: manual/index.md:5
+msgid "The library has one shared capability layer and two explicit execution models:"
+msgstr ""
+
+#: manual/index.md:7
+msgid "`core` provides shared types, capability traits, and functional operation records."
+msgstr ""
+
+#: manual/index.md:9
+msgid "`immut` provides persistent value semantics."
+msgstr ""
+
+#: manual/index.md:10
+msgid "`mutable` provides explicit setters and `_inplace` operations."
+msgstr ""
+
+#: manual/index.md:12
+msgid "Concrete implementations live in mirrored subpackages:"
+msgstr ""
+
+#: manual/index.md:17
+msgid "The top-level `immut` and `mutable` packages are facades that re-export core capabilities plus their concrete implementations. Both facades expose dense univariate, sorted-term multivariate, and ordered-map sparse polynomials. Canonical form and natural-power behavior are shared across both packages."
+msgstr ""
+
+#: manual/index.md:22
+msgid "The 0.2.0 package layout is intentionally source-incompatible with the former root package. Import `/immut` or `/mutable` explicitly."
+msgstr ""
+
+#: manual/index.md:24
+msgid "Representations"
+msgstr ""
+
+#: manual/index.md:26
+msgid "Both packages provide `DensePolynomial`, `TermPolynomial`, `SparsePolynomial`, `ExponentVector`, and context-aware polynomial helpers. Dense polynomials use ascending coefficient arrays; `TermPolynomial` uses a sorted term array; `SparsePolynomial` uses an ordered map. Every representation removes zero terms and maintains a canonical form."
+msgstr ""
+
+#: manual/index.md:28
+msgid "Natural powers implement `Luna-Flow/arithmetic.PowNatChecked`. The convenience `pow(UInt)` methods use the same semantics: exponent zero returns the multiplicative identity, including for the zero polynomial."
+msgstr ""
+
+#: manual/index.md:30
+msgid "Named variables"
+msgstr ""
+
+#: manual/index.md:32
+msgid "`Variable` and `VariableContext` provide the named-variable layer. A `ContextPolynomial` binds a variable context to either term-array or sparse storage, supports both indexed and named evaluation, and exposes checked variants for context or assignment failures."
+msgstr ""
+
+#: manual/index.md:34
+msgid "Context-aware polynomials integrate with `Luna-Flow/type_theory` names for substitution-facing APIs. `Variable::to_type_theory_name` and `VariableContext::variable_by_type_theory_name` bridge polynomial variables to the shared semantic substrate. `ContextPolynomial::substitute_checked` replaces variables with scalars or same-context polynomials, while `eval_partial_checked` is the scalar-only partial-evaluation specialization. These operations preserve polynomial-owned canonicalization; `type_theory` provides the shared naming and substitution vocabulary, not polynomial storage or normalization."
+msgstr ""
+
+#: manual/index.md:36
+msgid "Generic code"
+msgstr ""
+
+#: manual/index.md:38
+msgid "Use `UnivariatePolynomial`, `MultivariatePolynomial`, `ContextualPolynomial`, and `MutablePolynomial` when an algorithm only needs a capability boundary. Use `Type::ops()` records when functional-style generic code needs construction, conversion, or algebraic operations without matching on the storage representation."
+msgstr ""
+
+#: manual/index.md:44
+msgid "The shared `core` layer also exposes lightweight shape metadata through `PolynomialShape` and `HasShape`. Generic code can inspect univariate length, multivariate arity and term count, or context compatibility before combining values. Checked APIs such as `coefficient_checked`, `scale_checked`, `eval_checked`, substitution, and context `*_checked` methods return `None` for contract failures; the shorter convenience methods abort instead."
+msgstr ""
+
+#: manual/index.md:46
+msgid "The `immut` and `mutable` facades re-export the common algebra traits from `Luna-Flow/luna-generic`, including `Zero`, `One`, `AddMonoid`, `MulMonoid`, `Semiring`, `Ring`, `Field`, and `Num`, so polynomial APIs can be used with the same capability style as `Luna-Flow/linear-algebra`."
+msgstr ""
+
+#: manual/index.md:48
+msgid "Example"
+msgstr ""
+
+#: manual/index.md:76
+msgid "Where to go next"
+msgstr ""
+
+#: manual/index.md:78
+msgid "Start with the [`immut` tutorial](tutorial/immut.md) for value-style polynomials, or the [`mutable` tutorial](tutorial/mutable.md) for in-place updates. The design pages explain canonical form and representation invariants ([`immut`](design/immut.md)) and the mutation boundary ([`mutable`](design/mutable.md)). The generated `pkg.generated.mbti` files remain the authority for exact signatures. To work on the library itself, read the [contribution guidelines](contributing.md)."
+msgstr ""
+
+#: manual/tutorial/immut.md:1
+msgid "immut Tutorial"
+msgstr ""
+
+#: manual/tutorial/immut.md:3
+msgid "Use `immut` when polynomials should behave like ordinary values. Constructors copy input arrays, updates return new values, and old values remain unchanged."
+msgstr ""
+
+#: manual/tutorial/immut.md:5
+#: manual/tutorial/mutable.md:5
+msgid "Dense Univariate DensePolynomial"
+msgstr ""
+
+#: manual/tutorial/immut.md:14
+msgid "`p` represents `1 + 2x + 3x^2`, so `value` is `17`. `substitute` does not mutate `p`."
+msgstr ""
+
+#: manual/tutorial/immut.md:16
+msgid "Constructors keep canonical form:"
+msgstr ""
+
+#: manual/tutorial/immut.md:23
+msgid "`coefficients` is `[1, 2]`."
+msgstr ""
+
+#: manual/tutorial/immut.md:25
+msgid "Exponent Vectors"
+msgstr ""
+
+#: manual/tutorial/immut.md:33
+msgid "`xy2` represents `x * x_1^2`; its total degree is `3`. `x` is a new value."
+msgstr ""
+
+#: manual/tutorial/immut.md:35
+#: manual/tutorial/mutable.md:38
+msgid "Multivariate Term Arrays"
+msgstr ""
+
+#: manual/tutorial/immut.md:46
+msgid "The first two terms have equivalent exponents and cancel out. The remaining term is `3 * x_1`, so `value` is `6`."
+msgstr ""
+
+#: manual/tutorial/immut.md:48
+#: manual/tutorial/mutable.md:48
+msgid "Sparse Map Representation"
+msgstr ""
+
+#: manual/tutorial/immut.md:60
+msgid "`p` represents `x^2 + 2x + 1`; `coeff` is `Some(2)` and `value` is `9`."
+msgstr ""
+
+#: manual/tutorial/immut.md:62
+msgid "Choosing A Representation"
+msgstr ""
+
+#: manual/tutorial/immut.md:64
+msgid "Use `DensePolynomial` for dense univariate polynomials."
+msgstr ""
+
+#: manual/tutorial/immut.md:65
+msgid "Use `TermPolynomial` for sequential multivariate term processing."
+msgstr ""
+
+#: manual/tutorial/immut.md:66
+msgid "Use `SparsePolynomial` when exponent lookup matters."
+msgstr ""
+
+#: manual/tutorial/immut.md:67
+msgid "Convert between multivariate representations explicitly: `SparsePolynomial::from_terms(term.to_terms())` or `TermPolynomial::from_terms(sparse.to_terms())`."
+msgstr ""
+
+#: manual/tutorial/immut.md:70
+msgid "Use `UnivariatePolynomial`, `MultivariatePolynomial`, `ContextualPolynomial`, or `Type::ops()` when generic code should not depend on the storage representation."
+msgstr ""
+
+#: manual/tutorial/mutable.md:1
+msgid "mutable Tutorial"
+msgstr ""
+
+#: manual/tutorial/mutable.md:3
+msgid "Use `mutable` when code needs explicit control over intermediate allocation or step-by-step construction. The mathematical semantics match `immut`, but mutation is limited to setters, `clear`, and `_inplace` methods."
+msgstr ""
+
+#: manual/tutorial/mutable.md:15
+msgid "`snapshot` still represents `1 + 2x + 3x^2`. `p` is updated and then canonicalized to zero."
+msgstr ""
+
+#: manual/tutorial/mutable.md:17
+msgid "Ordinary operators do not mutate the receiver:"
+msgstr ""
+
+#: manual/tutorial/mutable.md:25
+msgid "`q` is a new polynomial and `unchanged` is `[1, 2]`."
+msgstr ""
+
+#: manual/tutorial/mutable.md:27
+msgid "Converting To And From immut"
+msgstr ""
+
+#: manual/tutorial/mutable.md:36
+msgid "Conversions produce independent values."
+msgstr ""
+
+#: manual/tutorial/mutable.md:46
+msgid "The two exponent vectors canonicalize to the same key, so the terms cancel."
+msgstr ""
+
+#: manual/tutorial/mutable.md:58
+msgid "`coeff` is `Some(2)`. Setting a coefficient to zero removes the term."
+msgstr ""
+
+#: manual/tutorial/mutable.md:60
+msgid "Guidance"
+msgstr ""
+
+#: manual/tutorial/mutable.md:62
+msgid "Use `_inplace` only when mutating the receiver is intentional."
+msgstr ""
+
+#: manual/tutorial/mutable.md:63
+msgid "Prefer `immut` when code relies on sharing old values."
+msgstr ""
+
+#: manual/tutorial/mutable.md:64
+msgid "Use `to_immut` and `from_immut` at API boundaries to isolate mutable state."
+msgstr ""

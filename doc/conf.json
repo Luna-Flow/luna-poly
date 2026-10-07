@@ -1,0 +1,8 @@
+{
+  "title": "luna-poly",
+  "summary": "Immutable and mutable polynomial libraries for MoonBit with canonical dense, sparse, and context-aware representations.",
+  "locales": [
+    "zh_CN",
+    "ja_JP"
+  ]
+}

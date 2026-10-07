@@ -1,49 +1,10 @@
 # Contribution Guidelines
 
-<br>
-
-## Table of Contents
-
-1. [Code Style](#1-code-style)
-
-2. [Naming Conventions](#2-naming-conventions)
-
-   2.1 [Variable Naming](#21-variable-naming)
-
-   2.2 [Function Naming](#22-function-naming)
-
-   2.3 [Struct and Trait Naming](#23-struct-and-trait-naming)
-
-   2.4 [Constant Naming](#24-constant-naming)
-
-   2.5 [Result Err Construction and Err Code](#25-result-err-construction-and-err-code)
-
-3. [Comments](#3-comments)
-
-4. [File Standards](#4-file-standards)
-
-   4.1 [Folder Naming](#41-folder-naming)
-
-   4.2 [File Organization](#42-file-organization)
-
-   4.3 [Generating .mbti Files](#43-generating-mbti-files)
-
-5. [Commit Guidelines](#5-commit-guidelines)
-
-   5.1 [Commit Messages](#51-commit-messages)
-
-   5.2 [Commit Frequency](#52-commit-frequency)
-
-6. [Code Review](#6-code-review)
-
-<br>
-
 ## 1. Code Style
-<br>
 
 - The project follows the formatting style enforced by the MoonBit Toolchain. Format your code automatically using the following command:
   
-  ```
+  ```bash
   moon fmt
   ```
   
@@ -51,31 +12,22 @@
   
   Alternatively, you can use the `ready_to_pr.sh` script to automatically format the code, run checks, generate test coverage files, and create `.mbti` files.
 
-<br>
-
 ## 2. Naming Conventions
-<br>
 
 ### 2.1 Variable Naming
 
 - Use **lowercase letters with underscores** as separators (e.g., `my_var`).
 - Variable names should be descriptive and clearly indicate their purpose.
 
-<br>
-
 ### 2.2 Function Naming
 
 - Use **lowercase letters with underscores** as separators (e.g., `calc_total_price()`).
 - Function names should be concise and descriptive, clearly expressing their functionality.
 
-<br>
-
 ### 2.3 Struct and Trait Naming
 
 - Use **PascalCase** (e.g., `MyStruct`, `MyTrait`).
 - Names should intuitively reflect the function or role of the struct or trait, avoiding overly abstract or non-descriptive names.
-
-<br>
 
 ### 2.4 Constant Naming
 
@@ -84,18 +36,13 @@
 - Prefix constants with a descriptive category where applicable (e.g., `machine_dbl_epsilon`, where `machine` indicates a machine-related constant).
 - Constant names should be concise and descriptive to facilitate understanding.
 
-<br>
-
 ### 2.5 Result Err Construction and Err Code
 
 - Use **uppercase letters with underscores** as separators (e.g., `E_MAX_ITER`).
 - Err codes should be prefixed with `E` to indicate an error-related construct.
 - Err codes should be concise and descriptive for easy comprehension.
 
-<br>
-
 ## 3. Comments
-<br>
 
 - **Conciseness**: Comments should be clear and to the point, avoiding unnecessary verbosity.
 - **Consistency**: Use uniform terminology and style across the codebase.
@@ -105,10 +52,7 @@
 
 Developers are encouraged to use MoonBit LSP’s AI-generated code comments to improve efficiency, but AI-generated comments should be reviewed to ensure correctness.
 
-<br>
-
 ## 4. File Standards
-<br>
 
 ### 4.1 Folder Naming
 
@@ -119,8 +63,6 @@ Developers are encouraged to use MoonBit LSP’s AI-generated code comments to i
 
   - For differentiation-related functionality: `diff`
   - For derivative-related functionality: `deriv`
-
-<br>
 
 ### 4.2 File Organization
 
@@ -134,10 +76,7 @@ Developers are encouraged to use MoonBit LSP’s AI-generated code comments to i
 
 - **Note:** Avoid overly generic or vague file names such as `utils.mbt`. Instead, ensure file names correspond to their function or module.
 
-<br>
-
 ## 5. Commit Guidelines
-<br>
 
 ### 5.1 Commit Messages
 
@@ -148,24 +87,20 @@ Developers are encouraged to use MoonBit LSP’s AI-generated code comments to i
 
   Examples:
   
-  ```
+  ```text
   fix: fix bug in something
   feat: add feature for something
   refactor: refactor something
   doc: add docs for something
   ```
 
-<br>
-
 ### 5.2 Commit Frequency
 
 - Keep commits small and focused on a single feature or fix.
 - Avoid large, monolithic commits that include multiple unrelated changes.
 
-<br>
-
 ## 6. Code Review
-<br>
+
 - If you are not a maintainer or collaborator, contact them before modifying dependencies or version numbers in `moon.mod`.
 - All code submissions must undergo **code review**.
 - Code reviews should focus on code quality, style, performance, and security.
