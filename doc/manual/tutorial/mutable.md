@@ -1,64 +1,120 @@
-# mutable Tutorial
+# mutable tutorial
 
-Use `mutable` when code needs explicit control over intermediate allocation or step-by-step construction. The mathematical semantics match `immut`, but mutation is limited to setters, `clear`, and `_inplace` methods.
+This tutorial is the entry point for updating polynomials in place. It shows the one import you need, how mutation differs from the operators, how to move between the mutable and immutable layers, and where each representation's tutorial continues.
 
-## Dense Univariate DensePolynomial
+## Quick start
 
-```moonbit
-let p = @mutable.DensePolynomial::from_coefficients([1, 2, 3])
-let snapshot = p.copy()
-
-p.set_coefficient(1, 5)
-p.add_inplace(@mutable.DensePolynomial::from_coefficients([-1, -5, -3]))
+```bash
+moon add Luna-Flow/luna-poly@0.2.0
 ```
 
-`snapshot` still represents `1 + 2x + 3x^2`. `p` is updated and then canonicalized to zero.
-
-Ordinary operators do not mutate the receiver:
-
-```moonbit
-let p = @mutable.DensePolynomial::from_coefficients([1, 2])
-let q = p * p
-let unchanged = p.to_coefficients()
+```text
+import {
+  "Luna-Flow/luna-poly/mutable",
+}
 ```
 
-`q` is a new polynomial and `unchanged` is `[1, 2]`.
-
-## Converting To And From immut
-
 ```moonbit
-let imm = @immut.DensePolynomial::from_coefficients([1, 0, 1])
-let mut_poly = @mutable.DensePolynomial::from_immut(imm)
-mut_poly.set_coefficient(0, 2)
-let back = mut_poly.to_immut()
+test "mutable quick start" {
+  let p = @mutable.DensePolynomial::from_coefficients([1, 2, 3])
+  let snapshot = p.copy()
+  p.set_coefficient(1, 5)
+  p.add_inplace(@mutable.DensePolynomial::from_coefficients([-1, -5, -3]))
+  assert_true(p.is_zero())
+  inspect(snapshot, content="1 + 2x^1 + 3x^2")
+}
 ```
 
-Conversions produce independent values.
+`set_coefficient` and `add_inplace` change `p`; the copy taken before is unaffected.
 
-## Multivariate Term Arrays
+## Everyday tasks
+
+### Pick a container
+
+| You want to | Use | Tutorial |
+| --- | --- | --- |
+| set and accumulate univariate coefficients | `DensePolynomial` | [mutable/dense](mutable/dense.md) |
+| keep multivariate terms sorted while adding | `TermPolynomial` | [mutable/term](mutable/term.md) |
+| add or set multivariate terms in $O(\log m)$ | `SparsePolynomial` | [mutable/sparse](mutable/sparse.md) |
+| accumulate polynomials in named variables | `ContextPolynomial` | [mutable/context](mutable/context.md) |
+
+### Know what mutates
+
+Methods ending in `_inplace`, the setters and `clear` mutate; operators never do:
 
 ```moonbit
-let p = @mutable.TermPolynomial::from_array([([1U], 2)])
-p.add_term_inplace(@mutable.ExponentVector::from_array([1U, 0]), -2)
-let is_zero = p.size() == 0
+test "what mutates" {
+  let p = @mutable.SparsePolynomial::from_array([([1U], 1)])
+  let q = p * p
+  inspect(p, content="1 * x")
+  p.mul_inplace(p)
+  inspect(p, content="1 * x^2")
+  assert_true(p == q)
+}
 ```
 
-The two exponent vectors canonicalize to the same key, so the terms cancel.
+### Cross the boundary to `immut`
 
-## Sparse Map Representation
+Convert at module boundaries so that callers receive values:
 
 ```moonbit
-let x = @mutable.ExponentVector::from_array([1U])
-let p = @mutable.SparsePolynomial::new()
-p.set_coefficient(x, 3)
-p.add_term_inplace(x, -1)
-let coeff = p.get(x)
+fn build_power_sum(n : Int) -> @immut.DensePolynomial[Int] {
+  let acc : @mutable.DensePolynomial[Int] = @mutable.DensePolynomial::zero()
+  for k in 0..<n {
+    acc.set_coefficient(k, 1)
+  }
+  acc.to_immut()
+}
+
+test "boundary" {
+  inspect(build_power_sum(4), content="1 + 1x^1 + 1x^2 + 1x^3")
+}
 ```
 
-`coeff` is `Some(2)`. Setting a coefficient to zero removes the term.
+## Going further
 
-## Guidance
+### Generic code for both layers
 
-- Use `_inplace` only when mutating the receiver is intentional.
-- Prefer `immut` when code relies on sharing old values.
-- Use `to_immut` and `from_immut` at API boundaries to isolate mutable state.
+The capability traits and operation records are the same for both facades:
+
+```moonbit
+fn[P, A] eval_square(ops : @mutable.UnivariateOps[P, A], p : P, a : A) -> A {
+  ops.eval(ops.mul(p, p), a)
+}
+
+test "both layers" {
+  inspect(eval_square(@mutable.DensePolynomial::ops(), @mutable.DensePolynomial::from_coefficients([1, 1]), 2), content="9")
+  inspect(eval_square(@immut.DensePolynomial::ops(), @immut.DensePolynomial::from_coefficients([1, 1]), 2), content="9")
+}
+```
+
+### Reset buffers generically
+
+Every mutable container implements `MutablePolynomial` (`Clearable + Copyable`):
+
+```moonbit
+fn[P : @mutable.MutablePolynomial] fresh_copy_and_clear(p : P) -> P {
+  let c = @mutable.Copyable::copy(p)
+  @mutable.Clearable::clear(p)
+  c
+}
+
+test "generic reset" {
+  let t = @mutable.TermPolynomial::from_array([([2U], 1)])
+  inspect(fresh_copy_and_clear(t), content="1 * x^2")
+  assert_true(t.is_zero())
+}
+```
+
+## Common pitfalls
+
+- **Bindings share containers.** `let q = p` does not copy; use `p.copy()`.
+- **Large additions into term arrays.** `TermPolynomial::add_inplace` inserts one term at a time; prefer sparse containers for accumulation.
+- **Context mismatches abort** in `add_inplace` and `mul_inplace`; there are no checked in-place forms.
+- **Mixing layers.** A `@mutable.DensePolynomial` is not an `@immut.DensePolynomial`; convert with `to_immut` / `from_immut`.
+
+## Next steps
+
+- The per-container tutorials linked above.
+- The [mutable API](../api/mutable.md) and the [mutable design](../design/mutable.md), which lists every difference from `immut`.
+- The [immut tutorial](immut.md) for the value-oriented layer.

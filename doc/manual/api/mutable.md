@@ -1,164 +1,127 @@
 # mutable API
 
-This page documents the current public API of `Luna-Flow/luna-poly/mutable`. The package exposes the same core type names as `immut`, but its containers are execution-oriented: setters, `clear`, and `_inplace` methods mutate the receiver; ordinary operators still return new values.
+`Luna-Flow/luna-poly/mutable` is the facade of the mutable polynomial layer. It defines nothing of its own: it re-exports the shared [`core`](core.md) vocabulary, the common algebra traits of `Luna-Flow/luna-generic`, and the four mutable representations, so one import gives access to the whole execution-oriented API. It exports the same names as the [`immut`](immut.md) facade.
 
-Use `src/mutable/pkg.generated.mbti` and `moon info` as the exact signature source.
+```text
+import {
+  "Luna-Flow/luna-poly/mutable",
+}
+```
 
-`mutable` is a facade over `mutable/dense`, `mutable/term`, `mutable/sparse`,
-and `mutable/context`. It re-exports the shared `core` capability traits,
-including `UnivariatePolynomial`, `MultivariatePolynomial`,
-`ContextualPolynomial`, `HasShape`, and `MutablePolynomial`. Concrete polynomial types
-expose `Type::ops()` records for generic functional algorithms.
+Every name below is a `pub using` alias: `@mutable.DensePolynomial` *is* `@mutable/dense.DensePolynomial`, and `@mutable.ExponentVector` *is* `@core.ExponentVector`, the same type as `@immut.ExponentVector`. Methods are documented on the page of the package that defines the type.
 
-The facade also re-exports `luna-generic` algebra traits such as `Zero`, `One`,
-`AddMonoid`, `MulMonoid`, `Semiring`, `Ring`, `Field`, and `Num`. Mutable
-containers implement the same `PolynomialShape` metadata as immutable
-containers.
+## Polynomial types
 
----
+### `DensePolynomial`
 
-## ExponentVector
+Mutable dense univariate polynomial. See the [mutable/dense API](mutable/dense.md).
 
-`mutable.ExponentVector` is a value wrapper around `immut.ExponentVector`. It does not provide in-place mutation; it exists as the exponent key used by mutable multivariate containers.
+```mbti
+pub using @dense {type DensePolynomial}
+```
 
-- `ExponentVector::from_array(values : Array[UInt]) -> ExponentVector`
-- `ExponentVector::one() -> ExponentVector`
-- `ExponentVector::from_immut(value : @immut.ExponentVector) -> ExponentVector`
-- `to_immut(self : ExponentVector) -> @immut.ExponentVector`
-- `to_array`, `length`, `degree`, `is_one`, `get`, `get_checked`, `with_exponent`, `with_exponent_checked`
+### `TermPolynomial`
 
-Trait implementations delegate to `immut.ExponentVector`: `One`, `Mul`, `Eq`, `Compare`, `Hash`, and `Show`.
+Mutable multivariate polynomial as a sorted term array. See the [mutable/term API](mutable/term.md).
 
----
+```mbti
+pub using @term {type TermPolynomial}
+```
 
-## DensePolynomial[A]
+### `SparsePolynomial`
 
-`DensePolynomial[A]` is a mutable dense univariate polynomial. Coefficients are still stored in ascending degree order and trailing zeroes are removed.
+Mutable multivariate polynomial as an ordered map. See the [mutable/sparse API](mutable/sparse.md).
 
-### Construction, Conversion, And Queries
+```mbti
+pub using @sparse {type SparsePolynomial}
+```
 
-- `DensePolynomial::from_coefficients(values : Array[A]) -> DensePolynomial[A]`
-- `DensePolynomial::from_immut(value : @immut.DensePolynomial[A]) -> DensePolynomial[A]`
-- `to_immut(self : DensePolynomial[A]) -> @immut.DensePolynomial[A]`
-- `to_coefficients`, `length`, `degree`, `leading_term`, `leading_coefficient`, `coefficient`
-- `coefficient_checked`
-- `DensePolynomial::constant`, `DensePolynomial::variable`, `DensePolynomial::monomial`, `DensePolynomial::monomial_checked`
+### `ContextPolynomial`, `ContextSubstitutionValue`
 
-### Mutating Operations
+Mutable polynomial over a named-variable context, and the payload of its substitutions. See the [mutable/context API](mutable/context.md).
 
-- `set_coefficient(self : DensePolynomial[A], power : Int, coefficient : A) -> Unit`
+```mbti
+pub using @context {type ContextPolynomial}
+pub using @context {type ContextSubstitutionValue}
+```
 
-  Sets one coefficient, resizing when needed and canonicalizing afterward.
+The alias re-exports the type, not its constructors as standalone values: write `Scalar(v)` and `Polynomial(p)` where the expected type is known, or `@mutable.ContextSubstitutionValue::Polynomial(p)` in full.
 
-- `clear(self : DensePolynomial[A]) -> Unit`
+## Shared vocabulary from `core`
 
-  Resets the polynomial to zero.
+### `ExponentVector`, `Variable`, `VariableContext`, `PolynomialShape`
 
-- `copy(self : DensePolynomial[A]) -> DensePolynomial[A]`
+Monomials, named variables, variable contexts and shape metadata. See the [core API](core.md).
 
-  Returns an independent copy.
+```mbti
+pub using @core {type ExponentVector}
+pub using @core {type Variable}
+pub using @core {type VariableContext}
+pub using @core {type PolynomialShape}
+```
 
-- `add_inplace`, `mul_inplace`, `scale_inplace`
+### `UnivariateOps`, `MultivariateOps`, `ContextOps`
 
-  Replace the receiver with the corresponding result.
+Operation records for dictionary-passing generic code. See the [core API](core.md#operation-records).
 
-### Non-Mutating Operations
+```mbti
+pub using @core {type UnivariateOps}
+pub using @core {type MultivariateOps}
+pub using @core {type ContextOps}
+```
 
-`+`, `-`, `*`, `scale`, `scale_checked`, `eval`, `substitute`, `derivative`, `pow`, and `karatsuba` return new values or query results and do not mutate the receiver.
+### Capability traits
 
----
+The observation traits and their bundles. See the [core API](core.md#capability-traits).
 
-## TermPolynomial[A]
+```mbti
+pub using @core {trait HasLength}
+pub using @core {trait HasDegree}
+pub using @core {trait IsZero}
+pub using @core {trait HasTermCount}
+pub using @core {trait HasArity}
+pub using @core {trait HasTotalDegree}
+pub using @core {trait HasContext}
+pub using @core {trait HasShape}
+pub using @core {trait Clearable}
+pub using @core {trait Copyable}
+pub using @core {trait UnivariatePolynomial}
+pub using @core {trait MultivariatePolynomial}
+pub using @core {trait ContextualPolynomial}
+pub using @core {trait MutablePolynomial}
+```
 
-`TermPolynomial[A]` is a mutable multivariate polynomial backed by a canonical sorted term array.
+Every mutable container implements `Clearable`, `Copyable` and `MutablePolynomial`, in addition to the observation bundle of its family.
 
-- `TermPolynomial::from_terms`
-- `TermPolynomial::from_array`
-- `TermPolynomial::from_immut`
-- `to_immut`
-- `to_terms`
-- `size`
-- `coefficients`
-- `clear`
-- `copy`
-- `add_term_inplace`
-- `add_inplace`
-- `mul_inplace`
-- `scale_inplace`
-- `scale`
-- `eval`
-- `eval_checked`
-- `pow`
+## Algebra traits from `luna-generic`
 
-The `_inplace` methods mutate the receiver; ordinary algebraic operators return new values.
-Convert explicitly with `SparsePolynomial::from_terms(term.to_terms())`.
+### `Zero`, `One`, `AddMonoid`, `MulMonoid`, `AddGroup`, `MulGroup`, `Semiring`, `Ring`, `Field`, `Num`
 
----
+The algebraic capability traits of [`Luna-Flow/luna-generic`](https://lunaflow.cn/en/luna-generic/), re-exported so that coefficient bounds can be written without a second import.
 
-## SparsePolynomial[A]
+```mbti
+pub using @luna-generic {trait Zero}
+pub using @luna-generic {trait One}
+pub using @luna-generic {trait AddMonoid}
+pub using @luna-generic {trait MulMonoid}
+pub using @luna-generic {trait AddGroup}
+pub using @luna-generic {trait MulGroup}
+pub using @luna-generic {trait Semiring}
+pub using @luna-generic {trait Ring}
+pub using @luna-generic {trait Field}
+pub using @luna-generic {trait Num}
+```
 
-`SparsePolynomial[A]` is a mutable multivariate sparse polynomial backed by `SortedMap[ExponentVector, A]`.
+```moonbit
+fn[P : @mutable.MutablePolynomial + @mutable.IsZero] reset(p : P) -> Bool {
+  @mutable.Clearable::clear(p)
+  @mutable.IsZero::is_zero(p)
+}
 
-- `SparsePolynomial::new`
-- `SparsePolynomial::from_terms`
-- `SparsePolynomial::from_array`
-- `SparsePolynomial::from_immut`
-- `to_immut`
-- `to_terms`
-- `size`
-- `is_empty`
-- `get`
-- `get_checked`
-- `set_coefficient`
-- `clear`
-- `copy`
-- `add_term_inplace`
-- `add_inplace`
-- `mul_inplace`
-- `scale_inplace`
-- `scale`
-- `eval`
-- `eval_checked`
-- `pow`
-
-`set_coefficient` removes a term when the coefficient is zero. Equality compares canonical term arrays.
-Convert explicitly with `TermPolynomial::from_terms(sparse.to_terms())`.
-
----
-
-## VariableContext And ContextPolynomial[A]
-
-`mutable` re-exports `immut.Variable` and `immut.VariableContext`, so variable
-identity is shared across execution models.
-
-`mutable.ContextPolynomial[A]` is a mutable wrapper around
-`immut.ContextPolynomial[A]`.
-
-- `ContextSubstitutionValue[A]`
-
-  Mutable substitution payload. `Scalar(value)` replaces a variable with a
-  coefficient value; `Polynomial(value)` replaces it with a same-context mutable
-  context polynomial and delegates to the immutable substitution semantics.
-
-- `ContextPolynomial::from_immut`
-- `to_immut`
-- `constant`
-- `variable`, `variable_checked`
-- `from_term_polynomial`
-- `from_sparse_polynomial`
-- `from_named_terms_as_terms`, `from_named_terms_as_terms_checked`
-- `from_named_terms_as_sparse`, `from_named_terms_as_sparse_checked`
-- `context`, `to_terms`, `to_term_polynomial`, `to_sparse_polynomial`
-- `eval`, `eval_checked`, `eval_named`, `eval_named_checked`
-- `eval_partial`, `eval_partial_checked`, `eval_partial_named`, `eval_partial_named_checked`
-- `substitute`, `substitute_checked`, `substitute_names`, `substitute_names_checked`
-- `add_inplace`, `mul_inplace`, `copy`, `pow`
-
-`+`, `-`, and `*` return new wrappers. `_inplace` methods replace the receiver
-and abort on incompatible contexts.
-
-Partial evaluation preserves the existing `VariableContext`; it does not
-project away assigned variables. Name-based variants use
-`Luna-Flow/type_theory/core.Name`. Checked variants delegate to the immutable
-implementation and return `None` for foreign variables, duplicate assignments,
-unknown names, or polynomial replacements from incompatible contexts.
+test "one import" {
+  let p = @mutable.DensePolynomial::from_coefficients([1, 1])
+  inspect(reset(p), content="true")
+  let s = @mutable.SparsePolynomial::from_array([([1U], 2)])
+  inspect(reset(s), content="true")
+}
+```

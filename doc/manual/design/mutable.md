@@ -1,80 +1,78 @@
-# mutable Design
+# mutable design
 
-`mutable` is the execution-oriented layer of `luna-poly`. It reuses the mathematical semantics and canonicalization rules of `immut`, while exposing explicitly mutating container operations.
+## Design goal
 
-## Responsibilities
+The `mutable` facade gives the execution-oriented half of `luna-poly` a single import, and the layer behind it lets algorithms update polynomials in place while computing exactly what the [`immut`](immut.md) layer computes. Performance comes first in this layer, but its side effects must stay where the caller can see them: in methods whose names say they mutate.
 
-- Re-export shared `core` capability traits through the `mutable` facade.
-- Provide `DensePolynomial`, `TermPolynomial`, `SparsePolynomial`, and `ExponentVector` aligned with `immut`.
-- Provide `from_immut` and `to_immut` conversions.
-- Provide setters, `clear`, `copy`, and `_inplace` operations for incremental construction and updates.
-- Keep ordinary algebraic operators non-mutating.
+## Mathematical background
 
-## Mutation Boundary
+A mutable polynomial is a *variable* whose value is a polynomial; the values are the same mathematical objects as in the immutable layer, in the same canonical forms. An in-place operation is an assignment $p \leftarrow p \circ q$, and the contract of the layer is
 
-Public methods that mutate the receiver include:
+$$
+\texttt{p.op\_inplace(q)}\ \text{ leaves } p \text{ equal to } \texttt{p\_before op q},
+$$
 
-- `DensePolynomial::set_coefficient`
-- `DensePolynomial::clear`
-- `DensePolynomial::add_inplace`
-- `DensePolynomial::mul_inplace`
-- `DensePolynomial::scale_inplace`
-- `TermPolynomial::clear`
-- `TermPolynomial::add_term_inplace`
-- `TermPolynomial::add_inplace`
-- `TermPolynomial::mul_inplace`
-- `TermPolynomial::scale_inplace`
-- `SparsePolynomial::set_coefficient`
-- `SparsePolynomial::clear`
-- `SparsePolynomial::add_term_inplace`
-- `SparsePolynomial::add_inplace`
-- `SparsePolynomial::mul_inplace`
-- `SparsePolynomial::scale_inplace`
+with `p_before op q` computed by the immutable algorithms. Every observation (degree, terms, evaluation, equality) depends only on the current value.
 
-Other ordinary operators and methods such as `scale`, `pow`, and `substitute` return new values.
+## Design decisions
 
-## Relationship With immut
+### A facade with the same names as `immut`
 
-Many mutable operations convert through `immut` and then convert back. This keeps the two layers aligned on:
+The facade re-exports `core`, the `luna-generic` algebra traits and the four mutable representations under the same names as the `immut` facade. Switching an algorithm between layers is mostly a change of import; generic code written against the capability traits or the operation records runs on both.
 
-- trailing-zero removal for univariate polynomials,
-- exponent-vector canonicalization and degree semantics,
-- multivariate term merging and zero deletion,
-- natural-number exponentiation and `arithmetic.PowNatChecked`.
+### Mutation is opt-in and named
 
-`mutable.ExponentVector` is a wrapper around `immut.ExponentVector`; it remains value-oriented so it can be used as a stable key.
+Only `set_coefficient`, `clear`, `add_term_inplace` and the `*_inplace` methods change their receiver. Operators and every other method return new values. `x + y` never changes `x`, even for mutable types, so arithmetic expressions read the same in both layers.
 
-## Canonical Form
+### Canonical form is restored before every return
 
-Mutating operations must restore canonical form before returning:
+Each mutating method leaves the container canonical: trimmed coefficient arrays, sorted and merged term arrays, zero-free sparse maps. The invariants are the same as in `immut`, so `==`, `degree`, `size` and the shapes have the same meaning.
 
-- `DensePolynomial` removes trailing zero coefficients.
-- `TermPolynomial` merges duplicate terms and removes zero coefficients.
-- `SparsePolynomial` removes map entries whose coefficients become zero.
+### Delegate the algorithms, specialize the updates
 
-New in-place operations must preserve these invariants.
+Non-trivial algorithms (Karatsuba, composition, derivative, powers, multivariate products, all of the context logic) are implemented once in `immut` and reached by conversion. The mutable packages implement directly only what benefits from in-place storage: coefficient setters, dense in-place addition, sparse single-term updates. The [consistency tests](consistency.md) check that both layers agree.
 
-## Usage Boundary
+### Ownership at the boundaries
 
-Prefer `immut` by default. Use `mutable` when code needs step-by-step updates, fewer explicit intermediate values, or integration with an existing mutable algorithm.
+Every conversion copies or rebuilds storage, except where the stored value is itself immutable (the context cell), so no mutable container ever shares storage with an immutable value or with another container:
 
-Generic code should depend on `UnivariatePolynomial`, `MultivariatePolynomial`,
-`ContextualPolynomial`, `MutablePolynomial`, or the relevant `Type::ops()`
-record instead of matching on a concrete mutable storage type.
+- `from_immut` and `to_immut` copy (dense, term, sparse) or share an immutable value (context);
+- `copy()` gives an independent container;
+- query methods such as `to_coefficients` and `to_terms` return fresh arrays.
 
-Mutable containers also implement `HasShape`, so execution-oriented algorithms
-can inspect the same `PolynomialShape` metadata as immutable code. The mutable
-facade re-exports the `luna-generic` algebra traits used by the linear-algebra
-package, and mutable `Type::ops()` records expose construction, addition,
-multiplication, evaluation, scaling, and powers for generic algorithms.
+### API symmetry with `immut`
 
-Checked methods mirror the immutable layer and return `None` for contract
-failures. Existing convenience methods remain aborting wrappers.
+The layers match in names, parameter order and checked-variant conventions. The documented differences are:
 
-Mutable context substitution delegates to the immutable context model. Mutable
-wrappers expose the same scalar/polynomial substitution and partial-evaluation
-APIs, but the canonical result is produced by the immutable implementation and
-then wrapped back into `mutable.ContextPolynomial`. The same checked failure
-contracts apply: foreign variables, duplicate assignments, unknown
-`type_theory` names, and incompatible replacement polynomial contexts return
-`None`.
+| Area | `immut` | `mutable` |
+| --- | --- | --- |
+| conversions | none | `from_immut`, `to_immut` on every type |
+| copy and reset | values need neither | `copy`, `clear` (`Copyable`, `Clearable`, `MutablePolynomial`) |
+| dense updates | rebuild with `from_coefficients` | `set_coefficient` (no checked form), `add_inplace`, `mul_inplace`, `scale_inplace` |
+| term updates | `+`, `scale` | `add_term_inplace`, `add_inplace`, `mul_inplace`, `scale_inplace` |
+| sparse updates | `add_term` (returns a new value) | `set_coefficient`, `add_term_inplace`, `add_inplace`, `mul_inplace`, `scale_inplace` |
+| context binary ops | `add_checked`, `mul_checked` | `add_inplace`, `mul_inplace` (aborting); checked forms via `ops()` |
+| context binding | takes immutable term/sparse polynomials | takes mutable term/sparse polynomials |
+| substitution payload | `immut` `ContextSubstitutionValue` | its own `ContextSubstitutionValue` holding mutable polynomials |
+| sparse `copy` bound | — | needs `Eq + AddMonoid` coefficients |
+| `ExponentVector`, `Variable`, `VariableContext` | `core` types | the same `core` types |
+
+## Correctness / invariants
+
+- Canonical form after every public call, in every container.
+- For every operation, the mutable result converted with `to_immut` equals the immutable result on the converted inputs.
+- No mutable container shares mutable storage with any other value.
+- Passing a container as its own argument (`p.add_inplace(p)`, `p.mul_inplace(p)`) gives $2p$ and $p^2$.
+
+## Alternatives rejected
+
+- **Mutable-only types without an immutable twin.** Value semantics is the safer default; mutation is an optimization chosen per call site.
+- **Mutating operators.** They would make every `a * b` a possible side effect.
+- **Independent algorithm implementations** for the mutable layer would double the code that must agree.
+
+## Boundaries
+
+- The facade adds no functions or types of its own.
+- Containers are not snapshots: assigning a container to a second binding shares it; use `copy()`.
+- Delegated operations pay a conversion cost; the layer optimizes updates, not the algorithms themselves.
+- Everything the immutable layer does not do (division, factorization, Gröbner bases), this layer does not do either.
