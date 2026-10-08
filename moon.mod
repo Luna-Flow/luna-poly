@@ -6,7 +6,7 @@ import {
   "Luna-Flow/arithmetic@0.2.1",
   "Luna-Flow/luna-generic@0.3.3",
   "moonbitlang/quickcheck@0.14.0",
-  "Luna-Flow/type_theory@0.1.0-alpha.1",
+  "Luna-Flow/type_theory@0.2.0",
 }
 
 readme = "README.md"
