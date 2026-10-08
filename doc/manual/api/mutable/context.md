@@ -1,8 +1,22 @@
 # mutable/context API
 
+## Purpose
+
 `Luna-Flow/luna-poly/mutable/context` provides a mutable `ContextPolynomial[A]`: a cell holding an [`immut/context`](../immut/context.md) polynomial that `add_inplace`, `mul_inplace` and `clear` replace. Every other operation delegates to the immutable implementation and has its semantics, failure cases and costs.
 
-The types are re-exported by the [`mutable`](../mutable.md) facade, which the examples use. "As in immut" refers to the [immut/context API](../immut/context.md). The design is in [mutable/context design](../../design/mutable/context.md).
+"As in immut" refers to the [immut/context API](../immut/context.md). The design is in [mutable/context design](../../design/mutable/context.md).
+
+## Importing
+
+The type is re-exported by the [`mutable`](../mutable.md) facade, which the examples use:
+
+```moonbit nocheck
+import {
+  "Luna-Flow/luna-poly/mutable",
+}
+```
+
+To depend on this package alone, import `"Luna-Flow/luna-poly/mutable/context"` instead; its names are the same.
 
 ## Types
 

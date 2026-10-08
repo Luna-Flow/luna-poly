@@ -1,14 +1,22 @@
 # immut API
 
+## Purpose
+
 `Luna-Flow/luna-poly/immut` is the facade of the immutable polynomial layer. It defines nothing of its own: it re-exports the shared [`core`](core.md) vocabulary, the common algebra traits of `Luna-Flow/luna-generic`, and the four immutable representations, so one import gives access to the whole value-oriented API.
 
-```text
+Every name below is a `pub using` alias: `@immut.DensePolynomial` *is* `@immut/dense.DensePolynomial`, and `@immut.ExponentVector` *is* `@core.ExponentVector`. Methods are documented on the page of the package that defines the type.
+
+## Importing
+
+Add the facade to your `moon.pkg`:
+
+```moonbit nocheck
 import {
   "Luna-Flow/luna-poly/immut",
 }
 ```
 
-Every name below is a `pub using` alias: `@immut.DensePolynomial` *is* `@immut/dense.DensePolynomial`, and `@immut.ExponentVector` *is* `@core.ExponentVector`. Methods are documented on the page of the package that defines the type.
+It is the import every other `immut` page assumes.
 
 ## Polynomial types
 

@@ -1,8 +1,22 @@
 # mutable/dense API
 
+## Purpose
+
 `Luna-Flow/luna-poly/mutable/dense` provides a mutable `DensePolynomial[A]`: the same canonical ascending coefficient storage as [`immut/dense`](../immut/dense.md), held in a growable array that setters and `_inplace` methods update. Operators and all other methods return new values and leave their operands untouched.
 
-The type is re-exported by the [`mutable`](../mutable.md) facade as `@mutable.DensePolynomial`, which the examples use. Methods marked "as in immut" have exactly the semantics, bounds and costs described on the [immut/dense API](../immut/dense.md) page. The mutation model is explained in the [mutable/dense design](../../design/mutable/dense.md).
+Methods marked "as in immut" have exactly the semantics, bounds and costs described on the [immut/dense API](../immut/dense.md) page. The mutation model is explained in the [mutable/dense design](../../design/mutable/dense.md).
+
+## Importing
+
+The type is re-exported by the [`mutable`](../mutable.md) facade, which the examples use:
+
+```moonbit nocheck
+import {
+  "Luna-Flow/luna-poly/mutable",
+}
+```
+
+To depend on this package alone, import `"Luna-Flow/luna-poly/mutable/dense"` instead; its names are the same.
 
 ## The type
 

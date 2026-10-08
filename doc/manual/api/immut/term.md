@@ -1,8 +1,22 @@
 # immut/term API
 
+## Purpose
+
 `Luna-Flow/luna-poly/immut/term` provides `TermPolynomial[A]`, an immutable multivariate polynomial stored as an array of `(ExponentVector, A)` terms. The array is canonical: sorted in *descending* [monomial order](../../design/core.md#the-monomial-order), with no two terms sharing an exponent vector and no zero coefficients.
 
-The type is re-exported by the [`immut`](../immut.md) facade as `@immut.TermPolynomial`, which the examples use. Variables are addressed by index: variable $i$ is position $i$ of the exponent vectors. For named variables use [`ContextPolynomial`](context.md). The design is explained in the [immut/term design](../../design/immut/term.md).
+Variables are addressed by index: variable $i$ is position $i$ of the exponent vectors. For named variables use [`ContextPolynomial`](context.md). The design is explained in the [immut/term design](../../design/immut/term.md).
+
+## Importing
+
+The type is re-exported by the [`immut`](../immut.md) facade, which the examples use:
+
+```moonbit nocheck
+import {
+  "Luna-Flow/luna-poly/immut",
+}
+```
+
+To depend on this package alone, import `"Luna-Flow/luna-poly/immut/term"` instead; its names are the same.
 
 ## The type
 

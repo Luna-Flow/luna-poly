@@ -1,8 +1,20 @@
 # immut/dense API
 
-`Luna-Flow/luna-poly/immut/dense` provides `DensePolynomial[A]`, an immutable univariate polynomial stored as its ascending coefficient vector. Every operation returns a new value in canonical form: no trailing zero coefficients, and the zero polynomial stored as an empty vector.
+## Purpose
 
-The type is re-exported by the [`immut`](../immut.md) facade as `@immut.DensePolynomial`, which the examples use. The algorithms and their costs are explained in the [immut/dense design](../../design/immut/dense.md).
+`Luna-Flow/luna-poly/immut/dense` provides `DensePolynomial[A]`, an immutable univariate polynomial stored as its ascending coefficient vector. Every operation returns a new value in canonical form: no trailing zero coefficients, and the zero polynomial stored as an empty vector. The algorithms and their costs are explained in the [immut/dense design](../../design/immut/dense.md).
+
+## Importing
+
+The type is re-exported by the [`immut`](../immut.md) facade, which the examples use:
+
+```moonbit nocheck
+import {
+  "Luna-Flow/luna-poly/immut",
+}
+```
+
+To depend on this package alone, import `"Luna-Flow/luna-poly/immut/dense"` instead; its names are the same.
 
 ## The type
 

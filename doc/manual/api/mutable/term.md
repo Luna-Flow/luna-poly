@@ -1,8 +1,22 @@
 # mutable/term API
 
+## Purpose
+
 `Luna-Flow/luna-poly/mutable/term` provides a mutable `TermPolynomial[A]`: the canonical descending term array of [`immut/term`](../immut/term.md), held in a mutable field that `_inplace` methods and `clear` replace. Operators and all other methods return new values.
 
-The type is re-exported by the [`mutable`](../mutable.md) facade as `@mutable.TermPolynomial`, which the examples use. "As in immut" means the semantics, bounds and costs of the [immut/term API](../immut/term.md). The mutation model is explained in the [mutable/term design](../../design/mutable/term.md).
+"As in immut" means the semantics, bounds and costs of the [immut/term API](../immut/term.md). The mutation model is explained in the [mutable/term design](../../design/mutable/term.md).
+
+## Importing
+
+The type is re-exported by the [`mutable`](../mutable.md) facade, which the examples use:
+
+```moonbit nocheck
+import {
+  "Luna-Flow/luna-poly/mutable",
+}
+```
+
+To depend on this package alone, import `"Luna-Flow/luna-poly/mutable/term"` instead; its names are the same.
 
 ## The type
 

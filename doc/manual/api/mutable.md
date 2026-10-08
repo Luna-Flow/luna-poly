@@ -1,14 +1,22 @@
 # mutable API
 
+## Purpose
+
 `Luna-Flow/luna-poly/mutable` is the facade of the mutable polynomial layer. It defines nothing of its own: it re-exports the shared [`core`](core.md) vocabulary, the common algebra traits of `Luna-Flow/luna-generic`, and the four mutable representations, so one import gives access to the whole execution-oriented API. It exports the same names as the [`immut`](immut.md) facade.
 
-```text
+Every name below is a `pub using` alias: `@mutable.DensePolynomial` *is* `@mutable/dense.DensePolynomial`, and `@mutable.ExponentVector` *is* `@core.ExponentVector`, the same type as `@immut.ExponentVector`. Methods are documented on the page of the package that defines the type.
+
+## Importing
+
+Add the facade to your `moon.pkg`:
+
+```moonbit nocheck
 import {
   "Luna-Flow/luna-poly/mutable",
 }
 ```
 
-Every name below is a `pub using` alias: `@mutable.DensePolynomial` *is* `@mutable/dense.DensePolynomial`, and `@mutable.ExponentVector` *is* `@core.ExponentVector`, the same type as `@immut.ExponentVector`. Methods are documented on the page of the package that defines the type.
+It is the import every other `mutable` page assumes.
 
 ## Polynomial types
 

@@ -1,8 +1,22 @@
 # immut/sparse API
 
+## Purpose
+
 `Luna-Flow/luna-poly/immut/sparse` provides `SparsePolynomial[A]`, an immutable multivariate polynomial stored as an ordered map from `ExponentVector` to non-zero coefficients. It describes the same polynomials as [`TermPolynomial`](term.md) but supports lookup of a single coefficient in logarithmic time.
 
-The type is re-exported by the [`immut`](../immut.md) facade as `@immut.SparsePolynomial`, which the examples use. Variables are addressed by index. The design is explained in the [immut/sparse design](../../design/immut/sparse.md).
+Variables are addressed by index. The design is explained in the [immut/sparse design](../../design/immut/sparse.md).
+
+## Importing
+
+The type is re-exported by the [`immut`](../immut.md) facade, which the examples use:
+
+```moonbit nocheck
+import {
+  "Luna-Flow/luna-poly/immut",
+}
+```
+
+To depend on this package alone, import `"Luna-Flow/luna-poly/immut/sparse"` instead; its names are the same.
 
 ## The type
 

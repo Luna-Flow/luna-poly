@@ -1,6 +1,20 @@
 # internal API
 
-`Luna-Flow/luna-poly/internal` holds helpers shared by the implementation packages. MoonBit restricts an `internal` package to importers inside the same module, so this page documents the contract the representations rely on; code outside `luna-poly` cannot call it.
+## Purpose
+
+`Luna-Flow/luna-poly/internal` holds helpers shared by the implementation packages. This page documents the contract the representations rely on. The reasoning is in the [internal design](../design/internal.md).
+
+## Importing
+
+MoonBit restricts an `internal` package to importers inside the same module, so only packages of `luna-poly` can write
+
+```moonbit nocheck
+import {
+  "Luna-Flow/luna-poly/internal",
+}
+```
+
+Code outside `luna-poly` cannot call it.
 
 ## Powers
 

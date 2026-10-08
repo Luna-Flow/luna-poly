@@ -1,8 +1,22 @@
 # mutable/sparse API
 
+## Purpose
+
 `Luna-Flow/luna-poly/mutable/sparse` provides a mutable `SparsePolynomial[A]`: an ordered map from `ExponentVector` to non-zero coefficients, like [`immut/sparse`](../immut/sparse.md), with methods that update the map in place in logarithmic time.
 
-The type is re-exported by the [`mutable`](../mutable.md) facade as `@mutable.SparsePolynomial`, which the examples use. "As in immut" means the semantics, bounds and costs of the [immut/sparse API](../immut/sparse.md). The mutation model is explained in the [mutable/sparse design](../../design/mutable/sparse.md).
+"As in immut" means the semantics, bounds and costs of the [immut/sparse API](../immut/sparse.md). The mutation model is explained in the [mutable/sparse design](../../design/mutable/sparse.md).
+
+## Importing
+
+The type is re-exported by the [`mutable`](../mutable.md) facade, which the examples use:
+
+```moonbit nocheck
+import {
+  "Luna-Flow/luna-poly/mutable",
+}
+```
+
+To depend on this package alone, import `"Luna-Flow/luna-poly/mutable/sparse"` instead; its names are the same.
 
 ## The type
 
@@ -104,7 +118,10 @@ pub fn[A : Eq + @luna-generic.AddMonoid] SparsePolynomial::add_term_inplace(Self
 
 ### `SparsePolynomial::add_inplace`
 
-Adds every term of `other` with `add_term_inplace`, $O(n \log(m + n))$. `p.add_inplace(p)` doubles `p`.
+Adds every term of `other` with `add_term_inplace`, $O(n \log(m + n))$. `p.add_inplace(p)` doubles `p` as long as no coefficient doubles to zero.
+
+> [!WARNING]
+> `p.add_inplace(p)` iterates over the map it is changing. When a doubled coefficient is zero (for example $2 \cdot (-2^{31}) = 0$ in `Int`), the key is removed during the iteration and other terms can be added twice or not at all: for $p = -2^{31} + x + x^2 + x^3$ the result is $4x + 2x^2 + 2x^3$ instead of $2x + 2x^2 + 2x^3$. Write `p.add_inplace(p.copy())` to double a polynomial in place.
 
 ```mbti
 pub fn[A : Eq + @luna-generic.AddMonoid] SparsePolynomial::add_inplace(Self[A], Self[A]) -> Unit

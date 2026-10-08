@@ -1,10 +1,24 @@
 # immut/context API
 
+## Purpose
+
 `Luna-Flow/luna-poly/immut/context` provides `ContextPolynomial[A]`, an immutable multivariate polynomial bound to a [`VariableContext`](../core.md#variablecontext). Terms refer to variables by name through the context, and the package adds named evaluation, partial evaluation and simultaneous substitution of variables by scalars or polynomials, including by `Luna-Flow/type_theory` names.
 
-The polynomial is stored either as a [`TermPolynomial`](term.md) or as a [`SparsePolynomial`](sparse.md); you choose when you build it, and the choice affects cost, not results. The types are re-exported by the [`immut`](../immut.md) facade, which the examples use. The mathematics of substitution is in the [immut/context design](../../design/immut/context.md).
+The polynomial is stored either as a [`TermPolynomial`](term.md) or as a [`SparsePolynomial`](sparse.md); you choose when you build it, and the choice affects cost, not results. The mathematics of substitution is in the [immut/context design](../../design/immut/context.md).
 
 Most operations come in pairs: the plain form aborts on a contract violation, and the `*_checked` form returns `None` instead. The contract violations are listed with each item.
+
+## Importing
+
+The type is re-exported by the [`immut`](../immut.md) facade, which the examples use:
+
+```moonbit nocheck
+import {
+  "Luna-Flow/luna-poly/immut",
+}
+```
+
+To depend on this package alone, import `"Luna-Flow/luna-poly/immut/context"` instead; its names are the same.
 
 ## Types
 

@@ -1,16 +1,20 @@
 # core API
 
-`Luna-Flow/luna-poly/core` is the shared vocabulary of the library. It owns the exponent-vector monomial type, the named-variable layer, the shape metadata, the capability traits that every concrete polynomial implements, and the operation records used for dictionary-passing generic code. It contains no polynomial storage of its own.
+## Purpose
+
+`Luna-Flow/luna-poly/core` is the shared vocabulary of the library. It owns the exponent-vector monomial type, the named-variable layer, the shape metadata, the capability traits that every concrete polynomial implements, and the operation records used for dictionary-passing generic code. It contains no polynomial storage of its own. The mathematics behind the items is explained in the [core design](../design/core.md).
+
+## Importing
 
 Both facades, [`immut`](immut.md) and [`mutable`](mutable.md), re-export every type and trait of this page, so most programs never import `core` directly. When you do, give it an alias that does not collide with `Luna-Flow/type_theory/core`:
 
-```text
+```moonbit nocheck
 import {
   "Luna-Flow/luna-poly/core" @poly_core,
 }
 ```
 
-The examples on this page use that alias. The mathematics behind the items is explained in the [core design](../design/core.md).
+The examples on this page use that alias, and the `immut` facade for concrete polynomials.
 
 ## Monomials
 
@@ -348,10 +352,17 @@ pub enum PolynomialShape {
   Multivariate(arity~ : Int, term_count~ : Int)
   Contextual(context~ : VariableContext, arity~ : Int, term_count~ : Int)
 } derive(Eq, @debug.Debug)
-pub fn PolynomialShape::equal(Self, Self) -> Bool
 ```
 
 `length` is the number of stored coefficients of a dense polynomial, `arity` the number of variables in use (the longest exponent vector), and `term_count` the number of non-zero terms.
+
+### `PolynomialShape::equal`
+
+`a == b` compares two shapes structurally: the same constructor with equal fields, including the context of `Contextual`. It is the derived `Eq`, promoted to a method; whether two polynomials can be combined is the weaker relation `is_compatible_with`.
+
+```mbti
+pub fn PolynomialShape::equal(Self, Self) -> Bool
+```
 
 ### `PolynomialShape::univariate`, `PolynomialShape::multivariate`, `PolynomialShape::contextual`
 
@@ -585,14 +596,21 @@ Operations of a univariate polynomial type `P` with coefficients `A`.
 
 ```mbti
 type UnivariateOps[P, A]
+```
+
+### `UnivariateOps::new`
+
+`UnivariateOps::new` builds a record from the functions of one polynomial type.
+
+```mbti
 pub fn[P, A] UnivariateOps::new(() -> P, () -> P, (Array[A]) -> P, (P) -> Array[A], (P, Int) -> A, (P, Int) -> A?, (P, A) -> A, (P, P) -> P, (P, P) -> P, (P, Int, A) -> P, (P, Int, A) -> P?, (P, UInt) -> P) -> Self[P, A]
 ```
 
 `new` takes, in order: `zero`, `one`, `from_coefficients`, `to_coefficients`, `coefficient`, `coefficient_checked`, `eval`, `add`, `mul`, `scale`, `scale_checked` and `pow`, with the meanings of the [`DensePolynomial`](immut/dense.md) methods of the same names. Use it to wrap your own univariate type.
 
-### `UnivariateOps` accessors
+### `UnivariateOps::zero`, `UnivariateOps::one`, `UnivariateOps::from_coefficients`, `UnivariateOps::to_coefficients`, `UnivariateOps::coefficient`, `UnivariateOps::coefficient_checked`, `UnivariateOps::eval`, `UnivariateOps::add`, `UnivariateOps::mul`, `UnivariateOps::scale`, `UnivariateOps::scale_checked`, `UnivariateOps::pow`
 
-Each accessor applies the corresponding stored function.
+Each accessor applies the corresponding stored function to its arguments and adds no behaviour of its own.
 
 ```mbti
 pub fn[P, A] UnivariateOps::zero(Self[P, A]) -> P
@@ -615,12 +633,21 @@ Operations of an index-addressed multivariate polynomial type `P` with coefficie
 
 ```mbti
 type MultivariateOps[P, A]
+```
+
+### `MultivariateOps::new`
+
+`MultivariateOps::new` builds a record from the functions of one polynomial type.
+
+```mbti
 pub fn[P, A] MultivariateOps::new(() -> P, () -> P, (Array[(ExponentVector, A)]) -> P, (P) -> Array[(ExponentVector, A)], (P, Array[A]) -> A, (P, Array[A]) -> A?, (P, P) -> P, (P, P) -> P, (P, ExponentVector, A) -> P, (P, UInt) -> P) -> Self[P, A]
 ```
 
 `new` takes, in order: `zero`, `one`, `from_terms`, `to_terms`, `eval_indexed`, `eval_indexed_checked`, `add`, `mul`, `scale` and `pow`. `eval_indexed` is the `eval` method of [`TermPolynomial`](immut/term.md) and [`SparsePolynomial`](immut/sparse.md).
 
-### `MultivariateOps` accessors
+### `MultivariateOps::zero`, `MultivariateOps::one`, `MultivariateOps::from_terms`, `MultivariateOps::to_terms`, `MultivariateOps::eval_indexed`, `MultivariateOps::eval_indexed_checked`, `MultivariateOps::add`, `MultivariateOps::mul`, `MultivariateOps::scale`, `MultivariateOps::pow`
+
+Each accessor applies the corresponding stored function to its arguments and adds no behaviour of its own.
 
 ```mbti
 pub fn[P, A] MultivariateOps::zero(Self[P, A]) -> P
@@ -641,12 +668,21 @@ Operations of a context-bound polynomial type `P` with coefficients `A`.
 
 ```mbti
 type ContextOps[P, A]
+```
+
+### `ContextOps::new`
+
+`ContextOps::new` builds a record from the functions of one polynomial type.
+
+```mbti
 pub fn[P, A] ContextOps::new((VariableContext, Array[(ExponentVector, A)]) -> P, (P) -> Array[(ExponentVector, A)], (P, Array[(Variable, A)]) -> A?, (P, P) -> P?, (P, P) -> P?) -> Self[P, A]
 ```
 
 `new` takes, in order: `from_terms`, `to_terms`, `eval_named_checked`, `add_checked` and `mul_checked`, with the meanings of the [`ContextPolynomial`](immut/context.md) methods.
 
-### `ContextOps` accessors
+### `ContextOps::from_terms`, `ContextOps::to_terms`, `ContextOps::eval_named_checked`, `ContextOps::add_checked`, `ContextOps::mul_checked`
+
+Each accessor applies the corresponding stored function to its arguments and adds no behaviour of its own.
 
 ```mbti
 pub fn[P, A] ContextOps::from_terms(Self[P, A], VariableContext, Array[(ExponentVector, A)]) -> P
