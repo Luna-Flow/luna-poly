@@ -6,3 +6,14 @@ _build/
 _coverage/
 coverage_summary.txt
 src/main/
+
+# AI agent / assistant local state (never track)
+.claude/
+.codex/
+.codex-tmp/
+.cursor/
+.gemini/
+.kiro/
+.windsurf/
+.aider*
+CLAUDE.local.md
