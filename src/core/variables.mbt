@@ -192,7 +192,9 @@ test "variable context resolves type-theory names" {
     Some(actual) => assert_eq(actual, y)
     None => fail("expected y to resolve by type-theory name")
   }
-  assert_true(context.variable_by_type_theory_name(@tt_core.Name::new("z")) is None)
+  assert_true(
+    context.variable_by_type_theory_name(@tt_core.Name::new("z")) is None,
+  )
   assert_eq(context.require_type_theory_name(@tt_core.Name::new("x")), x)
 }
 
