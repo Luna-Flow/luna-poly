@@ -150,7 +150,7 @@ test "queries" {
   inspect(p.arity(), content="3")
   debug_inspect(p.total_degree(), content="Some(3)")
   debug_inspect(p.coefficients(), content="[5, 1, 7]")
-  inspect(p.to_terms()[0].0, content="xx_1^2")
+  inspect(p.to_terms()[0].0, content="x * x_1^2")
 }
 ```
 
@@ -194,10 +194,10 @@ pub fn[A : Eq + @luna-generic.AddMonoid + Mul + @luna-generic.One] TermPolynomia
 test "arithmetic" {
   let x = @immut.TermPolynomial::from_array([([1U], 1)])
   let y = @immut.TermPolynomial::from_array([([0U, 1], 1)])
-  inspect((x + y).pow(2), content="1 * x_1^2 + 2 * xx_1 + 1 * x^2")
+  inspect((x + y).pow(2), content="1 * x_1^2 + 2 * x * x_1 + 1 * x^2")
   inspect((x + y) * (x - y), content="-1 * x_1^2 + 1 * x^2")
   let xy = @immut.ExponentVector::from_array([1U, 1])
-  inspect((x + y).scale(xy, 3), content="3 * xx_1^2 + 3 * x^2x_1")
+  inspect((x + y).scale(xy, 3), content="3 * x * x_1^2 + 3 * x^2 * x_1")
 }
 ```
 

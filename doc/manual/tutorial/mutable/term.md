@@ -27,7 +27,7 @@ test "mutable term quick start" {
   let p : @mutable.TermPolynomial[Int] = @mutable.TermPolynomial::zero()
   p.add_term_inplace(@mutable.ExponentVector::from_array([1U, 1]), 3)
   p.add_term_inplace(@mutable.ExponentVector::from_array([2U]), 1)
-  inspect(p, content="3 * xx_1 + 1 * x^2")
+  inspect(p, content="3 * x * x_1 + 1 * x^2")
 }
 ```
 
@@ -57,7 +57,7 @@ test "collect" {
 test "multiply" {
   let p = @mutable.TermPolynomial::from_array([([1U], 1), ([0U, 1], 1)])
   p.mul_inplace(p)
-  inspect(p, content="1 * x_1^2 + 2 * xx_1 + 1 * x^2")
+  inspect(p, content="1 * x_1^2 + 2 * x * x_1 + 1 * x^2")
   p.scale_inplace(@mutable.ExponentVector::from_array([0U, 0, 1]), -1)
   inspect(p.total_degree().unwrap(), content="3")
 }

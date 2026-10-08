@@ -86,7 +86,7 @@ pub fn[A] ContextPolynomial::from_sparse_polynomial(@Luna-Flow/luna-poly/core.Va
 ```
 
 > [!WARNING]
-> These two constructors do not check that the polynomial's arity is at most `context.size()`. If it is larger, `eval_named`, `eval_named_checked` and `to_string` abort with an index error instead of returning `None`. Check `polynomial.arity() <= context.size()` before calling them with untrusted input.
+> These two constructors do not check that the polynomial's arity is at most `context.size()`. If it is larger, `eval_named_checked` returns `None` and `eval_named` aborts, because the context names fewer variables than the polynomial uses, and `to_string` aborts with an index error. Check `polynomial.arity() <= context.size()` before calling them with untrusted input.
 
 ### `ContextPolynomial::constant`
 

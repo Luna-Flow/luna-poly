@@ -143,7 +143,7 @@ test "mutation" {
   inspect(p, content="3 * x_1")
   p.mul_inplace(p)
   p.scale_inplace(@mutable.ExponentVector::from_array([1U]), 2)
-  inspect(p, content="18 * xx_1^2")
+  inspect(p, content="18 * x * x_1^2")
   p.clear()
   assert_true(p.is_zero())
 }

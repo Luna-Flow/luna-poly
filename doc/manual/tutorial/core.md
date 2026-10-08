@@ -37,12 +37,12 @@ test "quick start" {
   let xy = @poly_core.ExponentVector::from_array([1U, 1])
   let x2 = @poly_core.ExponentVector::from_array([2U])
   let product = xy * x2
-  inspect(product, content="x^3x_1")
+  inspect(product, content="x^3 * x_1")
   inspect(product.degree(), content="4")
 }
 ```
 
-`[1, 1]` is $x_0 x_1$ and `[2]` is $x_0^2$; their product $x_0^3 x_1$ is printed as `x^3x_1`. Every type in this tutorial is also re-exported by the [`immut`](immut.md) and [`mutable`](mutable.md) facades, so `@immut.ExponentVector` is the same type as `@poly_core.ExponentVector`.
+`[1, 1]` is $x_0 x_1$ and `[2]` is $x_0^2$; their product $x_0^3 x_1$ is printed as `x^3 * x_1`. Every type in this tutorial is also re-exported by the [`immut`](immut.md) and [`mutable`](mutable.md) facades, so `@immut.ExponentVector` is the same type as `@poly_core.ExponentVector`.
 
 ## Everyday tasks
 
@@ -82,7 +82,7 @@ test "monomial order" {
   monomials.sort()
   inspect(
     monomials.map(m => m.to_string()).join(" < "),
-    content="1 < x < x_1^2 < xx_2 < x^3",
+    content="1 < x < x_1^2 < x * x_2 < x^3",
   )
 }
 ```
@@ -257,7 +257,7 @@ The `Option` does not say *why* an operation failed; check the preconditions you
 
 - **Import aliases.** `Luna-Flow/luna-poly/core` and `Luna-Flow/type_theory/core` both default to `@core`. Give at least one an alias, as in the quick start.
 - **Exponents are `UInt`.** Write literals as `1U` (at least the first element of an array), and remember that exponent sums wrap modulo $2^{32}$.
-- **Printed monomials have no separator.** `x * x_1` prints as `xx_1`. Use `to_array()` when you need an unambiguous form.
+- **Printed monomials use positional names.** `x` is $x_0$ and `x_i` is $x_i$, whatever names you have in mind; use a `ContextPolynomial` to print your own names, or `to_array()` for the raw exponents.
 - **Multi-bound type parameters.** Inside `fn[P : A + B]`, or when a method comes from a supertrait, write `Trait::method(p)` instead of `p.method()`.
 - **Contexts are structural.** Two contexts built from the same names in the same order are equal, and their polynomials can be combined.
 - **Shapes ignore size.** Two multivariate shapes are compatible whatever their arities; compatibility only rules out mixing families or contexts.

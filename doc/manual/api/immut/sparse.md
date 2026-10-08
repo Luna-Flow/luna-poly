@@ -155,7 +155,7 @@ test "queries" {
   let p = @immut.SparsePolynomial::from_array([([1U, 1], 3), ([2U], 1), ([], 4)])
   debug_inspect(p.get(@immut.ExponentVector::from_array([1U, 1])), content="Some(3)")
   debug_inspect(p.get(@immut.ExponentVector::from_array([0U, 2])), content="None")
-  inspect(p.to_terms().map(t => t.0.to_string()).join(", "), content="1, x^2, xx_1")
+  inspect(p.to_terms().map(t => t.0.to_string()).join(", "), content="1, x^2, x * x_1")
   inspect(p.arity(), content="2")
   debug_inspect(p.total_degree(), content="Some(2)")
 }
@@ -200,9 +200,9 @@ pub fn[A : Eq + @luna-generic.AddMonoid + Mul + @luna-generic.One] SparsePolynom
 ```moonbit
 test "arithmetic" {
   let p = @immut.SparsePolynomial::from_array([([1U], 1), ([0U, 1], -1)])
-  inspect(p.pow(2), content="1 * x^2 + -2 * xx_1 + 1 * x_1^2")
+  inspect(p.pow(2), content="1 * x^2 + -2 * x * x_1 + 1 * x_1^2")
   inspect(p - p, content="0")
-  inspect(p.scale(@immut.ExponentVector::from_array([1U]), 2), content="2 * x^2 + -2 * xx_1")
+  inspect(p.scale(@immut.ExponentVector::from_array([1U]), 2), content="2 * x^2 + -2 * x * x_1")
 }
 ```
 

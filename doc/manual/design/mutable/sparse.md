@@ -30,7 +30,7 @@ so only the key $\alpha$ changes, and it leaves the support exactly when $f_\alp
 
 **Choice.** `set_coefficient` and `add_term_inplace` implement the formula above directly on the AVL tree: one lookup, then an insertion, an update or a removal, each $O(\log m)$ comparisons. The invariant "no zero values" is maintained locally: `set_coefficient(α, 0)` removes the key, and `add_term_inplace` removes it when the sum becomes zero and ignores a zero increment. `add_inplace(g)` is $n$ such updates, $O(n \log(m + n))$, which is the reason to choose this container over [`mutable/term`](term.md) for accumulation.
 
-`p.add_inplace(p)` iterates over the tree it is updating. While every update only rewrites the value of the key being visited, the tree keeps its shape and the result is $2p$. When a doubled coefficient is zero, which happens with zero divisors such as $2 \cdot (-2^{31}) = 0$ in `Int`, `add_term_inplace` *removes* that key, the AVL tree rebalances in the middle of the iteration, and later keys can be visited twice or skipped. For $p = -2^{31} + x + x^2 + x^3$ over `Int`, `p.add_inplace(p)` gives $4x + 2x^2 + 2x^3$ instead of $2x + 2x^2 + 2x^3$. Iterating over a snapshot (`other.to_terms()`) would remove the problem; until then, write `p.add_inplace(p.copy())`.
+`add_inplace(g)` iterates over a snapshot of $g$ (`g.to_terms()`), not over its tree. This makes `p.add_inplace(p)` well defined: a coefficient that doubles to zero removes its key, and removing keys from a tree while iterating over it could visit later keys twice or skip them, but the snapshot is not affected. The result is $2p$.
 
 ### Whole-polynomial operations delegate
 
@@ -54,7 +54,7 @@ so only the key $\alpha$ changes, and it leaves the support exactly when $f_\alp
 - **No zero values; canonical keys.** Maintained by every mutating method; `==` (comparing ascending term lists) is polynomial equality.
 - **Agreement with immut**: `from_immut(a).op(...).to_immut() == a.op(...)`, and in-place operations leave the receiver equal to the operator result.
 - **Isolation**: `copy`, `to_terms`, `from_immut` and `to_immut` build new storage.
-- **Aliasing**: `mul_inplace(p)` on itself gives $p^2$. `add_inplace(p)` on itself gives $2p$ only when no coefficient doubles to zero; otherwise the result is wrong, as shown above.
+- **Aliasing**: `add_inplace(p)` on itself gives $2p$, also when coefficients double to zero; `mul_inplace(p)` on itself gives $p^2$.
 
 ## Alternatives rejected
 

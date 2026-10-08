@@ -148,7 +148,7 @@ pub fn ExponentVector::hash(Self) -> Int
 
 ### `ExponentVector::to_string`
 
-Renders the monomial with `x` for variable `0` and `x_i` for variable `i`, and `1` for the unit. Factors are written next to each other without a separator.
+Renders the monomial with `x` for variable `0` and `x_i` for variable `i`, and `1` for the unit. Factors are separated by ` * `, so $x_0 x_1$ prints as `x * x_1` and $x_0^2 x_2^3$ as `x^2 * x_2^3`. The 0.2.0 release wrote them without a separator (`xx_1`).
 
 ```mbti
 pub fn ExponentVector::to_string(Self) -> String
@@ -161,9 +161,9 @@ test "exponent vectors" {
   inspect(a.degree(), content="3")
   inspect(a[1], content="0")
   inspect(a[7], content="0")
-  inspect(a, content="x^2x_2")
+  inspect(a, content="x^2 * x_2")
   let b = @poly_core.ExponentVector::from_array([0U, 1])
-  inspect(a * b, content="x^2x_1x_2")
+  inspect(a * b, content="x^2 * x_1 * x_2")
   assert_true(a.get_checked(-1) is None)
   assert_true(a.with_exponent(2, 0) == @poly_core.ExponentVector::from_array([2U]))
   // Same degree: the higher variable decides, so x_1 > x_0.

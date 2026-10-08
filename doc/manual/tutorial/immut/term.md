@@ -28,7 +28,7 @@ import {
 ```moonbit
 test "term quick start" {
   let p = @immut.TermPolynomial::from_array([([2U], 1), ([1U, 1], 3), ([], 4)])
-  inspect(p, content="3 * xx_1 + 1 * x^2 + 4")
+  inspect(p, content="3 * x * x_1 + 1 * x^2 + 4")
   inspect(p.eval([2, 5]), content="38")
 }
 ```
@@ -115,7 +115,7 @@ Use `eval_checked` when the point comes from user input; `eval` aborts on a shor
 test "scale" {
   let p = @immut.TermPolynomial::from_array([([1U], 1), ([], 1)])
   let shifted = p.scale(@immut.ExponentVector::from_array([0U, 2]), 4)
-  inspect(shifted, content="4 * xx_1^2 + 4 * x_1^2")
+  inspect(shifted, content="4 * x * x_1^2 + 4 * x_1^2")
 }
 ```
 
@@ -135,7 +135,7 @@ fn[A : Eq + @immut.AddMonoid] homogeneous_part(
 
 test "homogeneous part" {
   let p = @immut.TermPolynomial::from_array([([2U], 1), ([1U, 1], 3), ([1U], 7), ([], 4)])
-  inspect(homogeneous_part(p, 2), content="3 * xx_1 + 1 * x^2")
+  inspect(homogeneous_part(p, 2), content="3 * x * x_1 + 1 * x^2")
   inspect(homogeneous_part(p, 5), content="0")
 }
 ```
@@ -188,7 +188,7 @@ test "with names" {
 - **`UInt` literals.** Exponent arrays are `Array[UInt]`; write the first element as `1U` so the literal is typed correctly.
 - **Trailing zeros do not add variables.** `[1, 0, 0]` is $x_0$, and its arity is `1`, not `3`.
 - **Order is graded, not lexicographic.** $x_1$ comes before $x_0$, and $x_0^2$ before both.
-- **Printed monomials have no separator.** `xx_1` means $x_0 x_1$.
+- **Printed monomials are positional.** `x * x_1` means $x_0 x_1$; variable names come only with `ContextPolynomial`.
 - **Large products.** `*` materializes all $mn$ products before merging; for very large sparse inputs that costs memory.
 
 ## Next steps

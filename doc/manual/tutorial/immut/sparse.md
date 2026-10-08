@@ -77,7 +77,7 @@ test "compute" {
   let x = @immut.SparsePolynomial::from_array([([1U], 1)])
   let y = @immut.SparsePolynomial::from_array([([0U, 1], 1)])
   let p = (x * y + x).pow(2)
-  inspect(p, content="1 * x^2 + 2 * x^2x_1 + 1 * x^2x_1^2")
+  inspect(p, content="1 * x^2 + 2 * x^2 * x_1 + 1 * x^2 * x_1^2")
   inspect(p.eval([2, 3]), content="64")
   assert_true(p.eval_checked([2]) is None)
 }

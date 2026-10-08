@@ -101,7 +101,7 @@ Each checked operation returns `None` exactly in these situations:
 | Operation | Rejected when |
 | --- | --- |
 | `from_named_terms_*_checked`, `variable_checked` | a variable is not contained in the context |
-| `eval_named_checked` | a variable is outside the context; a variable with index below `arity()` is unassigned or assigned twice |
+| `eval_named_checked` | a variable is outside the context; a variable with index below `arity()` is unassigned or assigned twice; `arity()` exceeds the context size |
 | `substitute_checked`, `eval_partial_checked` | a variable is outside the context or listed twice; a replacement polynomial has a different context |
 | `*_names_checked` | additionally, a name is not in the context |
 | `add_checked`, `mul_checked` | the contexts differ |
@@ -118,7 +118,7 @@ Binary operations require equal contexts. Merging $\Gamma$ and $\Gamma'$ automat
 
 ## Correctness / invariants
 
-- **Context invariant.** Every exponent vector of a context polynomial has length at most $|\Gamma|$. The named constructors guarantee it. `from_term_polynomial` and `from_sparse_polynomial` do not check it; a polynomial that violates it makes `eval_named(_checked)` and `to_string` abort. Callers must ensure `polynomial.arity() <= context.size()`.
+- **Context invariant.** Every exponent vector of a context polynomial has length at most $|\Gamma|$. The named constructors guarantee it. `from_term_polynomial` and `from_sparse_polynomial` do not check it; for a polynomial that violates it, `eval_named_checked` returns `None`, `eval_named` aborts, and `to_string` aborts with an index error. Callers must ensure `polynomial.arity() <= context.size()`.
 - **Substitution** computes $\varphi_\sigma$, the unique ring endomorphism with $x_i \mapsto q_i$, for commutative coefficients; the result is canonical (zero terms vanish, as when substituting $x \mapsto 0$).
 - **Partial evaluation** satisfies $\mathrm{ev}_b \circ \varphi_a = \mathrm{ev}_{a \cup b}$.
 - **Named evaluation** equals indexed evaluation at the values listed by index.

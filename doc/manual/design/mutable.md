@@ -68,7 +68,7 @@ The layers match in names, parameter order and checked-variant conventions. The 
 - Canonical form after every public call, in every container.
 - For every operation, the mutable result converted with `to_immut` equals the immutable result on the converted inputs.
 - No mutable container shares mutable storage with any other value.
-- Passing a container as its own argument (`p.add_inplace(p)`, `p.mul_inplace(p)`) gives $2p$ and $p^2$, with one exception: the sparse `p.add_inplace(p)` is wrong when doubling a coefficient gives zero (see [mutable/sparse](mutable/sparse.md#pointwise-updates-on-the-tree)).
+- Passing a container as its own argument (`p.add_inplace(p)`, `p.mul_inplace(p)`) gives $2p$ and $p^2$. The sparse `add_inplace` iterates over a snapshot of its argument so that this also holds when coefficients double to zero (see [mutable/sparse](mutable/sparse.md#pointwise-updates-on-the-tree)).
 
 ## Alternatives rejected
 
