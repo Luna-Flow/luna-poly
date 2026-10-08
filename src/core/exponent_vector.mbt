@@ -3,7 +3,7 @@
 struct ExponentVector {
   exponents : @core_vector.Vector[UInt]
   degree : UInt
-}
+} derive(Debug)
 
 ///|
 fn ExponentVector::from_vector(
@@ -18,7 +18,7 @@ fn ExponentVector::from_vector(
   for exponent in exponents {
     degree = degree + exponent
   }
-  { exponents, degree }
+  { exponents, degree, }
 }
 
 ///|
@@ -28,7 +28,7 @@ pub fn ExponentVector::from_array(values : Array[UInt]) -> ExponentVector {
 
 ///|
 pub fn ExponentVector::one() -> ExponentVector {
-  { exponents: @core_vector.from_array([]), degree: 0 }
+  { exponents: @core_vector.from_array([]), degree: 0, }
 }
 
 ///|

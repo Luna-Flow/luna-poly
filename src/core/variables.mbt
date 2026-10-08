@@ -3,7 +3,7 @@
 struct Variable {
   name : String
   index : Int
-} derive(Eq, Compare)
+} derive(Eq, Compare, Debug)
 
 ///|
 pub fn Variable::name(self : Variable) -> String {
@@ -29,11 +29,11 @@ pub impl Show for Variable with fn output(self, logger) {
 /// Variable table used by context-aware multivariate polynomials.
 struct VariableContext {
   variables : @core_vector.Vector[Variable]
-} derive(Eq)
+} derive(Eq, Debug)
 
 ///|
 pub fn VariableContext::new() -> VariableContext {
-  { variables: @core_vector.from_array([]) }
+  { variables: @core_vector.from_array([]), }
 }
 
 ///|
@@ -76,10 +76,10 @@ pub fn VariableContext::extend_checked(
   if self.has_name(name) {
     return None
   }
-  let variable : Variable = { name, index: self.variables.length() }
+  let variable : Variable = { name, index: self.variables.length(), }
   let variables = self.variables.iter().to_array()
   variables.push(variable)
-  Some(({ variables: @core_vector.from_array(variables) }, variable))
+  Some(({ variables: @core_vector.from_array(variables), }, variable))
 }
 
 ///|

@@ -38,7 +38,7 @@ pub enum PolynomialShape {
   Univariate(length~ : Int)
   Multivariate(arity~ : Int, term_count~ : Int)
   Contextual(context~ : VariableContext, arity~ : Int, term_count~ : Int)
-} derive(Eq)
+} derive(Eq, Debug)
 
 ///|
 pub fn PolynomialShape::univariate(length : Int) -> PolynomialShape {

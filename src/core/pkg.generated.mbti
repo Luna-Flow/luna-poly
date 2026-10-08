@@ -3,6 +3,7 @@ package "Luna-Flow/luna-poly/core"
 
 import {
   "Luna-Flow/luna-generic",
+  "moonbitlang/core/debug",
 }
 
 // Values
@@ -18,16 +19,21 @@ pub fn[P, A] ContextOps::mul_checked(Self[P, A], P, P) -> P?
 pub fn[P, A] ContextOps::new((VariableContext, Array[(ExponentVector, A)]) -> P, (P) -> Array[(ExponentVector, A)], (P, Array[(Variable, A)]) -> A?, (P, P) -> P?, (P, P) -> P?) -> Self[P, A]
 pub fn[P, A] ContextOps::to_terms(Self[P, A], P) -> Array[(ExponentVector, A)]
 
-type ExponentVector
+type ExponentVector derive(@debug.Debug)
+pub fn ExponentVector::compare(Self, Self) -> Int
 pub fn ExponentVector::degree(Self) -> UInt
+pub fn ExponentVector::equal(Self, Self) -> Bool
 pub fn ExponentVector::from_array(Array[UInt]) -> Self
 #alias("_[_]")
 pub fn ExponentVector::get(Self, Int) -> UInt
 pub fn ExponentVector::get_checked(Self, Int) -> UInt?
+pub fn ExponentVector::hash(Self) -> Int
 pub fn ExponentVector::is_one(Self) -> Bool
 pub fn ExponentVector::length(Self) -> Int
+pub fn ExponentVector::mul(Self, Self) -> Self
 pub fn ExponentVector::one() -> Self
 pub fn ExponentVector::to_array(Self) -> Array[UInt]
+pub fn ExponentVector::to_string(Self) -> String
 pub fn ExponentVector::with_exponent(Self, Int, UInt) -> Self
 pub fn ExponentVector::with_exponent_checked(Self, Int, UInt) -> Self?
 pub impl @luna-generic.One for ExponentVector
@@ -54,10 +60,11 @@ pub enum PolynomialShape {
   Univariate(length~ : Int)
   Multivariate(arity~ : Int, term_count~ : Int)
   Contextual(context~ : VariableContext, arity~ : Int, term_count~ : Int)
-} derive(Eq)
+} derive(Eq, @debug.Debug)
 pub fn PolynomialShape::arity(Self) -> Int
 pub fn PolynomialShape::compatible_checked(Self, Self) -> Unit?
 pub fn PolynomialShape::contextual(VariableContext, Int, Int) -> Self
+pub fn PolynomialShape::equal(Self, Self) -> Bool
 pub fn PolynomialShape::is_compatible_with(Self, Self) -> Bool
 pub fn PolynomialShape::multivariate(Int, Int) -> Self
 pub fn PolynomialShape::term_count(Self) -> Int?
@@ -78,14 +85,18 @@ pub fn[P, A] UnivariateOps::scale_checked(Self[P, A], P, Int, A) -> P?
 pub fn[P, A] UnivariateOps::to_coefficients(Self[P, A], P) -> Array[A]
 pub fn[P, A] UnivariateOps::zero(Self[P, A]) -> P
 
-type Variable derive(Compare, Eq)
+type Variable derive(Compare, Eq, @debug.Debug)
+pub fn Variable::compare(Self, Self) -> Int
+pub fn Variable::equal(Self, Self) -> Bool
 pub fn Variable::index(Self) -> Int
 pub fn Variable::name(Self) -> String
+pub fn Variable::to_string(Self) -> String
 pub fn Variable::to_type_theory_name(Self) -> @Luna-Flow/type_theory/core.Name
 pub impl Show for Variable
 
-type VariableContext derive(Eq)
+type VariableContext derive(Eq, @debug.Debug)
 pub fn VariableContext::contains(Self, Variable) -> Bool
+pub fn VariableContext::equal(Self, Self) -> Bool
 pub fn VariableContext::extend(Self, String) -> (Self, Variable)
 pub fn VariableContext::extend_checked(Self, String) -> (Self, Variable)?
 pub fn VariableContext::from_names(Array[String]) -> Self
@@ -154,4 +165,3 @@ pub(open) trait MutablePolynomial : Clearable + Copyable {
 
 pub(open) trait UnivariatePolynomial : HasShape + HasLength + HasDegree + IsZero {
 }
-
