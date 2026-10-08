@@ -3,8 +3,8 @@ name = "Luna-Flow/luna-poly"
 version = "0.2.0"
 
 import {
-  "Luna-Flow/arithmetic@0.2.1",
-  "Luna-Flow/luna-generic@0.3.3",
+  "Luna-Flow/arithmetic@0.5.0",
+  "Luna-Flow/luna-generic@0.4.0",
   "moonbitlang/quickcheck@0.14.0",
   "Luna-Flow/type_theory@0.2.0",
 }
