@@ -2,6 +2,17 @@
 
 This tutorial is the entry point for using polynomials as values. It shows one import that gives you every immutable representation, helps you pick the right one, and moves a polynomial between them. Each representation has its own tutorial for the details.
 
+| I want to | Use |
+| --- | --- |
+| get every immutable type with one import | `"Luna-Flow/luna-poly/immut"` |
+| compute with one variable | `DensePolynomial` |
+| traverse terms in order or read the leading term | `TermPolynomial` |
+| look up single coefficients | `SparsePolynomial` |
+| use named variables and substitution | `ContextPolynomial` |
+| convert between representations | `to_terms` and `from_terms`, or the context conversions |
+| write code that runs on every representation | the capability traits and `ops()` |
+| update a polynomial in place | the [mutable layer](mutable.md), via `from_immut` |
+
 ## Quick start
 
 ```bash

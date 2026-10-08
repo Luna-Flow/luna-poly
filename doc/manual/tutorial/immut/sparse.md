@@ -2,6 +2,16 @@
 
 This tutorial shows how to use `SparsePolynomial` when you need to look up individual coefficients of a multivariate polynomial: build one, query coefficients by exponent vector, add terms, compute and evaluate.
 
+| I want to | Use |
+| --- | --- |
+| build a sparse polynomial | `SparsePolynomial::from_array` or `from_terms` |
+| read the coefficient of $x^\alpha$ | `get` (`None` means zero) |
+| add one term and get a new polynomial | `add_term` |
+| add, multiply, evaluate | `+`, `*`, `eval`, `eval_checked` |
+| find the leading term | the last element of `to_terms()` |
+| switch to sorted-array storage | `TermPolynomial::from_terms(p.to_terms())` |
+| accumulate many terms quickly | the mutable [`SparsePolynomial`](../mutable/sparse.md) |
+
 ## Quick start
 
 ```bash

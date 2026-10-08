@@ -2,6 +2,17 @@
 
 This tutorial shows how to write polynomials in named variables and transform them: evaluate by name, evaluate some variables and keep the rest, substitute polynomials for variables, and do all of this with names coming from `Luna-Flow/type_theory`.
 
+| I want to | Use |
+| --- | --- |
+| declare named variables | `VariableContext::from_names`, `require_variable` |
+| build a polynomial from named terms | `from_named_terms_as_sparse` or `_as_terms` |
+| build $x$ or a constant | `ContextPolynomial::variable`, `constant` |
+| evaluate by name | `eval_named` |
+| fix some variables and keep the rest | `eval_partial` |
+| replace variables by polynomials | `substitute` with `Polynomial(q)` |
+| use `type_theory` names | `substitute_names`, `eval_partial_named` |
+| get `None` instead of an abort | the `*_checked` variants |
+
 ## Quick start
 
 ```bash

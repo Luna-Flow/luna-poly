@@ -2,6 +2,15 @@
 
 This tutorial is the entry point for updating polynomials in place. It shows the one import you need, how mutation differs from the operators, how to move between the mutable and immutable layers, and where each representation's tutorial continues.
 
+| I want to | Use |
+| --- | --- |
+| get every mutable type with one import | `"Luna-Flow/luna-poly/mutable"` |
+| change a polynomial in place | `set_coefficient`, `add_term_inplace`, `*_inplace` |
+| keep a value unchanged while computing | the operators, which never mutate |
+| take a snapshot | `copy()` |
+| move to or from the immutable layer | `to_immut`, `from_immut` |
+| reset a buffer | `clear()` or `Clearable::clear` |
+
 ## Quick start
 
 ```bash

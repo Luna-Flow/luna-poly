@@ -2,6 +2,14 @@
 
 This tutorial shows how to accumulate a named-variable polynomial in place and how to substitute and evaluate it with the same calls as in the immutable layer.
 
+| I want to | Use |
+| --- | --- |
+| accumulate a sum of products over named variables | `add_inplace`, `mul_inplace` |
+| substitute and evaluate | the same calls as in `immut/context` |
+| keep a snapshot | `copy()` (constant time) |
+| reset | `clear` |
+| combine without aborting | `ops()` and its `add_checked`, `mul_checked` |
+
 ## Quick start
 
 ```bash

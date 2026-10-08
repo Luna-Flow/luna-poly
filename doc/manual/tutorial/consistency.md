@@ -2,6 +2,12 @@
 
 This page is for contributors: it explains how to run the cross-layer agreement tests and how to add one when you add or change an operation. Library users never import this package.
 
+| I want to | Use |
+| --- | --- |
+| run the agreement tests | `moon test` |
+| check a new operation in both layers | a test in `src/consistency/core_wbtest.mbt` |
+| check a failure contract | compare the `*_checked` results of both layers |
+
 ## Quick start
 
 Run the tests of this package from the repository (or from a workspace that contains it):

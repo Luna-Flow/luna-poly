@@ -2,6 +2,19 @@
 
 This tutorial teaches you to compute with univariate polynomials as immutable values: build them, do arithmetic, evaluate, compose and differentiate them, and pick the right multiplication for long inputs.
 
+| I want to | Use |
+| --- | --- |
+| build $1 + 2x + 3x^2$ | `DensePolynomial::from_coefficients([1, 2, 3])` |
+| build $x$, a constant or $c\,x^n$ | `variable`, `constant`, `monomial` |
+| read a coefficient or the degree | `coefficient`, `degree`, `leading_term` |
+| add, subtract, multiply | `+`, `-`, `*` |
+| evaluate at a point | `eval` (Horner) |
+| compose $p(q(x))$ | `substitute` |
+| differentiate | `derivative` |
+| multiply long polynomials | `karatsuba` |
+| raise to a power | `pow` |
+| avoid aborting on a negative power index | `coefficient_checked`, `monomial_checked`, `scale_checked` |
+
 ## Quick start
 
 Add the module and import the immutable facade, which re-exports `DensePolynomial`:

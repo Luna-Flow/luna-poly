@@ -2,6 +2,17 @@
 
 This tutorial shows how to use the shared layer of `luna-poly`: exponent vectors, named variables, shapes, capability traits and operation records. By the end you can write one function that works for every polynomial representation in the library, and plug your own representation into it.
 
+| I want to | Use |
+| --- | --- |
+| build a monomial $x_0 x_1^2$ | `ExponentVector::from_array([1U, 2U])` |
+| read or change one exponent | `v[i]`, `get_checked`, `with_exponent` |
+| sort monomials the way the library does | `<`, `compare` (graded, ties at the last variable) |
+| name variables | `VariableContext::from_names`, `require_variable` |
+| map variables to `type_theory` names and back | `to_type_theory_name`, `variable_by_type_theory_name` |
+| write one function for every representation | the `Has*` traits or an operation record from `ops()` |
+| check that two polynomials can be combined | `shape().is_compatible_with(...)` |
+| avoid aborts | the `*_checked` variants, which return `None` |
+
 ## Quick start
 
 Add the module:

@@ -2,6 +2,14 @@
 
 This tutorial shows how to build a multivariate polynomial term by term in a mutable container that stays sorted and canonical, and when to prefer whole-polynomial operations instead.
 
+| I want to | Use |
+| --- | --- |
+| collect terms from a loop | `add_term_inplace` |
+| multiply or scale in place | `mul_inplace`, `scale_inplace` |
+| add many terms at once | build an array and call `from_terms` once |
+| evaluate the current value | `eval`, `eval_checked` |
+| publish the result | `to_immut` |
+
 ## Quick start
 
 ```bash

@@ -2,6 +2,13 @@
 
 This tutorial shows how to use the mutable `SparsePolynomial` as an accumulator: set and add coefficients by exponent vector in logarithmic time, expand products term by term, and freeze the result.
 
+| I want to | Use |
+| --- | --- |
+| count monomials or accumulate coefficients | `add_term_inplace` |
+| overwrite or remove a coefficient | `set_coefficient` (zero removes) |
+| expand a product term by term | `add_term_inplace` inside two loops |
+| freeze the result for sharing | `to_immut` |
+
 ## Quick start
 
 ```bash

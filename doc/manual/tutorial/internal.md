@@ -2,6 +2,11 @@
 
 This page is for contributors: it shows when to use the `internal` package while working on `luna-poly` itself. Users of the library never import it, and MoonBit does not allow packages outside the module to do so.
 
+| I want to | Use |
+| --- | --- |
+| implement `pow` for a new representation | `@internal.pow_nat(p, e, one=...)` |
+| evaluate $a^e$ for a coefficient | `@internal.pow_nat(a, e, one=One::one())` |
+
 ## Quick start
 
 Inside a `luna-poly` package, import it in `moon.pkg`:

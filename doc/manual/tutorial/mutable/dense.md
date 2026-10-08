@@ -2,6 +2,14 @@
 
 This tutorial shows how to build and update a univariate polynomial in place: set coefficients one at a time, accumulate sums and products into one container, keep snapshots, and hand the result back to immutable code.
 
+| I want to | Use |
+| --- | --- |
+| set one coefficient | `set_coefficient` |
+| add or multiply into an existing polynomial | `add_inplace`, `mul_inplace`, `scale_inplace` |
+| keep the old value | `copy()` before mutating, or use the operators |
+| hand the result to immutable code | `to_immut` |
+| reuse the container | `clear` |
+
 ## Quick start
 
 ```bash

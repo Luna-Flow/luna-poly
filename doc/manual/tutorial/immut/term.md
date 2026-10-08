@@ -2,6 +2,17 @@
 
 This tutorial shows how to work with multivariate polynomials as sorted term lists: build them, read their terms in order, do arithmetic, evaluate them at a point, and write small algorithms that walk the terms.
 
+| I want to | Use |
+| --- | --- |
+| build a multivariate polynomial | `TermPolynomial::from_array` or `from_terms` |
+| read terms from the leading term down | `to_terms`, `coefficients` |
+| add, subtract, multiply, raise to a power | `+`, `-`, `*`, `pow` |
+| evaluate without aborting on missing values | `eval_checked` |
+| multiply by a monomial $c\,x^\gamma$ | `scale` |
+| ask for the number of variables, terms or the degree | `arity`, `size`, `total_degree` |
+| look up coefficients by exponent | convert to `SparsePolynomial` |
+| use names instead of indexes | `ContextPolynomial` |
+
 ## Quick start
 
 ```bash
