@@ -10,7 +10,7 @@
 - Since MoonBit 0.10, trait implementations are not callable as methods unless they are promoted explicitly; `extends.mbt` decides which ones are.
 - Monomials are keys in sorted maps and in hash maps, so they need a total order and a hash, both consistent with equality.
 - `Luna-Flow/type_theory` owns the shared vocabulary for names; `luna-poly` may use its `Name` but must not depend on its term syntax or binding machinery.
-- Algebraic structure (`Zero`, `One`, `Ring`, ...) is defined by `Luna-Flow/luna-generic` 0.3.3, which `core` must not duplicate.
+- Algebraic structure (`Zero`, `One`, `Ring`, ...) is defined by `Luna-Flow/luna-generic` 0.4.0, which `core` must not duplicate.
 
 ## Mathematical background
 

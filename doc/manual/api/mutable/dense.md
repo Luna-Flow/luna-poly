@@ -193,7 +193,7 @@ Horner evaluation, composition $p(q)$ and the formal derivative, as in immut.
 ```mbti
 pub fn[A : @luna-generic.AddMonoid + Mul] DensePolynomial::eval(Self[A], A) -> A
 pub fn[A : Eq + @luna-generic.AddMonoid + Mul] DensePolynomial::substitute(Self[A], Self[A]) -> Self[A]
-pub fn[A : @luna-generic.NatHomomorphism + Eq + @luna-generic.Zero + Mul] DensePolynomial::derivative(Self[A]) -> Self[A]
+pub fn[A : @luna-generic.FromNat + Eq + @luna-generic.Zero + Mul] DensePolynomial::derivative(Self[A]) -> Self[A]
 ```
 
 ### `DensePolynomial::equal`, `DensePolynomial::compare`, `DensePolynomial::to_string`

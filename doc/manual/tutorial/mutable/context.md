@@ -13,7 +13,7 @@ This tutorial shows how to accumulate a named-variable polynomial in place and h
 ## Quick start
 
 ```bash
-moon add Luna-Flow/luna-poly@0.2.0
+moon add Luna-Flow/luna-poly@0.3.0
 ```
 
 ```text

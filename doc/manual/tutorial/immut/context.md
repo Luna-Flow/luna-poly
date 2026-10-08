@@ -16,7 +16,7 @@ This tutorial shows how to write polynomials in named variables and transform th
 ## Quick start
 
 ```bash
-moon add Luna-Flow/luna-poly@0.2.0
+moon add Luna-Flow/luna-poly@0.3.0
 ```
 
 ```text

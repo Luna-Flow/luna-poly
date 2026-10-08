@@ -276,10 +276,10 @@ pub fn[A : Eq + @luna-generic.AddMonoid + Mul] DensePolynomial::substitute(Self[
 
 ### `DensePolynomial::derivative`
 
-Returns the formal derivative $\sum_{i \ge 1} i\,c_i\,x^{i-1}$. The factor $i$ is mapped into the coefficient type with `@luna-generic.NatHomomorphism::from_nat`, so in characteristic $p$ the derivative of $x^p$ is zero. `luna-generic` implements `NatHomomorphism` for `Float`, `Double` and `BigInt`, so those are the coefficient types with a derivative; `Int` coefficients have none.
+Returns the formal derivative $\sum_{i \ge 1} i\,c_i\,x^{i-1}$. The factor $i$ is mapped into the coefficient type with `@luna-generic.FromNat::from_natural`, so in characteristic $p$ the derivative of $x^p$ is zero. `luna-generic` implements `FromNat` for `Int`, `Int16`, `Int64`, `UInt`, `UInt16`, `UInt64`, `Float`, `Double` and `BigInt`, so all of these coefficient types have a derivative; for fixed-width integers the factor $i$ wraps modulo $2^k$. A custom coefficient type needs a `FromNat` instance. Before 0.3.0 the bound was the deprecated `NatHomomorphism`, and `Int` coefficients had no derivative.
 
 ```mbti
-pub fn[A : @luna-generic.NatHomomorphism + Eq + @luna-generic.Zero + Mul] DensePolynomial::derivative(Self[A]) -> Self[A]
+pub fn[A : @luna-generic.FromNat + Eq + @luna-generic.Zero + Mul] DensePolynomial::derivative(Self[A]) -> Self[A]
 ```
 
 ```moonbit
@@ -288,6 +288,7 @@ test "evaluation and calculus" {
   inspect(p.eval(2), content="17")
   let shift = @immut.DensePolynomial::from_coefficients([1, 1])
   inspect(p.substitute(shift), content="6 + 8x^1 + 3x^2")
+  inspect(p.derivative(), content="2 + 6x^1")
   let f = @immut.DensePolynomial::from_coefficients([5.0, 0.0, 1.0, 2.0])
   debug_inspect(f.derivative().to_coefficients(), content="[0, 2, 6]")
 }

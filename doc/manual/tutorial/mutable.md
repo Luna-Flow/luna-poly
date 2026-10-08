@@ -14,7 +14,7 @@ This tutorial is the entry point for updating polynomials in place. It shows the
 ## Quick start
 
 ```bash
-moon add Luna-Flow/luna-poly@0.2.0
+moon add Luna-Flow/luna-poly@0.3.0
 ```
 
 ```text

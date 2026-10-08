@@ -20,7 +20,7 @@ This tutorial teaches you to compute with univariate polynomials as immutable va
 Add the module and import the immutable facade, which re-exports `DensePolynomial`:
 
 ```bash
-moon add Luna-Flow/luna-poly@0.2.0
+moon add Luna-Flow/luna-poly@0.3.0
 ```
 
 ```text
@@ -207,7 +207,7 @@ test "pow nat checked" {
   ```
 
 - **Floating-point trimming.** Only coefficients that compare equal to zero are trimmed. `0.1 + 0.2 - 0.3` is not zero, so such a coefficient stays.
-- **Derivatives need `NatHomomorphism`.** `derivative` works for `Float`, `Double` and `BigInt` coefficients; `Int` coefficients have no derivative.
+- **Derivatives need `FromNat`.** `derivative` works for every numeric type that luna-generic supports (`Int`, `Int64`, `UInt`, `Float`, `Double`, `BigInt`, ...). For fixed-width integers such as `Int` the factor $i$ wraps modulo $2^{32}$, and a custom coefficient type needs a `FromNat` instance. Before 0.3.0 the bound was `NatHomomorphism`, and `Int` coefficients had no derivative.
 - **`0^0`.** `pow(0)` returns one for every polynomial, including zero.
 - **Printing.** `to_string` writes `x^1` explicitly and skips zero terms; use `to_coefficients` for exact output.
 

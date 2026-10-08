@@ -13,7 +13,7 @@ This tutorial shows how to build and update a univariate polynomial in place: se
 ## Quick start
 
 ```bash
-moon add Luna-Flow/luna-poly@0.2.0
+moon add Luna-Flow/luna-poly@0.3.0
 ```
 
 ```text

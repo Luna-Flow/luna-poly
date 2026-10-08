@@ -1,6 +1,6 @@
 # luna-poly
 
-This manual documents the `v0.2.0` release of `Luna-Flow/luna-poly`.
+This manual documents version `0.3.0` of `Luna-Flow/luna-poly`, the version in `moon.mod`.
 
 ## Overview
 
@@ -15,10 +15,12 @@ This manual documents the `v0.2.0` release of `Luna-Flow/luna-poly`.
 
 Version 0.2.0 replaced the former single root package by `core`, the implementation packages and the two facades. Import `Luna-Flow/luna-poly/immut` or `Luna-Flow/luna-poly/mutable` explicitly; code written for the old root package does not compile unchanged.
 
+Version 0.3.0 bounds `DensePolynomial::derivative` by `FromNat` from luna-generic 0.4.0 instead of the deprecated `NatHomomorphism`. Fixed-width integer coefficients such as `Int` now have a derivative, computed modulo $2^k$; a custom coefficient type needs a `FromNat` instance.
+
 ## Install
 
 ```bash
-moon add Luna-Flow/luna-poly@0.2.0
+moon add Luna-Flow/luna-poly@0.3.0
 ```
 
 Then import a facade in your `moon.pkg`:
@@ -29,7 +31,7 @@ import {
 }
 ```
 
-The package needs the MoonBit toolchain 0.10 or later (`moonc` ≥ 0.10). It depends on `Luna-Flow/luna-generic` 0.3.3, `Luna-Flow/arithmetic` 0.2.1 and `Luna-Flow/type_theory` 0.2.0, which `moon` installs automatically.
+The package needs the MoonBit toolchain 0.10 or later (`moonc` ≥ 0.10). It depends on `Luna-Flow/luna-generic` 0.4.0, `Luna-Flow/arithmetic` 0.5.0 and `Luna-Flow/type_theory` 0.2.0, which `moon` installs automatically.
 
 ## Pages
 

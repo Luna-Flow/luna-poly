@@ -9,7 +9,7 @@
 - Coefficient types range from semirings without negation (`UInt`) through wrapping integers (`Int`, which is $\mathbb Z/2^{32}$) to inexact `Double` and exact `BigInt`, so one bound for the whole type would exclude useful cases.
 - Values must be shareable without defensive copies, so the storage is a persistent `@immut/vector.Vector`.
 - A generic coefficient type provides no roots of unity or suitable modulus, which rules out FFT-based multiplication.
-- luna-generic 0.3.3 maps integers into a coefficient type only through `NatHomomorphism`, implemented for `Float`, `Double` and `BigInt`; the formal derivative depends on it.
+- luna-generic 0.4.0 maps natural numbers into a coefficient type through `FromNat`, the canonical map out of ℕ, implemented for the fixed-width integers, `Float`, `Double` and `BigInt`; the formal derivative depends on it.
 
 ## Mathematical background
 
@@ -104,7 +104,7 @@ With $\deg p = n$ and $\deg q = d$, step $j$ of Horner multiplies a polynomial o
 
 ### Formal derivative through the canonical map from ℕ
 
-`derivative` computes $D\bigl(\sum_i c_i x^i\bigr) = \sum_{i \ge 1} (i \cdot 1_R)\, c_i\, x^{i-1}$, mapping the integer $i$ into $R$ with `NatHomomorphism::from_nat`. $D$ is additive and satisfies the Leibniz rule. On monomials,
+`derivative` computes $D\bigl(\sum_i c_i x^i\bigr) = \sum_{i \ge 1} (i \cdot 1_R)\, c_i\, x^{i-1}$, mapping the integer $i$ into $R$ with `FromNat::from_natural`. $D$ is additive and satisfies the Leibniz rule. On monomials,
 
 $$
 \begin{aligned}
@@ -114,7 +114,7 @@ D(x^i x^j) &= (i + j)\, x^{i+j-1} \\
 \end{aligned}
 $$
 
-and both sides of $D(fg) = D(f)\,g + f\,D(g)$ are bilinear in $(f, g)$, so the rule extends to all polynomials. Because $i$ is taken modulo the characteristic, $D(x^p) = p\,x^{p-1} = 0$ in characteristic $p$, exactly as in algebra. `luna-generic` provides `NatHomomorphism` for `Float`, `Double` and `BigInt`; fixed-width integer coefficients have no derivative until they get such an instance (the trait is being replaced by `FromNat` upstream).
+and both sides of $D(fg) = D(f)\,g + f\,D(g)$ are bilinear in $(f, g)$, so the rule extends to all polynomials. Because $i$ is taken modulo the characteristic, $D(x^p) = p\,x^{p-1} = 0$ in characteristic $p$, exactly as in algebra. `luna-generic` provides `FromNat` for `Int`, `Int16`, `Int64`, `UInt`, `UInt16`, `UInt64`, `Float`, `Double` and `BigInt`. For a fixed-width type $R = \mathbb Z/2^k$, `from_natural` reduces $i$ modulo $2^k$, which is exactly $i \cdot 1_R$, so `derivative` is the formal derivative over that ring. For `Float` and `Double` it rounds, which is exact for $i \le 2^{24}$ and $i \le 2^{53}$. Up to 0.2.0 the bound was the deprecated `NatHomomorphism`, which the fixed-width integer types do not implement, so they had no derivative.
 
 ### Powers by binary exponentiation
 
