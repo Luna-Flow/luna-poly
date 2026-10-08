@@ -32,6 +32,7 @@ All notable changes to `Luna-Flow/luna-poly` are listed here. The format follows
 
 ### Documentation
 
+- The manual describes version 0.3.0: luna-generic 0.4.0 and arithmetic 0.5.0, the `FromNat` bound of `DensePolynomial::derivative`, and derivatives over fixed-width integer coefficients.
 - The manual follows the luna-generic layout: an overview with Install, a Part/Tutorial/API/Design table and reading paths; Purpose and Importing sections on every API page; a task table at the start of every tutorial; a Constraints section on every design page. Every operation-record method has its own API heading.
 - Logic review of the design pages: exact evaluation cost of `TermPolynomial`, cost of context lookups, and the normalization shared by the two multivariate types.
 - Documentation rewritten: API, tutorial and design pages for every package (`core`, both facades, the eight representation packages, `internal` and `consistency`), an architecture guide, and a new contributing guide, with zh_CN and ja_JP translations.

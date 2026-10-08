@@ -1,11 +1,11 @@
 # luna-poly
 
-`luna-poly` 0.2.0 provides canonical polynomial types for MoonBit: dense univariate polynomials, multivariate polynomials as sorted term arrays or ordered maps, and polynomials over named variables with evaluation, partial evaluation and substitution. Every type exists as an immutable value and as a mutable container with explicit `_inplace` updates, and both share one canonical form, so `==` is equality of polynomials.
+`luna-poly` 0.3.0 provides canonical polynomial types for MoonBit: dense univariate polynomials, multivariate polynomials as sorted term arrays or ordered maps, and polynomials over named variables with evaluation, partial evaluation and substitution. Every type exists as an immutable value and as a mutable container with explicit `_inplace` updates, and both share one canonical form, so `==` is equality of polynomials.
 
 ## Install
 
 ```bash
-moon add Luna-Flow/luna-poly@0.2.0
+moon add Luna-Flow/luna-poly@0.3.0
 ```
 
 Then import a facade in `moon.pkg`:
