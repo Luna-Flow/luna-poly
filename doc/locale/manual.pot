@@ -411,8 +411,8 @@ msgstr ""
 #: manual/api/core.md:716
 #: manual/api/immut/context.md:363
 #: manual/api/immut/context.md:367
-#: manual/api/immut/dense.md:349
-#: manual/api/immut/dense.md:353
+#: manual/api/immut/dense.md:350
+#: manual/api/immut/dense.md:354
 #: manual/api/immut/sparse.md:268
 #: manual/api/immut/sparse.md:272
 #: manual/api/immut/term.md:280
@@ -430,7 +430,7 @@ msgstr ""
 
 #: manual/api/core.md:716
 #: manual/api/immut/context.md:367
-#: manual/api/immut/dense.md:353
+#: manual/api/immut/dense.md:354
 #: manual/api/immut/sparse.md:272
 #: manual/api/immut/term.md:284
 #: manual/api/mutable/context.md:227
@@ -458,7 +458,7 @@ msgstr ""
 
 #: manual/api/core.md:720
 #: manual/api/immut/context.md:369
-#: manual/api/immut/dense.md:357
+#: manual/api/immut/dense.md:358
 #: manual/api/immut/sparse.md:275
 #: manual/api/immut/term.md:287
 #: manual/api/mutable/context.md:229
@@ -750,7 +750,7 @@ msgid "Returns $p^e$ in the same storage; `pow(0)` is the constant one."
 msgstr ""
 
 #: manual/api/immut/context.md:343
-#: manual/api/immut/dense.md:331
+#: manual/api/immut/dense.md:332
 #: manual/api/immut/sparse.md:246
 #: manual/api/immut/term.md:249
 msgid "Generic access"
@@ -771,7 +771,7 @@ msgid "Hidden method forms kept for source compatibility:"
 msgstr ""
 
 #: manual/api/immut/context.md:370
-#: manual/api/immut/dense.md:358
+#: manual/api/immut/dense.md:359
 #: manual/api/immut/sparse.md:276
 #: manual/api/immut/term.md:288
 #: manual/api/mutable/context.md:230
@@ -918,36 +918,36 @@ msgid "Returns the composition $p(q)$, replacing $x$ by the polynomial $q$, with
 msgstr ""
 
 #: manual/api/immut/dense.md:279
-msgid "Returns the formal derivative $\\sum_{i \\ge 1} i\\,c_i\\,x^{i-1}$. The factor $i$ is mapped into the coefficient type with `@luna-generic.NatHomomorphism::from_nat`, so in characteristic $p$ the derivative of $x^p$ is zero. `luna-generic` implements `NatHomomorphism` for `Float`, `Double` and `BigInt`, so those are the coefficient types with a derivative; `Int` coefficients have none."
+msgid "Returns the formal derivative $\\sum_{i \\ge 1} i\\,c_i\\,x^{i-1}$. The factor $i$ is mapped into the coefficient type with `@luna-generic.FromNat::from_natural`, so in characteristic $p$ the derivative of $x^p$ is zero. `luna-generic` implements `FromNat` for `Int`, `Int16`, `Int64`, `UInt`, `UInt16`, `UInt64`, `Float`, `Double` and `BigInt`, so all of these coefficient types have a derivative; for fixed-width integers the factor $i$ wraps modulo $2^k$. A custom coefficient type needs a `FromNat` instance. Before 0.3.0 the bound was the deprecated `NatHomomorphism`, and `Int` coefficients had no derivative."
 msgstr ""
 
-#: manual/api/immut/dense.md:296
+#: manual/api/immut/dense.md:297
 #: manual/api/immut/sparse.md:228
 #: manual/api/immut/term.md:231
 msgid "Comparison and printing"
 msgstr ""
 
-#: manual/api/immut/dense.md:300
+#: manual/api/immut/dense.md:301
 msgid "Structural equality of canonical coefficient vectors, which is equality of polynomials. It is `==`."
 msgstr ""
 
-#: manual/api/immut/dense.md:308
+#: manual/api/immut/dense.md:309
 msgid "A structural total order for sorted containers: shorter (lower-degree) polynomials first, then coefficient by coefficient from the constant term up. It is not compatible with the ring operations."
 msgstr ""
 
-#: manual/api/immut/dense.md:316
+#: manual/api/immut/dense.md:317
 msgid "Renders the non-zero terms in ascending degree as `c` for the constant term and `cx^k` otherwise, joined by ` + `; zero prints as the coefficient zero."
 msgstr ""
 
-#: manual/api/immut/dense.md:335
+#: manual/api/immut/dense.md:336
 msgid "Returns the [`UnivariateOps`](../core.md#univariateops) record of this type, wiring `zero`, `one`, `from_coefficients`, `to_coefficients`, `coefficient`, `coefficient_checked`, `eval`, `+`, `*`, `scale`, `scale_checked` and `pow`."
 msgstr ""
 
-#: manual/api/immut/dense.md:351
+#: manual/api/immut/dense.md:352
 msgid "These method forms come from trait implementations. They are hidden from the interface file and kept for source compatibility only."
 msgstr ""
 
-#: manual/api/immut/dense.md:359
+#: manual/api/immut/dense.md:360
 #: manual/api/immut/sparse.md:277
 #: manual/api/immut/term.md:289
 #: manual/api/mutable/dense.md:239
@@ -2032,7 +2032,7 @@ msgid "`Luna-Flow/type_theory` owns the shared vocabulary for names; `luna-poly`
 msgstr ""
 
 #: manual/design/core.md:13
-msgid "Algebraic structure (`Zero`, `One`, `Ring`, ...) is defined by `Luna-Flow/luna-generic` 0.3.3, which `core` must not duplicate."
+msgid "Algebraic structure (`Zero`, `One`, `Ring`, ...) is defined by `Luna-Flow/luna-generic` 0.4.0, which `core` must not duplicate."
 msgstr ""
 
 #: manual/design/core.md:17
@@ -2686,7 +2686,7 @@ msgid "A generic coefficient type provides no roots of unity or suitable modulus
 msgstr ""
 
 #: manual/design/immut/dense.md:12
-msgid "luna-generic 0.3.3 maps integers into a coefficient type only through `NatHomomorphism`, implemented for `Float`, `Double` and `BigInt`; the formal derivative depends on it."
+msgid "luna-generic 0.4.0 maps natural numbers into a coefficient type through `FromNat`, the canonical map out of ℕ, implemented for the fixed-width integers, `Float`, `Double` and `BigInt`; the formal derivative depends on it."
 msgstr ""
 
 #: manual/design/immut/dense.md:16
@@ -2802,11 +2802,11 @@ msgid "Formal derivative through the canonical map from ℕ"
 msgstr ""
 
 #: manual/design/immut/dense.md:107
-msgid "`derivative` computes $D\\bigl(\\sum_i c_i x^i\\bigr) = \\sum_{i \\ge 1} (i \\cdot 1_R)\\, c_i\\, x^{i-1}$, mapping the integer $i$ into $R$ with `NatHomomorphism::from_nat`. $D$ is additive and satisfies the Leibniz rule. On monomials,"
+msgid "`derivative` computes $D\\bigl(\\sum_i c_i x^i\\bigr) = \\sum_{i \\ge 1} (i \\cdot 1_R)\\, c_i\\, x^{i-1}$, mapping the integer $i$ into $R$ with `FromNat::from_natural`. $D$ is additive and satisfies the Leibniz rule. On monomials,"
 msgstr ""
 
 #: manual/design/immut/dense.md:117
-msgid "and both sides of $D(fg) = D(f)\\,g + f\\,D(g)$ are bilinear in $(f, g)$, so the rule extends to all polynomials. Because $i$ is taken modulo the characteristic, $D(x^p) = p\\,x^{p-1} = 0$ in characteristic $p$, exactly as in algebra. `luna-generic` provides `NatHomomorphism` for `Float`, `Double` and `BigInt`; fixed-width integer coefficients have no derivative until they get such an instance (the trait is being replaced by `FromNat` upstream)."
+msgid "and both sides of $D(fg) = D(f)\\,g + f\\,D(g)$ are bilinear in $(f, g)$, so the rule extends to all polynomials. Because $i$ is taken modulo the characteristic, $D(x^p) = p\\,x^{p-1} = 0$ in characteristic $p$, exactly as in algebra. `luna-generic` provides `FromNat` for `Int`, `Int16`, `Int64`, `UInt`, `UInt16`, `UInt64`, `Float`, `Double` and `BigInt`. For a fixed-width type $R = \\mathbb Z/2^k$, `from_natural` reduces $i$ modulo $2^k$, which is exactly $i \\cdot 1_R$, so `derivative` is the formal derivative over that ring. For `Float` and `Double` it rounds, which is exact for $i \\le 2^{24}$ and $i \\le 2^{53}$. Up to 0.2.0 the bound was the deprecated `NatHomomorphism`, which the fixed-width integer types do not implement, so they had no derivative."
 msgstr ""
 
 #: manual/design/immut/dense.md:119
@@ -4050,7 +4050,7 @@ msgid "luna-poly"
 msgstr ""
 
 #: manual/index.md:3
-msgid "This manual documents the `v0.2.0` release of `Luna-Flow/luna-poly`."
+msgid "This manual documents version `0.3.0` of `Luna-Flow/luna-poly`, the version in `moon.mod`."
 msgstr ""
 
 #: manual/index.md:5
@@ -4090,348 +4090,352 @@ msgid "Version 0.2.0 replaced the former single root package by `core`, the impl
 msgstr ""
 
 #: manual/index.md:18
+msgid "Version 0.3.0 bounds `DensePolynomial::derivative` by `FromNat` from luna-generic 0.4.0 instead of the deprecated `NatHomomorphism`. Fixed-width integer coefficients such as `Int` now have a derivative, computed modulo $2^k$; a custom coefficient type needs a `FromNat` instance."
+msgstr ""
+
+#: manual/index.md:20
 msgid "Install"
 msgstr ""
 
-#: manual/index.md:24
+#: manual/index.md:26
 msgid "Then import a facade in your `moon.pkg`:"
 msgstr ""
 
-#: manual/index.md:32
-msgid "The package needs the MoonBit toolchain 0.10 or later (`moonc` ≥ 0.10). It depends on `Luna-Flow/luna-generic` 0.3.3, `Luna-Flow/arithmetic` 0.2.1 and `Luna-Flow/type_theory` 0.2.0, which `moon` installs automatically."
-msgstr ""
-
 #: manual/index.md:34
-msgid "Pages"
+msgid "The package needs the MoonBit toolchain 0.10 or later (`moonc` ≥ 0.10). It depends on `Luna-Flow/luna-generic` 0.4.0, `Luna-Flow/arithmetic` 0.5.0 and `Luna-Flow/type_theory` 0.2.0, which `moon` installs automatically."
 msgstr ""
 
 #: manual/index.md:36
+msgid "Pages"
+msgstr ""
+
+#: manual/index.md:38
 msgid "Each package of the module has a tutorial, an API page and a design page. The two facades are the packages most programs import; `internal` and `consistency` are for contributors."
 msgstr ""
 
-#: manual/index.md:38
+#: manual/index.md:40
 msgid "Part"
 msgstr ""
 
-#: manual/index.md:38
+#: manual/index.md:40
 #: manual/tutorial/immut.md:44
 #: manual/tutorial/mutable.md:43
 msgid "Tutorial"
 msgstr ""
 
-#: manual/index.md:38
+#: manual/index.md:40
 msgid "API"
 msgstr ""
 
-#: manual/index.md:38
+#: manual/index.md:40
 msgid "Design"
 msgstr ""
 
-#: manual/index.md:40
+#: manual/index.md:42
 msgid "`core`: exponent vectors, variables and contexts, shapes, capability traits, operation records"
 msgstr ""
 
-#: manual/index.md:40
+#: manual/index.md:42
 msgid "[tutorial](tutorial/core.md)"
 msgstr ""
 
-#: manual/index.md:40
+#: manual/index.md:42
 msgid "[API](api/core.md)"
 msgstr ""
 
-#: manual/index.md:40
+#: manual/index.md:42
 msgid "[design](design/core.md)"
 msgstr ""
 
-#: manual/index.md:41
+#: manual/index.md:43
 msgid "`immut`: facade of the immutable layer"
 msgstr ""
 
-#: manual/index.md:41
+#: manual/index.md:43
 msgid "[tutorial](tutorial/immut.md)"
 msgstr ""
 
-#: manual/index.md:41
+#: manual/index.md:43
 msgid "[API](api/immut.md)"
 msgstr ""
 
-#: manual/index.md:41
+#: manual/index.md:43
 msgid "[design](design/immut.md)"
 msgstr ""
 
-#: manual/index.md:42
+#: manual/index.md:44
 msgid "`immut/dense`: dense univariate `DensePolynomial`"
 msgstr ""
 
-#: manual/index.md:42
+#: manual/index.md:44
 msgid "[tutorial](tutorial/immut/dense.md)"
 msgstr ""
 
-#: manual/index.md:42
+#: manual/index.md:44
 msgid "[API](api/immut/dense.md)"
 msgstr ""
 
-#: manual/index.md:42
+#: manual/index.md:44
 msgid "[design](design/immut/dense.md)"
 msgstr ""
 
-#: manual/index.md:43
+#: manual/index.md:45
 msgid "`immut/term`: sorted-term `TermPolynomial`"
 msgstr ""
 
-#: manual/index.md:43
+#: manual/index.md:45
 msgid "[tutorial](tutorial/immut/term.md)"
 msgstr ""
 
-#: manual/index.md:43
+#: manual/index.md:45
 msgid "[API](api/immut/term.md)"
 msgstr ""
 
-#: manual/index.md:43
+#: manual/index.md:45
 msgid "[design](design/immut/term.md)"
 msgstr ""
 
-#: manual/index.md:44
+#: manual/index.md:46
 msgid "`immut/sparse`: ordered-map `SparsePolynomial`"
 msgstr ""
 
-#: manual/index.md:44
+#: manual/index.md:46
 msgid "[tutorial](tutorial/immut/sparse.md)"
 msgstr ""
 
-#: manual/index.md:44
+#: manual/index.md:46
 msgid "[API](api/immut/sparse.md)"
 msgstr ""
 
-#: manual/index.md:44
+#: manual/index.md:46
 msgid "[design](design/immut/sparse.md)"
 msgstr ""
 
-#: manual/index.md:45
+#: manual/index.md:47
 msgid "`immut/context`: named-variable `ContextPolynomial` and substitution"
 msgstr ""
 
-#: manual/index.md:45
+#: manual/index.md:47
 msgid "[tutorial](tutorial/immut/context.md)"
 msgstr ""
 
-#: manual/index.md:45
+#: manual/index.md:47
 msgid "[API](api/immut/context.md)"
 msgstr ""
 
-#: manual/index.md:45
+#: manual/index.md:47
 msgid "[design](design/immut/context.md)"
 msgstr ""
 
-#: manual/index.md:46
+#: manual/index.md:48
 msgid "`mutable`: facade of the mutable layer"
 msgstr ""
 
-#: manual/index.md:46
+#: manual/index.md:48
 msgid "[tutorial](tutorial/mutable.md)"
 msgstr ""
 
-#: manual/index.md:46
+#: manual/index.md:48
 msgid "[API](api/mutable.md)"
 msgstr ""
 
-#: manual/index.md:46
+#: manual/index.md:48
 msgid "[design](design/mutable.md)"
 msgstr ""
 
-#: manual/index.md:47
+#: manual/index.md:49
 msgid "`mutable/dense`: mutable `DensePolynomial`"
 msgstr ""
 
-#: manual/index.md:47
+#: manual/index.md:49
 msgid "[tutorial](tutorial/mutable/dense.md)"
 msgstr ""
 
-#: manual/index.md:47
+#: manual/index.md:49
 msgid "[API](api/mutable/dense.md)"
 msgstr ""
 
-#: manual/index.md:47
+#: manual/index.md:49
 msgid "[design](design/mutable/dense.md)"
 msgstr ""
 
-#: manual/index.md:48
+#: manual/index.md:50
 msgid "`mutable/term`: mutable `TermPolynomial`"
 msgstr ""
 
-#: manual/index.md:48
+#: manual/index.md:50
 msgid "[tutorial](tutorial/mutable/term.md)"
 msgstr ""
 
-#: manual/index.md:48
+#: manual/index.md:50
 msgid "[API](api/mutable/term.md)"
 msgstr ""
 
-#: manual/index.md:48
+#: manual/index.md:50
 msgid "[design](design/mutable/term.md)"
 msgstr ""
 
-#: manual/index.md:49
+#: manual/index.md:51
 msgid "`mutable/sparse`: mutable `SparsePolynomial`"
 msgstr ""
 
-#: manual/index.md:49
+#: manual/index.md:51
 msgid "[tutorial](tutorial/mutable/sparse.md)"
 msgstr ""
 
-#: manual/index.md:49
+#: manual/index.md:51
 msgid "[API](api/mutable/sparse.md)"
 msgstr ""
 
-#: manual/index.md:49
+#: manual/index.md:51
 msgid "[design](design/mutable/sparse.md)"
 msgstr ""
 
-#: manual/index.md:50
+#: manual/index.md:52
 msgid "`mutable/context`: mutable `ContextPolynomial`"
 msgstr ""
 
-#: manual/index.md:50
+#: manual/index.md:52
 msgid "[tutorial](tutorial/mutable/context.md)"
 msgstr ""
 
-#: manual/index.md:50
+#: manual/index.md:52
 msgid "[API](api/mutable/context.md)"
 msgstr ""
 
-#: manual/index.md:50
+#: manual/index.md:52
 msgid "[design](design/mutable/context.md)"
 msgstr ""
 
-#: manual/index.md:51
+#: manual/index.md:53
 msgid "`internal`: module-private natural powers"
 msgstr ""
 
-#: manual/index.md:51
+#: manual/index.md:53
 msgid "[tutorial](tutorial/internal.md)"
 msgstr ""
 
-#: manual/index.md:51
+#: manual/index.md:53
 msgid "[API](api/internal.md)"
 msgstr ""
 
-#: manual/index.md:51
+#: manual/index.md:53
 msgid "[design](design/internal.md)"
 msgstr ""
 
-#: manual/index.md:52
+#: manual/index.md:54
 msgid "`consistency`: test-only agreement checks between layers"
 msgstr ""
 
-#: manual/index.md:52
+#: manual/index.md:54
 msgid "[tutorial](tutorial/consistency.md)"
 msgstr ""
 
-#: manual/index.md:52
+#: manual/index.md:54
 msgid "[API](api/consistency.md)"
 msgstr ""
 
-#: manual/index.md:52
+#: manual/index.md:54
 msgid "[design](design/consistency.md)"
 msgstr ""
 
-#: manual/index.md:53
+#: manual/index.md:55
 msgid "Architecture guide: layers, dependencies, invariants"
 msgstr ""
 
-#: manual/index.md:53
+#: manual/index.md:55
 msgid "[architecture](architecture.md)"
 msgstr ""
 
-#: manual/index.md:54
+#: manual/index.md:56
 msgid "Contributing guide"
 msgstr ""
 
-#: manual/index.md:54
+#: manual/index.md:56
 msgid "[contributing](contributing.md)"
 msgstr ""
 
-#: manual/index.md:56
+#: manual/index.md:58
 msgid "Representations"
 msgstr ""
 
-#: manual/index.md:58
+#: manual/index.md:60
 msgid "`DensePolynomial`: univariate, ascending coefficient vector; Karatsuba, composition, derivative"
 msgstr ""
 
-#: manual/index.md:59
+#: manual/index.md:61
 msgid "`TermPolynomial`: multivariate, terms in descending monomial order; leading term first"
 msgstr ""
 
-#: manual/index.md:60
+#: manual/index.md:62
 msgid "`SparsePolynomial`: multivariate, ordered map from monomials to coefficients; logarithmic lookup"
 msgstr ""
 
-#: manual/index.md:61
+#: manual/index.md:63
 msgid "`ContextPolynomial`, `ContextSubstitutionValue`: polynomials over named variables, with named evaluation, partial evaluation and substitution"
 msgstr ""
 
-#: manual/index.md:63
+#: manual/index.md:65
 msgid "Each exists in `immut` and in `mutable`; the mutable types add `set_coefficient`, `add_term_inplace`, the `*_inplace` methods, `copy`, `clear`, `to_immut` and `from_immut`."
 msgstr ""
 
-#: manual/index.md:65
+#: manual/index.md:67
 msgid "Shared vocabulary"
 msgstr ""
 
-#: manual/index.md:67
+#: manual/index.md:69
 msgid "Monomials: `ExponentVector`, ordered by a graded monomial order"
 msgstr ""
 
-#: manual/index.md:68
+#: manual/index.md:70
 msgid "Names: `Variable`, `VariableContext`"
 msgstr ""
 
-#: manual/index.md:69
+#: manual/index.md:71
 msgid "Shapes: `PolynomialShape`"
 msgstr ""
 
-#: manual/index.md:70
+#: manual/index.md:72
 msgid "Capability traits: `HasLength`, `HasDegree`, `IsZero`, `HasTermCount`, `HasArity`, `HasTotalDegree`, `HasContext`, `HasShape`, `Clearable`, `Copyable`, and the bundles `UnivariatePolynomial`, `MultivariatePolynomial`, `ContextualPolynomial`, `MutablePolynomial`"
 msgstr ""
 
-#: manual/index.md:71
+#: manual/index.md:73
 msgid "Operation records: `UnivariateOps`, `MultivariateOps`, `ContextOps`"
 msgstr ""
 
-#: manual/index.md:72
+#: manual/index.md:74
 msgid "Algebra traits re-exported from `luna-generic`: `Zero`, `One`, `AddMonoid`, `MulMonoid`, `AddGroup`, `MulGroup`, `Semiring`, `Ring`, `Field`, `Num`"
 msgstr ""
 
-#: manual/index.md:74
+#: manual/index.md:76
 msgid "A first example"
 msgstr ""
 
-#: manual/index.md:94
+#: manual/index.md:96
 msgid "Where to read next"
 msgstr ""
 
-#: manual/index.md:96
+#: manual/index.md:98
 msgid "The [immut tutorial](tutorial/immut.md) helps you pick a representation, and the tutorial of that representation shows the everyday tasks. The API pages state every precondition, failure case and cost, and the design pages derive the mathematics: the monomial order in [core](design/core.md), Karatsuba and composition in [immut/dense](design/immut/dense.md), substitution as a ring homomorphism in [immut/context](design/immut/context.md)."
 msgstr ""
 
-#: manual/index.md:98
+#: manual/index.md:100
 msgid "New to the library: read the [immut tutorial](tutorial/immut.md), then the tutorial of the representation you need: [dense](tutorial/immut/dense.md) for one variable, [term](tutorial/immut/term.md) or [sparse](tutorial/immut/sparse.md) for several, [context](tutorial/immut/context.md) for named variables and substitution."
 msgstr ""
 
-#: manual/index.md:99
+#: manual/index.md:101
 msgid "Using it in a library: keep the [immut API](api/immut.md) and the per-representation API pages at hand. Read the [mutable tutorial](tutorial/mutable.md) when profiling shows that intermediate values matter, and the [core tutorial](tutorial/core.md) to write code that works for every representation."
 msgstr ""
 
-#: manual/index.md:100
+#: manual/index.md:102
 msgid "Contributing: read the [architecture guide](architecture.md), the [core design](design/core.md), the design pages of the packages you touch, the [consistency](design/consistency.md) page and the [contributing guide](contributing.md)."
 msgstr ""
 
-#: manual/index.md:102
+#: manual/index.md:104
 msgid "Validation"
 msgstr ""
 
-#: manual/index.md:104
+#: manual/index.md:106
 msgid "Recommended release checks, from the repository root (`./ready_to_pr.sh` runs them):"
 msgstr ""
 
@@ -5330,7 +5334,7 @@ msgid "**Floating-point trimming.** Only coefficients that compare equal to zero
 msgstr ""
 
 #: manual/tutorial/immut/dense.md:210
-msgid "**Derivatives need `NatHomomorphism`.** `derivative` works for `Float`, `Double` and `BigInt` coefficients; `Int` coefficients have no derivative."
+msgid "**Derivatives need `FromNat`.** `derivative` works for every numeric type that luna-generic supports (`Int`, `Int64`, `UInt`, `Float`, `Double`, `BigInt`, ...). For fixed-width integers such as `Int` the factor $i$ wraps modulo $2^{32}$, and a custom coefficient type needs a `FromNat` instance. Before 0.3.0 the bound was `NatHomomorphism`, and `Int` coefficients had no derivative."
 msgstr ""
 
 #: manual/tutorial/immut/dense.md:211

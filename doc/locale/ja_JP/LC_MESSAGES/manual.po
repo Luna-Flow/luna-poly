@@ -411,8 +411,8 @@ msgstr "`new` は順に `from_terms`、`to_terms`、`eval_named_checked`、`add_
 #: manual/api/core.md:716
 #: manual/api/immut/context.md:363
 #: manual/api/immut/context.md:367
-#: manual/api/immut/dense.md:349
-#: manual/api/immut/dense.md:353
+#: manual/api/immut/dense.md:350
+#: manual/api/immut/dense.md:354
 #: manual/api/immut/sparse.md:268
 #: manual/api/immut/sparse.md:272
 #: manual/api/immut/term.md:280
@@ -430,7 +430,7 @@ msgstr "非推奨"
 
 #: manual/api/core.md:716
 #: manual/api/immut/context.md:367
-#: manual/api/immut/dense.md:353
+#: manual/api/immut/dense.md:354
 #: manual/api/immut/sparse.md:272
 #: manual/api/immut/term.md:284
 #: manual/api/mutable/context.md:227
@@ -458,7 +458,7 @@ msgstr "`output` メソッド(`Show` 由来)"
 
 #: manual/api/core.md:720
 #: manual/api/immut/context.md:369
-#: manual/api/immut/dense.md:357
+#: manual/api/immut/dense.md:358
 #: manual/api/immut/sparse.md:275
 #: manual/api/immut/term.md:287
 #: manual/api/mutable/context.md:229
@@ -750,7 +750,7 @@ msgid "Returns $p^e$ in the same storage; `pow(0)` is the constant one."
 msgstr "同じ格納形式で $p^e$ を返します。`pow(0)` は定数 1 です。"
 
 #: manual/api/immut/context.md:343
-#: manual/api/immut/dense.md:331
+#: manual/api/immut/dense.md:332
 #: manual/api/immut/sparse.md:246
 #: manual/api/immut/term.md:249
 msgid "Generic access"
@@ -771,7 +771,7 @@ msgid "Hidden method forms kept for source compatibility:"
 msgstr "ソース互換性のために残されている、隠されたメソッド形式:"
 
 #: manual/api/immut/context.md:370
-#: manual/api/immut/dense.md:358
+#: manual/api/immut/dense.md:359
 #: manual/api/immut/sparse.md:276
 #: manual/api/immut/term.md:288
 #: manual/api/mutable/context.md:230
@@ -920,36 +920,36 @@ msgid "Returns the composition $p(q)$, replacing $x$ by the polynomial $q$, with
 msgstr "$x$ を多項式 $q$ で置き換えた合成 $p(q)$ を、多項式上の Horner 法で返します。"
 
 #: manual/api/immut/dense.md:279
-msgid "Returns the formal derivative $\\sum_{i \\ge 1} i\\,c_i\\,x^{i-1}$. The factor $i$ is mapped into the coefficient type with `@luna-generic.NatHomomorphism::from_nat`, so in characteristic $p$ the derivative of $x^p$ is zero. `luna-generic` implements `NatHomomorphism` for `Float`, `Double` and `BigInt`, so those are the coefficient types with a derivative; `Int` coefficients have none."
-msgstr "形式的微分 $\\sum_{i \\ge 1} i\\,c_i\\,x^{i-1}$ を返します。因子 $i$ は `@luna-generic.NatHomomorphism::from_nat` で係数型に写されるため、標数 $p$ では $x^p$ の微分は零になります。`luna-generic` は `Float`、`Double`、`BigInt` に対して `NatHomomorphism` を実装しているので、微分を持つ係数型はこれらです。`Int` 係数には微分がありません。"
+msgid "Returns the formal derivative $\\sum_{i \\ge 1} i\\,c_i\\,x^{i-1}$. The factor $i$ is mapped into the coefficient type with `@luna-generic.FromNat::from_natural`, so in characteristic $p$ the derivative of $x^p$ is zero. `luna-generic` implements `FromNat` for `Int`, `Int16`, `Int64`, `UInt`, `UInt16`, `UInt64`, `Float`, `Double` and `BigInt`, so all of these coefficient types have a derivative; for fixed-width integers the factor $i$ wraps modulo $2^k$. A custom coefficient type needs a `FromNat` instance. Before 0.3.0 the bound was the deprecated `NatHomomorphism`, and `Int` coefficients had no derivative."
+msgstr "形式的微分 $\\sum_{i \\ge 1} i\\,c_i\\,x^{i-1}$ を返します。因子 $i$ は `@luna-generic.FromNat::from_natural` で係数型に写されるため、標数 $p$ では $x^p$ の微分は零になります。`luna-generic` は `Int`、`Int16`、`Int64`、`UInt`、`UInt16`、`UInt64`、`Float`、`Double`、`BigInt` に対して `FromNat` を実装しているので、これらの係数型はすべて微分を持ちます。固定幅整数では因子 $i$ は $2^k$ を法として巡回します。独自の係数型には `FromNat` のインスタンスが必要です。0.3.0 より前の制約は非推奨の `NatHomomorphism` で、`Int` 係数には微分がありませんでした。"
 
-#: manual/api/immut/dense.md:296
+#: manual/api/immut/dense.md:297
 #: manual/api/immut/sparse.md:228
 #: manual/api/immut/term.md:231
 msgid "Comparison and printing"
 msgstr "比較と表示"
 
-#: manual/api/immut/dense.md:300
+#: manual/api/immut/dense.md:301
 msgid "Structural equality of canonical coefficient vectors, which is equality of polynomials. It is `==`."
 msgstr "正規形の係数ベクトルの構造的等価性であり、これは多項式としての等価性と一致します。`==` に対応します。"
 
-#: manual/api/immut/dense.md:308
+#: manual/api/immut/dense.md:309
 msgid "A structural total order for sorted containers: shorter (lower-degree) polynomials first, then coefficient by coefficient from the constant term up. It is not compatible with the ring operations."
 msgstr "ソート済みコンテナ用の構造的な全順序です。短い (次数の低い) 多項式が先に来て、次に定数項から順に係数ごとに比較します。環演算とは両立しません。"
 
-#: manual/api/immut/dense.md:316
+#: manual/api/immut/dense.md:317
 msgid "Renders the non-zero terms in ascending degree as `c` for the constant term and `cx^k` otherwise, joined by ` + `; zero prints as the coefficient zero."
 msgstr "非零項を次数の昇順に、定数項は `c`、それ以外は `cx^k` として表示し、` + ` で連結します。零は係数の零として表示されます。"
 
-#: manual/api/immut/dense.md:335
+#: manual/api/immut/dense.md:336
 msgid "Returns the [`UnivariateOps`](../core.md#univariateops) record of this type, wiring `zero`, `one`, `from_coefficients`, `to_coefficients`, `coefficient`, `coefficient_checked`, `eval`, `+`, `*`, `scale`, `scale_checked` and `pow`."
 msgstr "この型の [`UnivariateOps`](../core.md#univariateops) レコードを返します。`zero`、`one`、`from_coefficients`、`to_coefficients`、`coefficient`、`coefficient_checked`、`eval`、`+`、`*`、`scale`、`scale_checked`、`pow` が結び付けられています。"
 
-#: manual/api/immut/dense.md:351
+#: manual/api/immut/dense.md:352
 msgid "These method forms come from trait implementations. They are hidden from the interface file and kept for source compatibility only."
 msgstr "これらのメソッド形式はトレイト実装に由来します。インターフェースファイルからは隠されており、ソース互換性のためだけに残されています。"
 
-#: manual/api/immut/dense.md:359
+#: manual/api/immut/dense.md:360
 #: manual/api/immut/sparse.md:277
 #: manual/api/immut/term.md:289
 #: manual/api/mutable/dense.md:239
@@ -2038,8 +2038,8 @@ msgid "`Luna-Flow/type_theory` owns the shared vocabulary for names; `luna-poly`
 msgstr "`Luna-Flow/type_theory` は名前の共有語彙を持ちます。`luna-poly` はその `Name` を使えますが、項の構文や束縛の仕組みに依存してはなりません。"
 
 #: manual/design/core.md:13
-msgid "Algebraic structure (`Zero`, `One`, `Ring`, ...) is defined by `Luna-Flow/luna-generic` 0.3.3, which `core` must not duplicate."
-msgstr "代数構造（`Zero`、`One`、`Ring` など）は `Luna-Flow/luna-generic` 0.3.3 が定義しており、`core` はそれを重複させてはなりません。"
+msgid "Algebraic structure (`Zero`, `One`, `Ring`, ...) is defined by `Luna-Flow/luna-generic` 0.4.0, which `core` must not duplicate."
+msgstr "代数構造（`Zero`、`One`、`Ring` など）は `Luna-Flow/luna-generic` 0.4.0 が定義しており、`core` はそれを重複させてはなりません。"
 
 #: manual/design/core.md:17
 msgid "Polynomial rings"
@@ -2699,8 +2699,8 @@ msgid "A generic coefficient type provides no roots of unity or suitable modulus
 msgstr "汎用の係数型は 1 の冪根や適切な法を提供しないため、FFT による乗算は使えません。"
 
 #: manual/design/immut/dense.md:12
-msgid "luna-generic 0.3.3 maps integers into a coefficient type only through `NatHomomorphism`, implemented for `Float`, `Double` and `BigInt`; the formal derivative depends on it."
-msgstr "luna-generic 0.3.3 が整数を係数型へ写すのは `NatHomomorphism` だけで、`Float`、`Double`、`BigInt` に実装されています。形式微分はこれに依存します。"
+msgid "luna-generic 0.4.0 maps natural numbers into a coefficient type through `FromNat`, the canonical map out of ℕ, implemented for the fixed-width integers, `Float`, `Double` and `BigInt`; the formal derivative depends on it."
+msgstr "luna-generic 0.4.0 は自然数を `FromNat`（ℕ からの標準写像）で係数型へ写し、これは固定幅整数、`Float`、`Double`、`BigInt` に実装されています。形式微分はこれに依存します。"
 
 #: manual/design/immut/dense.md:16
 msgid ""
@@ -2819,12 +2819,12 @@ msgid "Formal derivative through the canonical map from ℕ"
 msgstr "ℕ からの標準写像による形式微分"
 
 #: manual/design/immut/dense.md:107
-msgid "`derivative` computes $D\\bigl(\\sum_i c_i x^i\\bigr) = \\sum_{i \\ge 1} (i \\cdot 1_R)\\, c_i\\, x^{i-1}$, mapping the integer $i$ into $R$ with `NatHomomorphism::from_nat`. $D$ is additive and satisfies the Leibniz rule. On monomials,"
-msgstr "`derivative` は $D\\bigl(\\sum_i c_i x^i\\bigr) = \\sum_{i \\ge 1} (i \\cdot 1_R)\\, c_i\\, x^{i-1}$ を計算し、整数 $i$ を `NatHomomorphism::from_nat` で $R$ に写します。$D$ は加法的でライプニッツ則を満たします。単項式上では"
+msgid "`derivative` computes $D\\bigl(\\sum_i c_i x^i\\bigr) = \\sum_{i \\ge 1} (i \\cdot 1_R)\\, c_i\\, x^{i-1}$, mapping the integer $i$ into $R$ with `FromNat::from_natural`. $D$ is additive and satisfies the Leibniz rule. On monomials,"
+msgstr "`derivative` は $D\\bigl(\\sum_i c_i x^i\\bigr) = \\sum_{i \\ge 1} (i \\cdot 1_R)\\, c_i\\, x^{i-1}$ を計算し、整数 $i$ を `FromNat::from_natural` で $R$ に写します。$D$ は加法的でライプニッツ則を満たします。単項式上では"
 
 #: manual/design/immut/dense.md:117
-msgid "and both sides of $D(fg) = D(f)\\,g + f\\,D(g)$ are bilinear in $(f, g)$, so the rule extends to all polynomials. Because $i$ is taken modulo the characteristic, $D(x^p) = p\\,x^{p-1} = 0$ in characteristic $p$, exactly as in algebra. `luna-generic` provides `NatHomomorphism` for `Float`, `Double` and `BigInt`; fixed-width integer coefficients have no derivative until they get such an instance (the trait is being replaced by `FromNat` upstream)."
-msgstr "であり、$D(fg) = D(f)\\,g + f\\,D(g)$ の両辺は $(f, g)$ について双線形なので、この規則はすべての多項式に拡張されます。$i$ は標数を法として取られるので、標数 $p$ では代数学のとおり $D(x^p) = p\\,x^{p-1} = 0$ となります。`luna-generic` は `Float`、`Double`、`BigInt` に対する `NatHomomorphism` を提供しています。固定幅整数の係数は、そのようなインスタンスが与えられるまで微分できません（このトレイトは上流で `FromNat` に置き換えられつつあります）。"
+msgid "and both sides of $D(fg) = D(f)\\,g + f\\,D(g)$ are bilinear in $(f, g)$, so the rule extends to all polynomials. Because $i$ is taken modulo the characteristic, $D(x^p) = p\\,x^{p-1} = 0$ in characteristic $p$, exactly as in algebra. `luna-generic` provides `FromNat` for `Int`, `Int16`, `Int64`, `UInt`, `UInt16`, `UInt64`, `Float`, `Double` and `BigInt`. For a fixed-width type $R = \\mathbb Z/2^k$, `from_natural` reduces $i$ modulo $2^k$, which is exactly $i \\cdot 1_R$, so `derivative` is the formal derivative over that ring. For `Float` and `Double` it rounds, which is exact for $i \\le 2^{24}$ and $i \\le 2^{53}$. Up to 0.2.0 the bound was the deprecated `NatHomomorphism`, which the fixed-width integer types do not implement, so they had no derivative."
+msgstr "であり、$D(fg) = D(f)\\,g + f\\,D(g)$ の両辺は $(f, g)$ について双線形なので、この規則はすべての多項式に拡張されます。$i$ は標数を法として取られるので、標数 $p$ では代数学のとおり $D(x^p) = p\\,x^{p-1} = 0$ となります。`luna-generic` は `Int`、`Int16`、`Int64`、`UInt`、`UInt16`、`UInt64`、`Float`、`Double`、`BigInt` に対する `FromNat` を提供しています。固定幅の型 $R = \\mathbb Z/2^k$ では `from_natural` が $i$ を $2^k$ を法として簡約し、これはちょうど $i \\cdot 1_R$ なので、`derivative` はその環上の形式微分です。`Float` と `Double` では丸めが入り、それぞれ $i \\le 2^{24}$、$i \\le 2^{53}$ のとき正確です。0.2.0 までの制約は非推奨の `NatHomomorphism` で、固定幅整数型はこれを実装していないため微分を持ちませんでした。"
 
 #: manual/design/immut/dense.md:119
 msgid "Powers by binary exponentiation"
@@ -4073,8 +4073,8 @@ msgid "luna-poly"
 msgstr "luna-poly"
 
 #: manual/index.md:3
-msgid "This manual documents the `v0.2.0` release of `Luna-Flow/luna-poly`."
-msgstr "このマニュアルは `Luna-Flow/luna-poly` の `v0.2.0` リリースを説明します。"
+msgid "This manual documents version `0.3.0` of `Luna-Flow/luna-poly`, the version in `moon.mod`."
+msgstr "このマニュアルは `Luna-Flow/luna-poly` のバージョン `0.3.0`（`moon.mod` に書かれたバージョン）を説明します。"
 
 #: manual/index.md:5
 msgid "Overview"
@@ -4113,348 +4113,352 @@ msgid "Version 0.2.0 replaced the former single root package by `core`, the impl
 msgstr "バージョン 0.2.0 では、以前の単一のルートパッケージが `core`、実装パッケージ、および 2 つのファサードに置き換えられました。`Luna-Flow/luna-poly/immut` または `Luna-Flow/luna-poly/mutable` を明示的にインポートしてください。旧ルートパッケージ向けに書かれたコードは、そのままではコンパイルできません。"
 
 #: manual/index.md:18
+msgid "Version 0.3.0 bounds `DensePolynomial::derivative` by `FromNat` from luna-generic 0.4.0 instead of the deprecated `NatHomomorphism`. Fixed-width integer coefficients such as `Int` now have a derivative, computed modulo $2^k$; a custom coefficient type needs a `FromNat` instance."
+msgstr "バージョン 0.3.0 では `DensePolynomial::derivative` の制約が、非推奨の `NatHomomorphism` から luna-generic 0.4.0 の `FromNat` に変わりました。`Int` などの固定幅整数の係数も微分を持つようになり、$2^k$ を法として計算されます。独自の係数型には `FromNat` のインスタンスが必要です。"
+
+#: manual/index.md:20
 msgid "Install"
 msgstr "インストール"
 
-#: manual/index.md:24
+#: manual/index.md:26
 msgid "Then import a facade in your `moon.pkg`:"
 msgstr "次に `moon.pkg` でファサードをインポートします："
 
-#: manual/index.md:32
-msgid "The package needs the MoonBit toolchain 0.10 or later (`moonc` ≥ 0.10). It depends on `Luna-Flow/luna-generic` 0.3.3, `Luna-Flow/arithmetic` 0.2.1 and `Luna-Flow/type_theory` 0.2.0, which `moon` installs automatically."
-msgstr "パッケージには MoonBit ツールチェーン 0.10 以降（`moonc` ≥ 0.10）が必要です。`Luna-Flow/luna-generic` 0.3.3、`Luna-Flow/arithmetic` 0.2.1、`Luna-Flow/type_theory` 0.2.0 に依存しており、これらは `moon` が自動的にインストールします。"
-
 #: manual/index.md:34
+msgid "The package needs the MoonBit toolchain 0.10 or later (`moonc` ≥ 0.10). It depends on `Luna-Flow/luna-generic` 0.4.0, `Luna-Flow/arithmetic` 0.5.0 and `Luna-Flow/type_theory` 0.2.0, which `moon` installs automatically."
+msgstr "パッケージには MoonBit ツールチェーン 0.10 以降（`moonc` ≥ 0.10）が必要です。`Luna-Flow/luna-generic` 0.4.0、`Luna-Flow/arithmetic` 0.5.0、`Luna-Flow/type_theory` 0.2.0 に依存しており、これらは `moon` が自動的にインストールします。"
+
+#: manual/index.md:36
 msgid "Pages"
 msgstr "ページ"
 
-#: manual/index.md:36
+#: manual/index.md:38
 msgid "Each package of the module has a tutorial, an API page and a design page. The two facades are the packages most programs import; `internal` and `consistency` are for contributors."
 msgstr "モジュールの各パッケージにはチュートリアル、API ページ、設計ページがあります。ほとんどのプログラムがインポートするのは 2 つのファサードで、`internal` と `consistency` は貢献者向けです。"
 
-#: manual/index.md:38
+#: manual/index.md:40
 msgid "Part"
 msgstr "部分"
 
-#: manual/index.md:38
+#: manual/index.md:40
 #: manual/tutorial/immut.md:44
 #: manual/tutorial/mutable.md:43
 msgid "Tutorial"
 msgstr "チュートリアル"
 
-#: manual/index.md:38
+#: manual/index.md:40
 msgid "API"
 msgstr "API"
 
-#: manual/index.md:38
+#: manual/index.md:40
 msgid "Design"
 msgstr "設計"
 
-#: manual/index.md:40
+#: manual/index.md:42
 msgid "`core`: exponent vectors, variables and contexts, shapes, capability traits, operation records"
 msgstr "`core`：指数ベクトル、変数とコンテキスト、形状、能力トレイト、演算レコード"
 
-#: manual/index.md:40
+#: manual/index.md:42
 msgid "[tutorial](tutorial/core.md)"
 msgstr "[チュートリアル](tutorial/core.md)"
 
-#: manual/index.md:40
+#: manual/index.md:42
 msgid "[API](api/core.md)"
 msgstr "[API](api/core.md)"
 
-#: manual/index.md:40
+#: manual/index.md:42
 msgid "[design](design/core.md)"
 msgstr "[設計](design/core.md)"
 
-#: manual/index.md:41
+#: manual/index.md:43
 msgid "`immut`: facade of the immutable layer"
 msgstr "`immut`：イミュータブル層のファサード"
 
-#: manual/index.md:41
+#: manual/index.md:43
 msgid "[tutorial](tutorial/immut.md)"
 msgstr "[チュートリアル](tutorial/immut.md)"
 
-#: manual/index.md:41
+#: manual/index.md:43
 msgid "[API](api/immut.md)"
 msgstr "[API](api/immut.md)"
 
-#: manual/index.md:41
+#: manual/index.md:43
 msgid "[design](design/immut.md)"
 msgstr "[設計](design/immut.md)"
 
-#: manual/index.md:42
+#: manual/index.md:44
 msgid "`immut/dense`: dense univariate `DensePolynomial`"
 msgstr "`immut/dense`：密な一変数 `DensePolynomial`"
 
-#: manual/index.md:42
+#: manual/index.md:44
 msgid "[tutorial](tutorial/immut/dense.md)"
 msgstr "[チュートリアル](tutorial/immut/dense.md)"
 
-#: manual/index.md:42
+#: manual/index.md:44
 msgid "[API](api/immut/dense.md)"
 msgstr "[API](api/immut/dense.md)"
 
-#: manual/index.md:42
+#: manual/index.md:44
 msgid "[design](design/immut/dense.md)"
 msgstr "[設計](design/immut/dense.md)"
 
-#: manual/index.md:43
+#: manual/index.md:45
 msgid "`immut/term`: sorted-term `TermPolynomial`"
 msgstr "`immut/term`：整列項 `TermPolynomial`"
 
-#: manual/index.md:43
+#: manual/index.md:45
 msgid "[tutorial](tutorial/immut/term.md)"
 msgstr "[チュートリアル](tutorial/immut/term.md)"
 
-#: manual/index.md:43
+#: manual/index.md:45
 msgid "[API](api/immut/term.md)"
 msgstr "[API](api/immut/term.md)"
 
-#: manual/index.md:43
+#: manual/index.md:45
 msgid "[design](design/immut/term.md)"
 msgstr "[設計](design/immut/term.md)"
 
-#: manual/index.md:44
+#: manual/index.md:46
 msgid "`immut/sparse`: ordered-map `SparsePolynomial`"
 msgstr "`immut/sparse`：順序付きマップ `SparsePolynomial`"
 
-#: manual/index.md:44
+#: manual/index.md:46
 msgid "[tutorial](tutorial/immut/sparse.md)"
 msgstr "[チュートリアル](tutorial/immut/sparse.md)"
 
-#: manual/index.md:44
+#: manual/index.md:46
 msgid "[API](api/immut/sparse.md)"
 msgstr "[API](api/immut/sparse.md)"
 
-#: manual/index.md:44
+#: manual/index.md:46
 msgid "[design](design/immut/sparse.md)"
 msgstr "[設計](design/immut/sparse.md)"
 
-#: manual/index.md:45
+#: manual/index.md:47
 msgid "`immut/context`: named-variable `ContextPolynomial` and substitution"
 msgstr "`immut/context`：名前付き変数 `ContextPolynomial` と代入"
 
-#: manual/index.md:45
+#: manual/index.md:47
 msgid "[tutorial](tutorial/immut/context.md)"
 msgstr "[チュートリアル](tutorial/immut/context.md)"
 
-#: manual/index.md:45
+#: manual/index.md:47
 msgid "[API](api/immut/context.md)"
 msgstr "[API](api/immut/context.md)"
 
-#: manual/index.md:45
+#: manual/index.md:47
 msgid "[design](design/immut/context.md)"
 msgstr "[設計](design/immut/context.md)"
 
-#: manual/index.md:46
+#: manual/index.md:48
 msgid "`mutable`: facade of the mutable layer"
 msgstr "`mutable`：ミュータブル層のファサード"
 
-#: manual/index.md:46
+#: manual/index.md:48
 msgid "[tutorial](tutorial/mutable.md)"
 msgstr "[チュートリアル](tutorial/mutable.md)"
 
-#: manual/index.md:46
+#: manual/index.md:48
 msgid "[API](api/mutable.md)"
 msgstr "[API](api/mutable.md)"
 
-#: manual/index.md:46
+#: manual/index.md:48
 msgid "[design](design/mutable.md)"
 msgstr "[設計](design/mutable.md)"
 
-#: manual/index.md:47
+#: manual/index.md:49
 msgid "`mutable/dense`: mutable `DensePolynomial`"
 msgstr "`mutable/dense`：ミュータブルな `DensePolynomial`"
 
-#: manual/index.md:47
+#: manual/index.md:49
 msgid "[tutorial](tutorial/mutable/dense.md)"
 msgstr "[チュートリアル](tutorial/mutable/dense.md)"
 
-#: manual/index.md:47
+#: manual/index.md:49
 msgid "[API](api/mutable/dense.md)"
 msgstr "[API](api/mutable/dense.md)"
 
-#: manual/index.md:47
+#: manual/index.md:49
 msgid "[design](design/mutable/dense.md)"
 msgstr "[設計](design/mutable/dense.md)"
 
-#: manual/index.md:48
+#: manual/index.md:50
 msgid "`mutable/term`: mutable `TermPolynomial`"
 msgstr "`mutable/term`：ミュータブルな `TermPolynomial`"
 
-#: manual/index.md:48
+#: manual/index.md:50
 msgid "[tutorial](tutorial/mutable/term.md)"
 msgstr "[チュートリアル](tutorial/mutable/term.md)"
 
-#: manual/index.md:48
+#: manual/index.md:50
 msgid "[API](api/mutable/term.md)"
 msgstr "[API](api/mutable/term.md)"
 
-#: manual/index.md:48
+#: manual/index.md:50
 msgid "[design](design/mutable/term.md)"
 msgstr "[設計](design/mutable/term.md)"
 
-#: manual/index.md:49
+#: manual/index.md:51
 msgid "`mutable/sparse`: mutable `SparsePolynomial`"
 msgstr "`mutable/sparse`：ミュータブルな `SparsePolynomial`"
 
-#: manual/index.md:49
+#: manual/index.md:51
 msgid "[tutorial](tutorial/mutable/sparse.md)"
 msgstr "[チュートリアル](tutorial/mutable/sparse.md)"
 
-#: manual/index.md:49
+#: manual/index.md:51
 msgid "[API](api/mutable/sparse.md)"
 msgstr "[API](api/mutable/sparse.md)"
 
-#: manual/index.md:49
+#: manual/index.md:51
 msgid "[design](design/mutable/sparse.md)"
 msgstr "[設計](design/mutable/sparse.md)"
 
-#: manual/index.md:50
+#: manual/index.md:52
 msgid "`mutable/context`: mutable `ContextPolynomial`"
 msgstr "`mutable/context`：ミュータブルな `ContextPolynomial`"
 
-#: manual/index.md:50
+#: manual/index.md:52
 msgid "[tutorial](tutorial/mutable/context.md)"
 msgstr "[チュートリアル](tutorial/mutable/context.md)"
 
-#: manual/index.md:50
+#: manual/index.md:52
 msgid "[API](api/mutable/context.md)"
 msgstr "[API](api/mutable/context.md)"
 
-#: manual/index.md:50
+#: manual/index.md:52
 msgid "[design](design/mutable/context.md)"
 msgstr "[設計](design/mutable/context.md)"
 
-#: manual/index.md:51
+#: manual/index.md:53
 msgid "`internal`: module-private natural powers"
 msgstr "`internal`：モジュール内部専用の自然数乗"
 
-#: manual/index.md:51
+#: manual/index.md:53
 msgid "[tutorial](tutorial/internal.md)"
 msgstr "[チュートリアル](tutorial/internal.md)"
 
-#: manual/index.md:51
+#: manual/index.md:53
 msgid "[API](api/internal.md)"
 msgstr "[API](api/internal.md)"
 
-#: manual/index.md:51
+#: manual/index.md:53
 msgid "[design](design/internal.md)"
 msgstr "[設計](design/internal.md)"
 
-#: manual/index.md:52
+#: manual/index.md:54
 msgid "`consistency`: test-only agreement checks between layers"
 msgstr "`consistency`：層間の一致を確かめるテスト専用パッケージ"
 
-#: manual/index.md:52
+#: manual/index.md:54
 msgid "[tutorial](tutorial/consistency.md)"
 msgstr "[チュートリアル](tutorial/consistency.md)"
 
-#: manual/index.md:52
+#: manual/index.md:54
 msgid "[API](api/consistency.md)"
 msgstr "[API](api/consistency.md)"
 
-#: manual/index.md:52
+#: manual/index.md:54
 msgid "[design](design/consistency.md)"
 msgstr "[設計](design/consistency.md)"
 
-#: manual/index.md:53
+#: manual/index.md:55
 msgid "Architecture guide: layers, dependencies, invariants"
 msgstr "アーキテクチャガイド：層、依存関係、不変条件"
 
-#: manual/index.md:53
+#: manual/index.md:55
 msgid "[architecture](architecture.md)"
 msgstr "[アーキテクチャ](architecture.md)"
 
-#: manual/index.md:54
+#: manual/index.md:56
 msgid "Contributing guide"
 msgstr "貢献ガイド"
 
-#: manual/index.md:54
+#: manual/index.md:56
 msgid "[contributing](contributing.md)"
 msgstr "[貢献ガイド](contributing.md)"
 
-#: manual/index.md:56
+#: manual/index.md:58
 msgid "Representations"
 msgstr "表現"
 
-#: manual/index.md:58
+#: manual/index.md:60
 msgid "`DensePolynomial`: univariate, ascending coefficient vector; Karatsuba, composition, derivative"
 msgstr "`DensePolynomial`：一変数、昇順の係数ベクトル。Karatsuba、合成、微分"
 
-#: manual/index.md:59
+#: manual/index.md:61
 msgid "`TermPolynomial`: multivariate, terms in descending monomial order; leading term first"
 msgstr "`TermPolynomial`：多変数、項は単項式順序の降順。先頭項が最初"
 
-#: manual/index.md:60
+#: manual/index.md:62
 msgid "`SparsePolynomial`: multivariate, ordered map from monomials to coefficients; logarithmic lookup"
 msgstr "`SparsePolynomial`：多変数、単項式から係数への順序付きマップ。対数時間の検索"
 
-#: manual/index.md:61
+#: manual/index.md:63
 msgid "`ContextPolynomial`, `ContextSubstitutionValue`: polynomials over named variables, with named evaluation, partial evaluation and substitution"
 msgstr "`ContextPolynomial`、`ContextSubstitutionValue`：名前付き変数上の多項式。名前による評価、部分評価、代入"
 
-#: manual/index.md:63
+#: manual/index.md:65
 msgid "Each exists in `immut` and in `mutable`; the mutable types add `set_coefficient`, `add_term_inplace`, the `*_inplace` methods, `copy`, `clear`, `to_immut` and `from_immut`."
 msgstr "どの型も `immut` と `mutable` の両方にあり、ミュータブルな型には `set_coefficient`、`add_term_inplace`、`*_inplace` メソッド、`copy`、`clear`、`to_immut`、`from_immut` が加わります。"
 
-#: manual/index.md:65
+#: manual/index.md:67
 msgid "Shared vocabulary"
 msgstr "共有語彙"
 
-#: manual/index.md:67
+#: manual/index.md:69
 msgid "Monomials: `ExponentVector`, ordered by a graded monomial order"
 msgstr "単項式：`ExponentVector`、次数付き単項式順序で整列"
 
-#: manual/index.md:68
+#: manual/index.md:70
 msgid "Names: `Variable`, `VariableContext`"
 msgstr "名前：`Variable`、`VariableContext`"
 
-#: manual/index.md:69
+#: manual/index.md:71
 msgid "Shapes: `PolynomialShape`"
 msgstr "形状：`PolynomialShape`"
 
-#: manual/index.md:70
+#: manual/index.md:72
 msgid "Capability traits: `HasLength`, `HasDegree`, `IsZero`, `HasTermCount`, `HasArity`, `HasTotalDegree`, `HasContext`, `HasShape`, `Clearable`, `Copyable`, and the bundles `UnivariatePolynomial`, `MultivariatePolynomial`, `ContextualPolynomial`, `MutablePolynomial`"
 msgstr "能力トレイト：`HasLength`、`HasDegree`、`IsZero`、`HasTermCount`、`HasArity`、`HasTotalDegree`、`HasContext`、`HasShape`、`Clearable`、`Copyable`、およびまとめ役の `UnivariatePolynomial`、`MultivariatePolynomial`、`ContextualPolynomial`、`MutablePolynomial`"
 
-#: manual/index.md:71
+#: manual/index.md:73
 msgid "Operation records: `UnivariateOps`, `MultivariateOps`, `ContextOps`"
 msgstr "演算レコード：`UnivariateOps`、`MultivariateOps`、`ContextOps`"
 
-#: manual/index.md:72
+#: manual/index.md:74
 msgid "Algebra traits re-exported from `luna-generic`: `Zero`, `One`, `AddMonoid`, `MulMonoid`, `AddGroup`, `MulGroup`, `Semiring`, `Ring`, `Field`, `Num`"
 msgstr "`luna-generic` から再エクスポートされる代数トレイト：`Zero`、`One`、`AddMonoid`、`MulMonoid`、`AddGroup`、`MulGroup`、`Semiring`、`Ring`、`Field`、`Num`"
 
-#: manual/index.md:74
+#: manual/index.md:76
 msgid "A first example"
 msgstr "最初の例"
 
-#: manual/index.md:94
+#: manual/index.md:96
 msgid "Where to read next"
 msgstr "次に読むもの"
 
-#: manual/index.md:96
+#: manual/index.md:98
 msgid "The [immut tutorial](tutorial/immut.md) helps you pick a representation, and the tutorial of that representation shows the everyday tasks. The API pages state every precondition, failure case and cost, and the design pages derive the mathematics: the monomial order in [core](design/core.md), Karatsuba and composition in [immut/dense](design/immut/dense.md), substitution as a ring homomorphism in [immut/context](design/immut/context.md)."
 msgstr "[immut チュートリアル](tutorial/immut.md)は表現の選び方を示し、その表現のチュートリアルが日常的な作業を示します。API ページはすべての前提条件、失敗ケース、コストを記し、設計ページは数学を導出します。単項式順序は [core](design/core.md)、Karatsuba と合成は [immut/dense](design/immut/dense.md)、環準同型としての代入は [immut/context](design/immut/context.md) にあります。"
 
-#: manual/index.md:98
+#: manual/index.md:100
 msgid "New to the library: read the [immut tutorial](tutorial/immut.md), then the tutorial of the representation you need: [dense](tutorial/immut/dense.md) for one variable, [term](tutorial/immut/term.md) or [sparse](tutorial/immut/sparse.md) for several, [context](tutorial/immut/context.md) for named variables and substitution."
 msgstr "ライブラリを初めて使う方：[immut チュートリアル](tutorial/immut.md) を読み、次に必要な表現のチュートリアルを読んでください。一変数なら [dense](tutorial/immut/dense.md)、多変数なら [term](tutorial/immut/term.md) または [sparse](tutorial/immut/sparse.md)、名前付き変数と代入なら [context](tutorial/immut/context.md) です。"
 
-#: manual/index.md:99
+#: manual/index.md:101
 msgid "Using it in a library: keep the [immut API](api/immut.md) and the per-representation API pages at hand. Read the [mutable tutorial](tutorial/mutable.md) when profiling shows that intermediate values matter, and the [core tutorial](tutorial/core.md) to write code that works for every representation."
 msgstr "ライブラリで使う方：[immut API](api/immut.md) と各表現の API ページを手元に置いてください。中間値が問題になることがプロファイリングで分かったら [mutable チュートリアル](tutorial/mutable.md) を、すべての表現で動くコードを書くには [core チュートリアル](tutorial/core.md) を読んでください。"
 
-#: manual/index.md:100
+#: manual/index.md:102
 msgid "Contributing: read the [architecture guide](architecture.md), the [core design](design/core.md), the design pages of the packages you touch, the [consistency](design/consistency.md) page and the [contributing guide](contributing.md)."
 msgstr "貢献する方：[アーキテクチャガイド](architecture.md)、[core 設計](design/core.md)、変更するパッケージの設計ページ、[consistency](design/consistency.md) のページ、そして [貢献ガイド](contributing.md) を読んでください。"
 
-#: manual/index.md:102
+#: manual/index.md:104
 msgid "Validation"
 msgstr "検証"
 
-#: manual/index.md:104
+#: manual/index.md:106
 msgid "Recommended release checks, from the repository root (`./ready_to_pr.sh` runs them):"
 msgstr "推奨されるリリース前の確認（リポジトリのルートで実行。`./ready_to_pr.sh` がまとめて実行します）："
 
@@ -5353,8 +5357,8 @@ msgid "**Floating-point trimming.** Only coefficients that compare equal to zero
 msgstr "**浮動小数点の切り詰め。** 切り詰められるのは、ゼロと等しいと比較される係数だけです。`0.1 + 0.2 - 0.3` はゼロではないので、そのような係数は残ります。"
 
 #: manual/tutorial/immut/dense.md:210
-msgid "**Derivatives need `NatHomomorphism`.** `derivative` works for `Float`, `Double` and `BigInt` coefficients; `Int` coefficients have no derivative."
-msgstr "**微分には `NatHomomorphism` が必要。** `derivative` は `Float`、`Double`、`BigInt` の係数で動作します。`Int` の係数は微分できません。"
+msgid "**Derivatives need `FromNat`.** `derivative` works for every numeric type that luna-generic supports (`Int`, `Int64`, `UInt`, `Float`, `Double`, `BigInt`, ...). For fixed-width integers such as `Int` the factor $i$ wraps modulo $2^{32}$, and a custom coefficient type needs a `FromNat` instance. Before 0.3.0 the bound was `NatHomomorphism`, and `Int` coefficients had no derivative."
+msgstr "**微分には `FromNat` が必要です。** `derivative` は luna-generic が対応するすべての数値型（`Int`、`Int64`、`UInt`、`Float`、`Double`、`BigInt` など）で使えます。`Int` のような固定幅整数では因子 $i$ は $2^{32}$ を法として巡回し、独自の係数型には `FromNat` のインスタンスが必要です。0.3.0 より前の制約は `NatHomomorphism` で、`Int` 係数には微分がありませんでした。"
 
 #: manual/tutorial/immut/dense.md:211
 msgid "**`0^0`.** `pow(0)` returns one for every polynomial, including zero."
@@ -6287,6 +6291,9 @@ msgstr "[mutable/term API](../../api/mutable/term.md) と [mutable/term の設�
 #: manual/tutorial/mutable/term.md:125
 msgid "The [immut/term tutorial](../immut/term.md) for the mathematics, and [mutable/sparse](sparse.md) for cheap single-term updates."
 msgstr "数学的な背景は [immut/term チュートリアル](../immut/term.md)、安価な単一項の更新は [mutable/sparse](sparse.md)。"
+
+#~ msgid "**Derivatives need `NatHomomorphism`.** `derivative` works for `Float`, `Double` and `BigInt` coefficients; `Int` coefficients have no derivative."
+#~ msgstr "**微分には `NatHomomorphism` が必要。** `derivative` は `Float`、`Double`、`BigInt` の係数で動作します。`Int` の係数は微分できません。"
 
 #~ msgid "The examples on this page use that alias. The mathematics behind the items is explained in the [core design](../design/core.md)."
 #~ msgstr "このページの例ではその別名を使います。各項目の背後にある数学は [core の設計](../design/core.md) で説明しています。"

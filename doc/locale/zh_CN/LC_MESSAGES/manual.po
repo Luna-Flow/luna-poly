@@ -411,8 +411,8 @@ msgstr "`new` 依次接收：`from_terms`、`to_terms`、`eval_named_checked`、
 #: manual/api/core.md:716
 #: manual/api/immut/context.md:363
 #: manual/api/immut/context.md:367
-#: manual/api/immut/dense.md:349
-#: manual/api/immut/dense.md:353
+#: manual/api/immut/dense.md:350
+#: manual/api/immut/dense.md:354
 #: manual/api/immut/sparse.md:268
 #: manual/api/immut/sparse.md:272
 #: manual/api/immut/term.md:280
@@ -430,7 +430,7 @@ msgstr "已弃用"
 
 #: manual/api/core.md:716
 #: manual/api/immut/context.md:367
-#: manual/api/immut/dense.md:353
+#: manual/api/immut/dense.md:354
 #: manual/api/immut/sparse.md:272
 #: manual/api/immut/term.md:284
 #: manual/api/mutable/context.md:227
@@ -458,7 +458,7 @@ msgstr "`output` 方法（来自 `Show`）"
 
 #: manual/api/core.md:720
 #: manual/api/immut/context.md:369
-#: manual/api/immut/dense.md:357
+#: manual/api/immut/dense.md:358
 #: manual/api/immut/sparse.md:275
 #: manual/api/immut/term.md:287
 #: manual/api/mutable/context.md:229
@@ -750,7 +750,7 @@ msgid "Returns $p^e$ in the same storage; `pow(0)` is the constant one."
 msgstr "以相同存储形式返回 $p^e$；`pow(0)` 是常数一。"
 
 #: manual/api/immut/context.md:343
-#: manual/api/immut/dense.md:331
+#: manual/api/immut/dense.md:332
 #: manual/api/immut/sparse.md:246
 #: manual/api/immut/term.md:249
 msgid "Generic access"
@@ -771,7 +771,7 @@ msgid "Hidden method forms kept for source compatibility:"
 msgstr "为源码兼容而保留的隐藏方法形式："
 
 #: manual/api/immut/context.md:370
-#: manual/api/immut/dense.md:358
+#: manual/api/immut/dense.md:359
 #: manual/api/immut/sparse.md:276
 #: manual/api/immut/term.md:288
 #: manual/api/mutable/context.md:230
@@ -920,36 +920,36 @@ msgid "Returns the composition $p(q)$, replacing $x$ by the polynomial $q$, with
 msgstr "返回复合 $p(q)$，即把 $x$ 替换为多项式 $q$，在多项式上使用 Horner 法则计算。"
 
 #: manual/api/immut/dense.md:279
-msgid "Returns the formal derivative $\\sum_{i \\ge 1} i\\,c_i\\,x^{i-1}$. The factor $i$ is mapped into the coefficient type with `@luna-generic.NatHomomorphism::from_nat`, so in characteristic $p$ the derivative of $x^p$ is zero. `luna-generic` implements `NatHomomorphism` for `Float`, `Double` and `BigInt`, so those are the coefficient types with a derivative; `Int` coefficients have none."
-msgstr "返回形式导数 $\\sum_{i \\ge 1} i\\,c_i\\,x^{i-1}$。因子 $i$ 通过 `@luna-generic.NatHomomorphism::from_nat` 映射到系数类型中，因此在特征 $p$ 下 $x^p$ 的导数为零。`luna-generic` 为 `Float`、`Double` 和 `BigInt` 实现了 `NatHomomorphism`，所以只有这些系数类型具有导数；`Int` 系数没有。"
+msgid "Returns the formal derivative $\\sum_{i \\ge 1} i\\,c_i\\,x^{i-1}$. The factor $i$ is mapped into the coefficient type with `@luna-generic.FromNat::from_natural`, so in characteristic $p$ the derivative of $x^p$ is zero. `luna-generic` implements `FromNat` for `Int`, `Int16`, `Int64`, `UInt`, `UInt16`, `UInt64`, `Float`, `Double` and `BigInt`, so all of these coefficient types have a derivative; for fixed-width integers the factor $i$ wraps modulo $2^k$. A custom coefficient type needs a `FromNat` instance. Before 0.3.0 the bound was the deprecated `NatHomomorphism`, and `Int` coefficients had no derivative."
+msgstr "返回形式导数 $\\sum_{i \\ge 1} i\\,c_i\\,x^{i-1}$。因子 $i$ 通过 `@luna-generic.FromNat::from_natural` 映射到系数类型中，因此在特征 $p$ 下 $x^p$ 的导数为零。`luna-generic` 为 `Int`、`Int16`、`Int64`、`UInt`、`UInt16`、`UInt64`、`Float`、`Double` 和 `BigInt` 实现了 `FromNat`，所以这些系数类型都有导数；对定宽整数，因子 $i$ 按模 $2^k$ 回绕。自定义系数类型需要一个 `FromNat` 实例。0.3.0 之前的约束是已弃用的 `NatHomomorphism`，`Int` 系数没有导数。"
 
-#: manual/api/immut/dense.md:296
+#: manual/api/immut/dense.md:297
 #: manual/api/immut/sparse.md:228
 #: manual/api/immut/term.md:231
 msgid "Comparison and printing"
 msgstr "比较与打印"
 
-#: manual/api/immut/dense.md:300
+#: manual/api/immut/dense.md:301
 msgid "Structural equality of canonical coefficient vectors, which is equality of polynomials. It is `==`."
 msgstr "规范系数向量的结构相等，也就是多项式相等。即 `==`。"
 
-#: manual/api/immut/dense.md:308
+#: manual/api/immut/dense.md:309
 msgid "A structural total order for sorted containers: shorter (lower-degree) polynomials first, then coefficient by coefficient from the constant term up. It is not compatible with the ring operations."
 msgstr "供有序容器使用的结构性全序：较短（次数较低）的多项式在前，然后从常数项起逐个比较系数。它与环运算不相容。"
 
-#: manual/api/immut/dense.md:316
+#: manual/api/immut/dense.md:317
 msgid "Renders the non-zero terms in ascending degree as `c` for the constant term and `cx^k` otherwise, joined by ` + `; zero prints as the coefficient zero."
 msgstr "按升幂输出非零项，常数项写作 `c`，其余写作 `cx^k`，用 ` + ` 连接；零输出为系数零。"
 
-#: manual/api/immut/dense.md:335
+#: manual/api/immut/dense.md:336
 msgid "Returns the [`UnivariateOps`](../core.md#univariateops) record of this type, wiring `zero`, `one`, `from_coefficients`, `to_coefficients`, `coefficient`, `coefficient_checked`, `eval`, `+`, `*`, `scale`, `scale_checked` and `pow`."
 msgstr "返回该类型的 [`UnivariateOps`](../core.md#univariateops) 记录，其中连接了 `zero`、`one`、`from_coefficients`、`to_coefficients`、`coefficient`、`coefficient_checked`、`eval`、`+`、`*`、`scale`、`scale_checked` 和 `pow`。"
 
-#: manual/api/immut/dense.md:351
+#: manual/api/immut/dense.md:352
 msgid "These method forms come from trait implementations. They are hidden from the interface file and kept for source compatibility only."
 msgstr "这些方法形式来自 trait 实现。它们在接口文件中被隐藏，仅为源码兼容而保留。"
 
-#: manual/api/immut/dense.md:359
+#: manual/api/immut/dense.md:360
 #: manual/api/immut/sparse.md:277
 #: manual/api/immut/term.md:289
 #: manual/api/mutable/dense.md:239
@@ -2038,8 +2038,8 @@ msgid "`Luna-Flow/type_theory` owns the shared vocabulary for names; `luna-poly`
 msgstr "`Luna-Flow/type_theory` 拥有名字的共享词汇；`luna-poly` 可以使用它的 `Name`，但不得依赖它的项语法或绑定机制。"
 
 #: manual/design/core.md:13
-msgid "Algebraic structure (`Zero`, `One`, `Ring`, ...) is defined by `Luna-Flow/luna-generic` 0.3.3, which `core` must not duplicate."
-msgstr "代数结构（`Zero`、`One`、`Ring` 等）由 `Luna-Flow/luna-generic` 0.3.3 定义，`core` 不得重复定义。"
+msgid "Algebraic structure (`Zero`, `One`, `Ring`, ...) is defined by `Luna-Flow/luna-generic` 0.4.0, which `core` must not duplicate."
+msgstr "代数结构（`Zero`、`One`、`Ring` 等）由 `Luna-Flow/luna-generic` 0.4.0 定义，`core` 不得重复定义。"
 
 #: manual/design/core.md:17
 msgid "Polynomial rings"
@@ -2699,8 +2699,8 @@ msgid "A generic coefficient type provides no roots of unity or suitable modulus
 msgstr "泛型系数类型不提供单位根或合适的模数，这排除了基于 FFT 的乘法。"
 
 #: manual/design/immut/dense.md:12
-msgid "luna-generic 0.3.3 maps integers into a coefficient type only through `NatHomomorphism`, implemented for `Float`, `Double` and `BigInt`; the formal derivative depends on it."
-msgstr "luna-generic 0.3.3 只通过 `NatHomomorphism` 把整数映入系数类型，它为 `Float`、`Double` 与 `BigInt` 实现；形式导数依赖于它。"
+msgid "luna-generic 0.4.0 maps natural numbers into a coefficient type through `FromNat`, the canonical map out of ℕ, implemented for the fixed-width integers, `Float`, `Double` and `BigInt`; the formal derivative depends on it."
+msgstr "luna-generic 0.4.0 通过 `FromNat`（从 ℕ 出发的典范映射）把自然数映入系数类型，它为定宽整数、`Float`、`Double` 与 `BigInt` 实现；形式导数依赖于它。"
 
 #: manual/design/immut/dense.md:16
 msgid ""
@@ -2819,12 +2819,12 @@ msgid "Formal derivative through the canonical map from ℕ"
 msgstr "经由 ℕ 的典范映射求形式导数"
 
 #: manual/design/immut/dense.md:107
-msgid "`derivative` computes $D\\bigl(\\sum_i c_i x^i\\bigr) = \\sum_{i \\ge 1} (i \\cdot 1_R)\\, c_i\\, x^{i-1}$, mapping the integer $i$ into $R$ with `NatHomomorphism::from_nat`. $D$ is additive and satisfies the Leibniz rule. On monomials,"
-msgstr "`derivative` 计算 $D\\bigl(\\sum_i c_i x^i\\bigr) = \\sum_{i \\ge 1} (i \\cdot 1_R)\\, c_i\\, x^{i-1}$，用 `NatHomomorphism::from_nat` 把整数 $i$ 映射到 $R$ 中。$D$ 是可加的，并满足 Leibniz 法则。在单项式上，"
+msgid "`derivative` computes $D\\bigl(\\sum_i c_i x^i\\bigr) = \\sum_{i \\ge 1} (i \\cdot 1_R)\\, c_i\\, x^{i-1}$, mapping the integer $i$ into $R$ with `FromNat::from_natural`. $D$ is additive and satisfies the Leibniz rule. On monomials,"
+msgstr "`derivative` 计算 $D\\bigl(\\sum_i c_i x^i\\bigr) = \\sum_{i \\ge 1} (i \\cdot 1_R)\\, c_i\\, x^{i-1}$，用 `FromNat::from_natural` 把整数 $i$ 映射到 $R$ 中。$D$ 是可加的，并满足 Leibniz 法则。在单项式上，"
 
 #: manual/design/immut/dense.md:117
-msgid "and both sides of $D(fg) = D(f)\\,g + f\\,D(g)$ are bilinear in $(f, g)$, so the rule extends to all polynomials. Because $i$ is taken modulo the characteristic, $D(x^p) = p\\,x^{p-1} = 0$ in characteristic $p$, exactly as in algebra. `luna-generic` provides `NatHomomorphism` for `Float`, `Double` and `BigInt`; fixed-width integer coefficients have no derivative until they get such an instance (the trait is being replaced by `FromNat` upstream)."
-msgstr "并且 $D(fg) = D(f)\\,g + f\\,D(g)$ 两边关于 $(f, g)$ 都是双线性的，因此该法则推广到所有多项式。由于 $i$ 按特征取模，在特征 $p$ 下 $D(x^p) = p\\,x^{p-1} = 0$，与代数中完全一致。`luna-generic` 为 `Float`、`Double` 和 `BigInt` 提供了 `NatHomomorphism`；定宽整数系数在获得这样的实例之前没有导数（上游正在用 `FromNat` 取代该 trait）。"
+msgid "and both sides of $D(fg) = D(f)\\,g + f\\,D(g)$ are bilinear in $(f, g)$, so the rule extends to all polynomials. Because $i$ is taken modulo the characteristic, $D(x^p) = p\\,x^{p-1} = 0$ in characteristic $p$, exactly as in algebra. `luna-generic` provides `FromNat` for `Int`, `Int16`, `Int64`, `UInt`, `UInt16`, `UInt64`, `Float`, `Double` and `BigInt`. For a fixed-width type $R = \\mathbb Z/2^k$, `from_natural` reduces $i$ modulo $2^k$, which is exactly $i \\cdot 1_R$, so `derivative` is the formal derivative over that ring. For `Float` and `Double` it rounds, which is exact for $i \\le 2^{24}$ and $i \\le 2^{53}$. Up to 0.2.0 the bound was the deprecated `NatHomomorphism`, which the fixed-width integer types do not implement, so they had no derivative."
+msgstr "并且 $D(fg) = D(f)\\,g + f\\,D(g)$ 两边关于 $(f, g)$ 都是双线性的，因此该法则推广到所有多项式。由于 $i$ 按特征取模，在特征 $p$ 下 $D(x^p) = p\\,x^{p-1} = 0$，与代数中完全一致。`luna-generic` 为 `Int`、`Int16`、`Int64`、`UInt`、`UInt16`、`UInt64`、`Float`、`Double` 和 `BigInt` 提供了 `FromNat`。对定宽类型 $R = \\mathbb Z/2^k$，`from_natural` 把 $i$ 按模 $2^k$ 约化，这恰好是 $i \\cdot 1_R$，所以 `derivative` 就是该环上的形式导数。对 `Float` 和 `Double` 它会舍入，分别在 $i \\le 2^{24}$ 和 $i \\le 2^{53}$ 时精确。0.2.0 及之前的约束是已弃用的 `NatHomomorphism`，定宽整数类型没有实现它，因此没有导数。"
 
 #: manual/design/immut/dense.md:119
 msgid "Powers by binary exponentiation"
@@ -4073,8 +4073,8 @@ msgid "luna-poly"
 msgstr "luna-poly"
 
 #: manual/index.md:3
-msgid "This manual documents the `v0.2.0` release of `Luna-Flow/luna-poly`."
-msgstr "本手册记录 `Luna-Flow/luna-poly` 的 `v0.2.0` 版本。"
+msgid "This manual documents version `0.3.0` of `Luna-Flow/luna-poly`, the version in `moon.mod`."
+msgstr "本手册记录 `Luna-Flow/luna-poly` 的 `0.3.0` 版本，即 `moon.mod` 中的版本。"
 
 #: manual/index.md:5
 msgid "Overview"
@@ -4113,348 +4113,352 @@ msgid "Version 0.2.0 replaced the former single root package by `core`, the impl
 msgstr "0.2.0 版用 `core`、各实现包和两个门面包取代了原先的单一根包。请显式导入 `Luna-Flow/luna-poly/immut` 或 `Luna-Flow/luna-poly/mutable`；为旧根包编写的代码无法不加修改地编译。"
 
 #: manual/index.md:18
+msgid "Version 0.3.0 bounds `DensePolynomial::derivative` by `FromNat` from luna-generic 0.4.0 instead of the deprecated `NatHomomorphism`. Fixed-width integer coefficients such as `Int` now have a derivative, computed modulo $2^k$; a custom coefficient type needs a `FromNat` instance."
+msgstr "0.3.0 版把 `DensePolynomial::derivative` 的约束从已弃用的 `NatHomomorphism` 改为 luna-generic 0.4.0 的 `FromNat`。`Int` 等定宽整数系数现在也有导数，按模 $2^k$ 计算；自定义系数类型需要一个 `FromNat` 实例。"
+
+#: manual/index.md:20
 msgid "Install"
 msgstr "安装"
 
-#: manual/index.md:24
+#: manual/index.md:26
 msgid "Then import a facade in your `moon.pkg`:"
 msgstr "然后在 `moon.pkg` 中导入一个门面包："
 
-#: manual/index.md:32
-msgid "The package needs the MoonBit toolchain 0.10 or later (`moonc` ≥ 0.10). It depends on `Luna-Flow/luna-generic` 0.3.3, `Luna-Flow/arithmetic` 0.2.1 and `Luna-Flow/type_theory` 0.2.0, which `moon` installs automatically."
-msgstr "本包需要 MoonBit 工具链 0.10 或更高版本（`moonc` ≥ 0.10）。它依赖 `Luna-Flow/luna-generic` 0.3.3、`Luna-Flow/arithmetic` 0.2.1 和 `Luna-Flow/type_theory` 0.2.0，`moon` 会自动安装它们。"
-
 #: manual/index.md:34
+msgid "The package needs the MoonBit toolchain 0.10 or later (`moonc` ≥ 0.10). It depends on `Luna-Flow/luna-generic` 0.4.0, `Luna-Flow/arithmetic` 0.5.0 and `Luna-Flow/type_theory` 0.2.0, which `moon` installs automatically."
+msgstr "本包需要 MoonBit 工具链 0.10 或更高版本（`moonc` ≥ 0.10）。它依赖 `Luna-Flow/luna-generic` 0.4.0、`Luna-Flow/arithmetic` 0.5.0 和 `Luna-Flow/type_theory` 0.2.0，`moon` 会自动安装它们。"
+
+#: manual/index.md:36
 msgid "Pages"
 msgstr "页面"
 
-#: manual/index.md:36
+#: manual/index.md:38
 msgid "Each package of the module has a tutorial, an API page and a design page. The two facades are the packages most programs import; `internal` and `consistency` are for contributors."
 msgstr "模块中的每个包都有一个教程、一个 API 页面和一个设计页面。两个门面包是大多数程序会导入的包；`internal` 与 `consistency` 面向贡献者。"
 
-#: manual/index.md:38
+#: manual/index.md:40
 msgid "Part"
 msgstr "部分"
 
-#: manual/index.md:38
+#: manual/index.md:40
 #: manual/tutorial/immut.md:44
 #: manual/tutorial/mutable.md:43
 msgid "Tutorial"
 msgstr "教程"
 
-#: manual/index.md:38
+#: manual/index.md:40
 msgid "API"
 msgstr "API"
 
-#: manual/index.md:38
+#: manual/index.md:40
 msgid "Design"
 msgstr "设计"
 
-#: manual/index.md:40
+#: manual/index.md:42
 msgid "`core`: exponent vectors, variables and contexts, shapes, capability traits, operation records"
 msgstr "`core`：指数向量、变量与上下文、形状、能力 trait、操作记录"
 
-#: manual/index.md:40
+#: manual/index.md:42
 msgid "[tutorial](tutorial/core.md)"
 msgstr "[教程](tutorial/core.md)"
 
-#: manual/index.md:40
+#: manual/index.md:42
 msgid "[API](api/core.md)"
 msgstr "[API](api/core.md)"
 
-#: manual/index.md:40
+#: manual/index.md:42
 msgid "[design](design/core.md)"
 msgstr "[设计](design/core.md)"
 
-#: manual/index.md:41
+#: manual/index.md:43
 msgid "`immut`: facade of the immutable layer"
 msgstr "`immut`：不可变层的门面包"
 
-#: manual/index.md:41
+#: manual/index.md:43
 msgid "[tutorial](tutorial/immut.md)"
 msgstr "[教程](tutorial/immut.md)"
 
-#: manual/index.md:41
+#: manual/index.md:43
 msgid "[API](api/immut.md)"
 msgstr "[API](api/immut.md)"
 
-#: manual/index.md:41
+#: manual/index.md:43
 msgid "[design](design/immut.md)"
 msgstr "[设计](design/immut.md)"
 
-#: manual/index.md:42
+#: manual/index.md:44
 msgid "`immut/dense`: dense univariate `DensePolynomial`"
 msgstr "`immut/dense`：稠密单变量 `DensePolynomial`"
 
-#: manual/index.md:42
+#: manual/index.md:44
 msgid "[tutorial](tutorial/immut/dense.md)"
 msgstr "[教程](tutorial/immut/dense.md)"
 
-#: manual/index.md:42
+#: manual/index.md:44
 msgid "[API](api/immut/dense.md)"
 msgstr "[API](api/immut/dense.md)"
 
-#: manual/index.md:42
+#: manual/index.md:44
 msgid "[design](design/immut/dense.md)"
 msgstr "[设计](design/immut/dense.md)"
 
-#: manual/index.md:43
+#: manual/index.md:45
 msgid "`immut/term`: sorted-term `TermPolynomial`"
 msgstr "`immut/term`：有序项 `TermPolynomial`"
 
-#: manual/index.md:43
+#: manual/index.md:45
 msgid "[tutorial](tutorial/immut/term.md)"
 msgstr "[教程](tutorial/immut/term.md)"
 
-#: manual/index.md:43
+#: manual/index.md:45
 msgid "[API](api/immut/term.md)"
 msgstr "[API](api/immut/term.md)"
 
-#: manual/index.md:43
+#: manual/index.md:45
 msgid "[design](design/immut/term.md)"
 msgstr "[设计](design/immut/term.md)"
 
-#: manual/index.md:44
+#: manual/index.md:46
 msgid "`immut/sparse`: ordered-map `SparsePolynomial`"
 msgstr "`immut/sparse`：有序映射 `SparsePolynomial`"
 
-#: manual/index.md:44
+#: manual/index.md:46
 msgid "[tutorial](tutorial/immut/sparse.md)"
 msgstr "[教程](tutorial/immut/sparse.md)"
 
-#: manual/index.md:44
+#: manual/index.md:46
 msgid "[API](api/immut/sparse.md)"
 msgstr "[API](api/immut/sparse.md)"
 
-#: manual/index.md:44
+#: manual/index.md:46
 msgid "[design](design/immut/sparse.md)"
 msgstr "[设计](design/immut/sparse.md)"
 
-#: manual/index.md:45
+#: manual/index.md:47
 msgid "`immut/context`: named-variable `ContextPolynomial` and substitution"
 msgstr "`immut/context`：命名变量 `ContextPolynomial` 与代换"
 
-#: manual/index.md:45
+#: manual/index.md:47
 msgid "[tutorial](tutorial/immut/context.md)"
 msgstr "[教程](tutorial/immut/context.md)"
 
-#: manual/index.md:45
+#: manual/index.md:47
 msgid "[API](api/immut/context.md)"
 msgstr "[API](api/immut/context.md)"
 
-#: manual/index.md:45
+#: manual/index.md:47
 msgid "[design](design/immut/context.md)"
 msgstr "[设计](design/immut/context.md)"
 
-#: manual/index.md:46
+#: manual/index.md:48
 msgid "`mutable`: facade of the mutable layer"
 msgstr "`mutable`：可变层的门面包"
 
-#: manual/index.md:46
+#: manual/index.md:48
 msgid "[tutorial](tutorial/mutable.md)"
 msgstr "[教程](tutorial/mutable.md)"
 
-#: manual/index.md:46
+#: manual/index.md:48
 msgid "[API](api/mutable.md)"
 msgstr "[API](api/mutable.md)"
 
-#: manual/index.md:46
+#: manual/index.md:48
 msgid "[design](design/mutable.md)"
 msgstr "[设计](design/mutable.md)"
 
-#: manual/index.md:47
+#: manual/index.md:49
 msgid "`mutable/dense`: mutable `DensePolynomial`"
 msgstr "`mutable/dense`：可变的 `DensePolynomial`"
 
-#: manual/index.md:47
+#: manual/index.md:49
 msgid "[tutorial](tutorial/mutable/dense.md)"
 msgstr "[教程](tutorial/mutable/dense.md)"
 
-#: manual/index.md:47
+#: manual/index.md:49
 msgid "[API](api/mutable/dense.md)"
 msgstr "[API](api/mutable/dense.md)"
 
-#: manual/index.md:47
+#: manual/index.md:49
 msgid "[design](design/mutable/dense.md)"
 msgstr "[设计](design/mutable/dense.md)"
 
-#: manual/index.md:48
+#: manual/index.md:50
 msgid "`mutable/term`: mutable `TermPolynomial`"
 msgstr "`mutable/term`：可变的 `TermPolynomial`"
 
-#: manual/index.md:48
+#: manual/index.md:50
 msgid "[tutorial](tutorial/mutable/term.md)"
 msgstr "[教程](tutorial/mutable/term.md)"
 
-#: manual/index.md:48
+#: manual/index.md:50
 msgid "[API](api/mutable/term.md)"
 msgstr "[API](api/mutable/term.md)"
 
-#: manual/index.md:48
+#: manual/index.md:50
 msgid "[design](design/mutable/term.md)"
 msgstr "[设计](design/mutable/term.md)"
 
-#: manual/index.md:49
+#: manual/index.md:51
 msgid "`mutable/sparse`: mutable `SparsePolynomial`"
 msgstr "`mutable/sparse`：可变的 `SparsePolynomial`"
 
-#: manual/index.md:49
+#: manual/index.md:51
 msgid "[tutorial](tutorial/mutable/sparse.md)"
 msgstr "[教程](tutorial/mutable/sparse.md)"
 
-#: manual/index.md:49
+#: manual/index.md:51
 msgid "[API](api/mutable/sparse.md)"
 msgstr "[API](api/mutable/sparse.md)"
 
-#: manual/index.md:49
+#: manual/index.md:51
 msgid "[design](design/mutable/sparse.md)"
 msgstr "[设计](design/mutable/sparse.md)"
 
-#: manual/index.md:50
+#: manual/index.md:52
 msgid "`mutable/context`: mutable `ContextPolynomial`"
 msgstr "`mutable/context`：可变的 `ContextPolynomial`"
 
-#: manual/index.md:50
+#: manual/index.md:52
 msgid "[tutorial](tutorial/mutable/context.md)"
 msgstr "[教程](tutorial/mutable/context.md)"
 
-#: manual/index.md:50
+#: manual/index.md:52
 msgid "[API](api/mutable/context.md)"
 msgstr "[API](api/mutable/context.md)"
 
-#: manual/index.md:50
+#: manual/index.md:52
 msgid "[design](design/mutable/context.md)"
 msgstr "[设计](design/mutable/context.md)"
 
-#: manual/index.md:51
+#: manual/index.md:53
 msgid "`internal`: module-private natural powers"
 msgstr "`internal`：模块私有的自然数幂"
 
-#: manual/index.md:51
+#: manual/index.md:53
 msgid "[tutorial](tutorial/internal.md)"
 msgstr "[教程](tutorial/internal.md)"
 
-#: manual/index.md:51
+#: manual/index.md:53
 msgid "[API](api/internal.md)"
 msgstr "[API](api/internal.md)"
 
-#: manual/index.md:51
+#: manual/index.md:53
 msgid "[design](design/internal.md)"
 msgstr "[设计](design/internal.md)"
 
-#: manual/index.md:52
+#: manual/index.md:54
 msgid "`consistency`: test-only agreement checks between layers"
 msgstr "`consistency`：仅用于测试的层间一致性检查"
 
-#: manual/index.md:52
+#: manual/index.md:54
 msgid "[tutorial](tutorial/consistency.md)"
 msgstr "[教程](tutorial/consistency.md)"
 
-#: manual/index.md:52
+#: manual/index.md:54
 msgid "[API](api/consistency.md)"
 msgstr "[API](api/consistency.md)"
 
-#: manual/index.md:52
+#: manual/index.md:54
 msgid "[design](design/consistency.md)"
 msgstr "[设计](design/consistency.md)"
 
-#: manual/index.md:53
+#: manual/index.md:55
 msgid "Architecture guide: layers, dependencies, invariants"
 msgstr "架构指南：层次、依赖、不变式"
 
-#: manual/index.md:53
+#: manual/index.md:55
 msgid "[architecture](architecture.md)"
 msgstr "[架构指南](architecture.md)"
 
-#: manual/index.md:54
+#: manual/index.md:56
 msgid "Contributing guide"
 msgstr "贡献指南"
 
-#: manual/index.md:54
+#: manual/index.md:56
 msgid "[contributing](contributing.md)"
 msgstr "[贡献指南](contributing.md)"
 
-#: manual/index.md:56
+#: manual/index.md:58
 msgid "Representations"
 msgstr "表示"
 
-#: manual/index.md:58
+#: manual/index.md:60
 msgid "`DensePolynomial`: univariate, ascending coefficient vector; Karatsuba, composition, derivative"
 msgstr "`DensePolynomial`：单变量，升序系数向量；Karatsuba、复合、求导"
 
-#: manual/index.md:59
+#: manual/index.md:61
 msgid "`TermPolynomial`: multivariate, terms in descending monomial order; leading term first"
 msgstr "`TermPolynomial`：多变量，项按单项式序降序排列；首项在前"
 
-#: manual/index.md:60
+#: manual/index.md:62
 msgid "`SparsePolynomial`: multivariate, ordered map from monomials to coefficients; logarithmic lookup"
 msgstr "`SparsePolynomial`：多变量，从单项式到系数的有序映射；对数时间查找"
 
-#: manual/index.md:61
+#: manual/index.md:63
 msgid "`ContextPolynomial`, `ContextSubstitutionValue`: polynomials over named variables, with named evaluation, partial evaluation and substitution"
 msgstr "`ContextPolynomial`、`ContextSubstitutionValue`：命名变量上的多项式，支持按名求值、部分求值与代换"
 
-#: manual/index.md:63
+#: manual/index.md:65
 msgid "Each exists in `immut` and in `mutable`; the mutable types add `set_coefficient`, `add_term_inplace`, the `*_inplace` methods, `copy`, `clear`, `to_immut` and `from_immut`."
 msgstr "每种类型在 `immut` 与 `mutable` 中各有一份；可变类型另有 `set_coefficient`、`add_term_inplace`、各 `*_inplace` 方法、`copy`、`clear`、`to_immut` 与 `from_immut`。"
 
-#: manual/index.md:65
+#: manual/index.md:67
 msgid "Shared vocabulary"
 msgstr "共享词汇"
 
-#: manual/index.md:67
+#: manual/index.md:69
 msgid "Monomials: `ExponentVector`, ordered by a graded monomial order"
 msgstr "单项式：`ExponentVector`，按分次单项式序排序"
 
-#: manual/index.md:68
+#: manual/index.md:70
 msgid "Names: `Variable`, `VariableContext`"
 msgstr "名字：`Variable`、`VariableContext`"
 
-#: manual/index.md:69
+#: manual/index.md:71
 msgid "Shapes: `PolynomialShape`"
 msgstr "形状：`PolynomialShape`"
 
-#: manual/index.md:70
+#: manual/index.md:72
 msgid "Capability traits: `HasLength`, `HasDegree`, `IsZero`, `HasTermCount`, `HasArity`, `HasTotalDegree`, `HasContext`, `HasShape`, `Clearable`, `Copyable`, and the bundles `UnivariatePolynomial`, `MultivariatePolynomial`, `ContextualPolynomial`, `MutablePolynomial`"
 msgstr "能力 trait：`HasLength`、`HasDegree`、`IsZero`、`HasTermCount`、`HasArity`、`HasTotalDegree`、`HasContext`、`HasShape`、`Clearable`、`Copyable`，以及组合 `UnivariatePolynomial`、`MultivariatePolynomial`、`ContextualPolynomial`、`MutablePolynomial`"
 
-#: manual/index.md:71
+#: manual/index.md:73
 msgid "Operation records: `UnivariateOps`, `MultivariateOps`, `ContextOps`"
 msgstr "操作记录：`UnivariateOps`、`MultivariateOps`、`ContextOps`"
 
-#: manual/index.md:72
+#: manual/index.md:74
 msgid "Algebra traits re-exported from `luna-generic`: `Zero`, `One`, `AddMonoid`, `MulMonoid`, `AddGroup`, `MulGroup`, `Semiring`, `Ring`, `Field`, `Num`"
 msgstr "从 `luna-generic` 重新导出的代数 trait：`Zero`、`One`、`AddMonoid`、`MulMonoid`、`AddGroup`、`MulGroup`、`Semiring`、`Ring`、`Field`、`Num`"
 
-#: manual/index.md:74
+#: manual/index.md:76
 msgid "A first example"
 msgstr "第一个示例"
 
-#: manual/index.md:94
+#: manual/index.md:96
 msgid "Where to read next"
 msgstr "接下来读什么"
 
-#: manual/index.md:96
+#: manual/index.md:98
 msgid "The [immut tutorial](tutorial/immut.md) helps you pick a representation, and the tutorial of that representation shows the everyday tasks. The API pages state every precondition, failure case and cost, and the design pages derive the mathematics: the monomial order in [core](design/core.md), Karatsuba and composition in [immut/dense](design/immut/dense.md), substitution as a ring homomorphism in [immut/context](design/immut/context.md)."
 msgstr "[immut 教程](tutorial/immut.md)帮助你选择表示，所选表示的教程展示日常任务。API 页面列出每个前置条件、失败情形和开销，设计页面推导其中的数学：[core](design/core.md) 中的单项式序、[immut/dense](design/immut/dense.md) 中的 Karatsuba 与复合、[immut/context](design/immut/context.md) 中作为环同态的代换。"
 
-#: manual/index.md:98
+#: manual/index.md:100
 msgid "New to the library: read the [immut tutorial](tutorial/immut.md), then the tutorial of the representation you need: [dense](tutorial/immut/dense.md) for one variable, [term](tutorial/immut/term.md) or [sparse](tutorial/immut/sparse.md) for several, [context](tutorial/immut/context.md) for named variables and substitution."
 msgstr "初次接触本库：先读 [immut 教程](tutorial/immut.md)，再读你所需表示的教程：单变量读 [dense](tutorial/immut/dense.md)，多变量读 [term](tutorial/immut/term.md) 或 [sparse](tutorial/immut/sparse.md)，命名变量与代换读 [context](tutorial/immut/context.md)。"
 
-#: manual/index.md:99
+#: manual/index.md:101
 msgid "Using it in a library: keep the [immut API](api/immut.md) and the per-representation API pages at hand. Read the [mutable tutorial](tutorial/mutable.md) when profiling shows that intermediate values matter, and the [core tutorial](tutorial/core.md) to write code that works for every representation."
 msgstr "在库中使用：把 [immut API](api/immut.md) 和各表示的 API 页面放在手边。当性能分析表明中间值很重要时，阅读 [mutable 教程](tutorial/mutable.md)；要编写适用于所有表示的代码，阅读 [core 教程](tutorial/core.md)。"
 
-#: manual/index.md:100
+#: manual/index.md:102
 msgid "Contributing: read the [architecture guide](architecture.md), the [core design](design/core.md), the design pages of the packages you touch, the [consistency](design/consistency.md) page and the [contributing guide](contributing.md)."
 msgstr "参与贡献：阅读[架构指南](architecture.md)、[core 设计](design/core.md)、你所修改的包的设计页面、[consistency](design/consistency.md) 页面以及[贡献指南](contributing.md)。"
 
-#: manual/index.md:102
+#: manual/index.md:104
 msgid "Validation"
 msgstr "校验"
 
-#: manual/index.md:104
+#: manual/index.md:106
 msgid "Recommended release checks, from the repository root (`./ready_to_pr.sh` runs them):"
 msgstr "推荐的发布检查，在仓库根目录下执行（`./ready_to_pr.sh` 会运行它们）："
 
@@ -5353,8 +5357,8 @@ msgid "**Floating-point trimming.** Only coefficients that compare equal to zero
 msgstr "**浮点修剪。** 只有与零比较相等的系数才会被修剪。`0.1 + 0.2 - 0.3` 不为零，因此这样的系数会保留。"
 
 #: manual/tutorial/immut/dense.md:210
-msgid "**Derivatives need `NatHomomorphism`.** `derivative` works for `Float`, `Double` and `BigInt` coefficients; `Int` coefficients have no derivative."
-msgstr "**导数需要 `NatHomomorphism`。** `derivative` 适用于 `Float`、`Double` 和 `BigInt` 系数；`Int` 系数没有导数。"
+msgid "**Derivatives need `FromNat`.** `derivative` works for every numeric type that luna-generic supports (`Int`, `Int64`, `UInt`, `Float`, `Double`, `BigInt`, ...). For fixed-width integers such as `Int` the factor $i$ wraps modulo $2^{32}$, and a custom coefficient type needs a `FromNat` instance. Before 0.3.0 the bound was `NatHomomorphism`, and `Int` coefficients had no derivative."
+msgstr "**导数需要 `FromNat`。** `derivative` 适用于 luna-generic 支持的所有数值类型（`Int`、`Int64`、`UInt`、`Float`、`Double`、`BigInt` 等）。对 `Int` 这样的定宽整数，因子 $i$ 按模 $2^{32}$ 回绕；自定义系数类型需要一个 `FromNat` 实例。0.3.0 之前的约束是 `NatHomomorphism`，`Int` 系数没有导数。"
 
 #: manual/tutorial/immut/dense.md:211
 msgid "**`0^0`.** `pow(0)` returns one for every polynomial, including zero."
@@ -6287,6 +6291,9 @@ msgstr "[mutable/term API](../../api/mutable/term.md) 与 [mutable/term 设计](
 #: manual/tutorial/mutable/term.md:125
 msgid "The [immut/term tutorial](../immut/term.md) for the mathematics, and [mutable/sparse](sparse.md) for cheap single-term updates."
 msgstr "数学背景见 [immut/term 教程](../immut/term.md)，廉价的单项更新见 [mutable/sparse](sparse.md)。"
+
+#~ msgid "**Derivatives need `NatHomomorphism`.** `derivative` works for `Float`, `Double` and `BigInt` coefficients; `Int` coefficients have no derivative."
+#~ msgstr "**导数需要 `NatHomomorphism`。** `derivative` 适用于 `Float`、`Double` 和 `BigInt` 系数；`Int` 系数没有导数。"
 
 #~ msgid "The examples on this page use that alias. The mathematics behind the items is explained in the [core design](../design/core.md)."
 #~ msgstr "本页示例均使用该别名。各项背后的数学原理见 [core 设计](../design/core.md)。"
