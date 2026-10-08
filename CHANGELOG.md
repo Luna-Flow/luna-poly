@@ -8,6 +8,8 @@ All notable changes to `Luna-Flow/luna-poly` are listed here. The format follows
 
 - Migrated to MoonBit 0.10 (`moonc` 0.10 or later is required). `moon.mod` now uses the `source = "src"` field, and the package manifests import `moonbitlang/core/debug` where `Debug` is derived.
 - Bumped `Luna-Flow/type_theory` from `0.1.0-alpha.1` to `0.2.0`.
+- Bumped `Luna-Flow/luna-generic` from `0.3.3` to `0.4.0` and `Luna-Flow/arithmetic` from `0.2.1` to `0.5.0`.
+- **Breaking:** `DensePolynomial::derivative` (`immut/dense` and `mutable/dense`) requires `FromNat` instead of the `NatHomomorphism` trait deprecated in luna-generic 0.4.0. `Float`, `Double` and `BigInt` keep their derivative, and the fixed-width integer types (`Int`, `Int64`, `UInt`, ...) gain one, computed modulo 2^k. A custom coefficient type needs a `FromNat` instance.
 - Trait methods are now promoted to methods explicitly with `pub extend` in each package's `extends.mbt`. Operators (`add`, `sub`, `mul`, `neg`), `equal`, `compare`, `hash`, `to_string`, `zero`, `one`, `shape`, `is_zero`, `term_count` and `clear` stay callable as methods and now appear in the interface files.
 - `ContextPolynomial::term_count` and `ContextPolynomial::arity` (immutable and mutable) are public methods.
 - `ExponentVector`, `Variable`, `VariableContext`, `PolynomialShape` and all polynomial types derive `Debug`, so they work with `assert_eq` and `debug_inspect`.
