@@ -198,8 +198,11 @@ pub fn[A : Eq + AddMonoid] SparsePolynomial::add_inplace(
   self : SparsePolynomial[A],
   other : SparsePolynomial[A],
 ) -> Unit {
-  for exponent, coefficient in other.terms {
-    self.add_term_inplace(exponent, coefficient)
+  // Iterate over a snapshot: when `other` is `self`, `add_term_inplace` may
+  // remove keys (a coefficient that doubles to zero), and removing from the
+  // tree while iterating over it visits keys twice or skips them.
+  for term in other.to_terms() {
+    self.add_term_inplace(term.0, term.1)
   }
 }
 
@@ -398,4 +401,32 @@ test "mutable sparse operations delete zero coefficients" {
   let p = SparsePolynomial::from_array([([1U], 2)])
   p.add_term_inplace(ExponentVector::from_array([1U, 0]), -2)
   assert_true(p.is_empty())
+}
+
+///|
+test "add_inplace on itself when a coefficient doubles to zero" {
+  let e = fn(values : Array[UInt]) { ExponentVector::from_array(values) }
+  let terms = [(e([]), -2147483648), (e([1]), 1), (e([2]), 1), (e([3]), 1)]
+  let p = SparsePolynomial::from_terms(terms)
+  p.add_inplace(p)
+  let expected = @immut_sparse.SparsePolynomial::from_terms(terms)
+  assert_true(p.to_terms() == (expected + expected).to_terms())
+  inspect(p, content="2 * x + 2 * x^2 + 2 * x^3")
+}
+
+///|
+test "add_inplace on itself agrees with immutable doubling" {
+  for n in 1..<=8 {
+    for mask in 0..<(1 << n) {
+      let terms : Array[(ExponentVector, Int)] = []
+      for k in 0..<n {
+        let coefficient = if ((mask >> k) & 1) == 1 { -2147483648 } else { k + 1 }
+        terms.push((ExponentVector::from_array([k.reinterpret_as_uint()]), coefficient))
+      }
+      let p = SparsePolynomial::from_terms(terms)
+      p.add_inplace(p)
+      let q = @immut_sparse.SparsePolynomial::from_terms(terms)
+      assert_true(p.to_terms() == (q + q).to_terms())
+    }
+  }
 }
