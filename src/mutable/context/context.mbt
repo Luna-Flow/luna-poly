@@ -493,3 +493,57 @@ test "mutable context polynomial delegates named evaluation" {
   )
   assert_eq(p.eval_named([(x, 4)]), 9)
 }
+
+///|
+test "mutable context polynomial delegates named polynomial substitution" {
+  let context = VariableContext::from_names(["x", "y"])
+  let x = context.require_variable("x")
+  let y = context.require_variable("y")
+  let p = ContextPolynomial::from_named_terms_as_sparse(context, [
+    ([(x, 1U)], 1),
+    ([(y, 1U)], 1),
+  ])
+  let y_plus_one = ContextPolynomial::from_named_terms_as_sparse(context, [
+    ([(y, 1U)], 1),
+    ([], 1),
+  ])
+  let substituted = p.substitute_names([
+    (x.to_type_theory_name(), Polynomial(y_plus_one)),
+    (y.to_type_theory_name(), Scalar(2)),
+  ])
+  assert_eq(substituted.eval_named([(x, 0), (y, 3)]), 6)
+}
+
+///|
+test "mutable context polynomial rejects duplicate named substitutions" {
+  let context = VariableContext::from_names(["x"])
+  let x = context.require_variable("x")
+  let p = ContextPolynomial::from_named_terms_as_sparse(context, [
+    ([(x, 1U)], 1),
+  ])
+  let x_name = x.to_type_theory_name()
+  assert_true(p.eval_partial_named_checked([(x_name, 1), (x_name, 2)]) is None)
+  assert_true(
+    p.substitute_names_checked([(x_name, Scalar(1)), (x_name, Scalar(2))]) is None,
+  )
+}
+
+///|
+test "mutable context polynomial rejects incompatible named polynomial substitution" {
+  let context = VariableContext::from_names(["x"])
+  let other_context = VariableContext::from_names(["z"])
+  let x = context.require_variable("x")
+  let z = other_context.require_variable("z")
+  let p = ContextPolynomial::from_named_terms_as_sparse(context, [
+    ([(x, 1U)], 1),
+  ])
+  let replacement = ContextPolynomial::from_named_terms_as_sparse(
+    other_context,
+    [([(z, 1U)], 1)],
+  )
+  assert_true(
+    p.substitute_names_checked([
+      (x.to_type_theory_name(), Polynomial(replacement)),
+    ]) is None,
+  )
+}

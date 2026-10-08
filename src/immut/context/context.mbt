@@ -744,6 +744,60 @@ test "context polynomial accepts type-theory names for substitutions" {
 }
 
 ///|
+test "context named substitution rejects duplicate type-theory names" {
+  let context = VariableContext::from_names(["x"])
+  let x = context.require_variable("x")
+  let p = ContextPolynomial::from_named_terms_as_sparse(context, [
+    ([(x, 1U)], 1),
+  ])
+  let x_name = x.to_type_theory_name()
+  assert_true(p.eval_partial_named_checked([(x_name, 1), (x_name, 2)]) is None)
+  assert_true(
+    p.substitute_names_checked([(x_name, Scalar(1)), (x_name, Scalar(2))]) is None,
+  )
+}
+
+///|
+test "context polynomial substitutes type-theory names by polynomials" {
+  let context = VariableContext::from_names(["x", "y"])
+  let x = context.require_variable("x")
+  let y = context.require_variable("y")
+  let p = ContextPolynomial::from_named_terms_as_sparse(context, [
+    ([(x, 1U)], 1),
+    ([(y, 1U)], 1),
+  ])
+  let y_plus_one = ContextPolynomial::from_named_terms_as_sparse(context, [
+    ([(y, 1U)], 1),
+    ([], 1),
+  ])
+  let substituted = p.substitute_names([
+    (x.to_type_theory_name(), Polynomial(y_plus_one)),
+    (y.to_type_theory_name(), Scalar(2)),
+  ])
+  assert_eq(substituted.eval_named([(x, 0), (y, 3)]), 6)
+}
+
+///|
+test "context named substitution rejects incompatible polynomial context" {
+  let context = VariableContext::from_names(["x"])
+  let other_context = VariableContext::from_names(["z"])
+  let x = context.require_variable("x")
+  let z = other_context.require_variable("z")
+  let p = ContextPolynomial::from_named_terms_as_sparse(context, [
+    ([(x, 1U)], 1),
+  ])
+  let replacement = ContextPolynomial::from_named_terms_as_sparse(
+    other_context,
+    [([(z, 1U)], 1)],
+  )
+  assert_true(
+    p.substitute_names_checked([
+      (x.to_type_theory_name(), Polynomial(replacement)),
+    ]) is None,
+  )
+}
+
+///|
 test "context substitution rejects invalid replacement variables" {
   let context = VariableContext::from_names(["x"])
   let other_context = VariableContext::from_names(["z"])
@@ -781,6 +835,19 @@ test "context substitution rejects duplicate replacement variables" {
   ])
   assert_true(p.eval_partial_checked([(x, 1), (x, 2)]) is None)
   assert_true(p.substitute_checked([(x, Scalar(1)), (x, Scalar(2))]) is None)
+}
+
+///|
+test "context named evaluation rejects duplicate and incomplete assignments" {
+  let context = VariableContext::from_names(["x", "y"])
+  let x = context.require_variable("x")
+  let y = context.require_variable("y")
+  let p = ContextPolynomial::from_named_terms_as_sparse(context, [
+    ([(x, 1U)], 1),
+    ([(y, 1U)], 1),
+  ])
+  assert_true(p.eval_named_checked([(x, 1), (x, 2), (y, 3)]) is None)
+  assert_true(p.eval_named_checked([(x, 1)]) is None)
 }
 
 ///|

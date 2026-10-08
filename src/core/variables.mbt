@@ -178,3 +178,36 @@ pub impl Show for VariableContext with fn output(self, logger) {
   }
   logger.write_char(')')
 }
+
+///|
+test "variable context resolves type-theory names" {
+  let context = VariableContext::from_names(["x", "y"])
+  let x = context.require_variable("x")
+  let y = context.require_variable("y")
+  match context.variable_by_type_theory_name(@tt_core.Name::new("x")) {
+    Some(actual) => assert_eq(actual, x)
+    None => fail("expected x to resolve by type-theory name")
+  }
+  match context.variable_by_type_theory_name(@tt_core.Name::new("y")) {
+    Some(actual) => assert_eq(actual, y)
+    None => fail("expected y to resolve by type-theory name")
+  }
+  assert_true(context.variable_by_type_theory_name(@tt_core.Name::new("z")) is None)
+  assert_eq(context.require_type_theory_name(@tt_core.Name::new("x")), x)
+}
+
+///|
+test "variable context get and contains handle boundaries" {
+  let context = VariableContext::from_names(["x"])
+  let x = context.require_variable("x")
+  let other_context = VariableContext::from_names(["z"])
+  let z = other_context.require_variable("z")
+  assert_true(context.get(-1) is None)
+  assert_true(context.get(1) is None)
+  match context.get(0) {
+    Some(actual) => assert_eq(actual, x)
+    None => fail("expected index 0 to resolve")
+  }
+  assert_true(context.contains(x))
+  assert_false(context.contains(z))
+}
