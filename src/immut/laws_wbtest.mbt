@@ -33,7 +33,7 @@ test "karatsuba agrees with canonical multiplication above threshold" {
 }
 
 ///|
-struct AddOnly {
+priv struct AddOnly {
   value : Int
 } derive(Eq)
 
@@ -56,7 +56,7 @@ impl Add for AddOnly with fn add(self, other) {
 impl AddMonoid for AddOnly
 
 ///|
-struct MulNoOne {
+priv struct MulNoOne {
   value : Int
 } derive(Eq)
 
@@ -84,7 +84,7 @@ impl Mul for MulNoOne with fn mul(self, other) {
 }
 
 ///|
-struct GroupNoMul {
+priv struct GroupNoMul {
   value : Int
 } derive(Eq)
 
