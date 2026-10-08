@@ -760,7 +760,8 @@ test "context named substitution rejects duplicate type-theory names" {
   let x_name = x.to_type_theory_name()
   assert_true(p.eval_partial_named_checked([(x_name, 1), (x_name, 2)]) is None)
   assert_true(
-    p.substitute_names_checked([(x_name, Scalar(1)), (x_name, Scalar(2))]) is None,
+    p.substitute_names_checked([(x_name, Scalar(1)), (x_name, Scalar(2))])
+    is None,
   )
 }
 
@@ -800,7 +801,8 @@ test "context named substitution rejects incompatible polynomial context" {
   assert_true(
     p.substitute_names_checked([
       (x.to_type_theory_name(), Polynomial(replacement)),
-    ]) is None,
+    ])
+    is None,
   )
 }
 

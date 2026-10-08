@@ -524,7 +524,8 @@ test "mutable context polynomial rejects duplicate named substitutions" {
   let x_name = x.to_type_theory_name()
   assert_true(p.eval_partial_named_checked([(x_name, 1), (x_name, 2)]) is None)
   assert_true(
-    p.substitute_names_checked([(x_name, Scalar(1)), (x_name, Scalar(2))]) is None,
+    p.substitute_names_checked([(x_name, Scalar(1)), (x_name, Scalar(2))])
+    is None,
   )
 }
 
@@ -544,7 +545,8 @@ test "mutable context polynomial rejects incompatible named polynomial substitut
   assert_true(
     p.substitute_names_checked([
       (x.to_type_theory_name(), Polynomial(replacement)),
-    ]) is None,
+    ])
+    is None,
   )
 }
 
