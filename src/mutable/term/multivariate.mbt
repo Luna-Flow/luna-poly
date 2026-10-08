@@ -2,7 +2,7 @@
 /// Mutable multivariate polynomial backed by a canonical sorted term array.
 struct TermPolynomial[A] {
   mut terms : Array[(ExponentVector, A)]
-} derive(Eq)
+} derive(Eq, Debug)
 
 ///|
 pub fn[A : Eq + AddMonoid] TermPolynomial::from_terms(
@@ -25,7 +25,7 @@ pub fn[A : Eq + AddMonoid] TermPolynomial::from_array(
 pub fn[A] TermPolynomial::from_immut(
   value : @immut_term.TermPolynomial[A],
 ) -> TermPolynomial[A] {
-  { terms: value.to_terms() }
+  { terms: value.to_terms(), }
 }
 
 ///|
@@ -48,7 +48,7 @@ pub fn[A] TermPolynomial::size(self : TermPolynomial[A]) -> Int {
 }
 
 ///|
-fn[A] TermPolynomial::arity(self : TermPolynomial[A]) -> Int {
+pub fn[A] TermPolynomial::arity(self : TermPolynomial[A]) -> Int {
   let mut result = 0
   for term in self.terms {
     result = @cmp.maximum(result, term.0.length())
@@ -57,7 +57,7 @@ fn[A] TermPolynomial::arity(self : TermPolynomial[A]) -> Int {
 }
 
 ///|
-fn[A] TermPolynomial::total_degree(self : TermPolynomial[A]) -> UInt? {
+pub fn[A] TermPolynomial::total_degree(self : TermPolynomial[A]) -> UInt? {
   let mut result = 0U
   let mut found = false
   for term in self.terms {
@@ -118,7 +118,7 @@ pub fn[A] TermPolynomial::clear(self : TermPolynomial[A]) -> Unit {
 
 ///|
 pub fn[A] TermPolynomial::copy(self : TermPolynomial[A]) -> TermPolynomial[A] {
-  { terms: self.terms.copy() }
+  { terms: self.terms.copy(), }
 }
 
 ///|
@@ -165,15 +165,15 @@ pub fn[A : Eq + AddMonoid + Mul] TermPolynomial::mul_inplace(
 
 ///|
 pub impl[A] Zero for TermPolynomial[A] with fn zero() {
-  { terms: [] }
+  { terms: [], }
 }
 
 ///|
 pub impl[A : Eq + Zero + One] One for TermPolynomial[A] with fn one() {
-  if A::one() == A::zero() {
+  if (@lg.One::one() : A) == @lg.Zero::zero() {
     TermPolynomial::zero()
   } else {
-    { terms: [(ExponentVector::one(), A::one())] }
+    { terms: [(ExponentVector::one(), @lg.One::one())], }
   }
 }
 
@@ -189,7 +189,7 @@ pub impl[A : Eq + Zero + Neg] Neg for TermPolynomial[A] with fn neg(self) {
   let terms : Array[(ExponentVector, A)] = []
   for term in self.terms {
     let coefficient = -term.1
-    if coefficient != A::zero() {
+    if coefficient != @lg.Zero::zero() {
       terms.push((term.0, coefficient))
     }
   }
@@ -219,12 +219,12 @@ pub fn[A : Eq + Zero + Mul] TermPolynomial::scale(
   coefficient : A,
 ) -> TermPolynomial[A] {
   let terms : Array[(ExponentVector, A)] = []
-  if coefficient == A::zero() {
+  if coefficient == @lg.Zero::zero() {
     return { terms, }
   }
   for term in self.terms {
     let scaled = term.1 * coefficient
-    if scaled != A::zero() {
+    if scaled != @lg.Zero::zero() {
       terms.push((term.0 * exponent, scaled))
     }
   }
@@ -259,12 +259,13 @@ pub fn[A : AddMonoid + Mul + One] TermPolynomial::eval_checked(
   if self.arity() > values.length() {
     return None
   }
-  let mut result = A::zero()
+  let mut result = @lg.Zero::zero()
   for entry in self.terms {
     let (exponent, coefficient) = entry
     let mut term = coefficient
     for i in 0..<exponent.length() {
-      term = term * @internal.pow_nat(values[i], exponent[i], one=A::one())
+      term = term *
+        @internal.pow_nat(values[i], exponent[i], one=@lg.One::one())
     }
     result = result + term
   }
@@ -313,7 +314,7 @@ pub impl[A : Show + Zero] Show for TermPolynomial[A] with fn output(
   logger,
 ) {
   if self.terms.length() == 0 {
-    logger.write_object(A::zero())
+    logger.write_object((@lg.Zero::zero() : A))
     return
   }
   for i in 0..<self.terms.length() {

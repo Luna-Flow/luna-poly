@@ -5,6 +5,7 @@ import {
   "Luna-Flow/arithmetic",
   "Luna-Flow/luna-generic",
   "Luna-Flow/luna-poly/core",
+  "moonbitlang/core/debug",
 }
 
 // Values
@@ -12,35 +13,46 @@ import {
 // Errors
 
 // Types and methods
-type DensePolynomial[A] derive(Compare, Eq)
+type DensePolynomial[A] derive(Compare, Eq, @debug.Debug)
+pub fn[A : Eq + @luna-generic.AddMonoid] DensePolynomial::add(Self[A], Self[A]) -> Self[A]
 pub fn[A : Eq + @luna-generic.AddMonoid] DensePolynomial::add_inplace(Self[A], Self[A]) -> Unit
 pub fn[A] DensePolynomial::clear(Self[A]) -> Unit
 pub fn[A : @luna-generic.Zero] DensePolynomial::coefficient(Self[A], Int) -> A
 pub fn[A : @luna-generic.Zero] DensePolynomial::coefficient_checked(Self[A], Int) -> A?
+pub fn[A : Compare] DensePolynomial::compare(Self[A], Self[A]) -> Int
 pub fn[A : Eq + @luna-generic.Zero] DensePolynomial::constant(A) -> Self[A]
 pub fn[A] DensePolynomial::copy(Self[A]) -> Self[A]
 pub fn[A] DensePolynomial::degree(Self[A]) -> Int?
 pub fn[A : @luna-generic.NatHomomorphism + Eq + @luna-generic.Zero + Mul] DensePolynomial::derivative(Self[A]) -> Self[A]
+pub fn[A : Eq] DensePolynomial::equal(Self[A], Self[A]) -> Bool
 pub fn[A : @luna-generic.AddMonoid + Mul] DensePolynomial::eval(Self[A], A) -> A
 pub fn[A : Eq + @luna-generic.Zero] DensePolynomial::from_coefficients(Array[A]) -> Self[A]
 pub fn[A : Eq + @luna-generic.Zero] DensePolynomial::from_immut(@Luna-Flow/luna-poly/immut/dense.DensePolynomial[A]) -> Self[A]
+pub fn[A] DensePolynomial::is_zero(Self[A]) -> Bool
 pub fn[A : Eq + @luna-generic.AddMonoid + Mul + Neg + @luna-generic.One] DensePolynomial::karatsuba(Self[A], Self[A]) -> Self[A]
 pub fn[A] DensePolynomial::leading_coefficient(Self[A]) -> A?
 pub fn[A] DensePolynomial::leading_term(Self[A]) -> (Int, A)?
 pub fn[A] DensePolynomial::length(Self[A]) -> Int
 pub fn[A : Eq + @luna-generic.Zero] DensePolynomial::monomial(Int, A) -> Self[A]
 pub fn[A : Eq + @luna-generic.Zero] DensePolynomial::monomial_checked(Int, A) -> Self[A]?
+pub fn[A : Eq + @luna-generic.AddMonoid + Mul] DensePolynomial::mul(Self[A], Self[A]) -> Self[A]
 pub fn[A : Eq + @luna-generic.AddMonoid + Mul] DensePolynomial::mul_inplace(Self[A], Self[A]) -> Unit
+pub fn[A : Eq + @luna-generic.Zero + Neg] DensePolynomial::neg(Self[A]) -> Self[A]
+pub fn[A : Eq + @luna-generic.Zero + @luna-generic.One] DensePolynomial::one() -> Self[A]
 pub fn[A : Eq + @luna-generic.AddMonoid + Mul + @luna-generic.One] DensePolynomial::ops() -> @core.UnivariateOps[Self[A], A]
 pub fn[A : Eq + @luna-generic.AddMonoid + Mul + @luna-generic.One] DensePolynomial::pow(Self[A], UInt) -> Self[A]
 pub fn[A : Eq + @luna-generic.Zero + Mul] DensePolynomial::scale(Self[A], Int, A) -> Self[A]
 pub fn[A : Eq + @luna-generic.Zero + Mul] DensePolynomial::scale_checked(Self[A], Int, A) -> Self[A]?
 pub fn[A : Eq + @luna-generic.Zero + Mul] DensePolynomial::scale_inplace(Self[A], Int, A) -> Unit
 pub fn[A : Eq + @luna-generic.Zero] DensePolynomial::set_coefficient(Self[A], Int, A) -> Unit
+pub fn[A] DensePolynomial::shape(Self[A]) -> @core.PolynomialShape
+pub fn[A : Eq + @luna-generic.AddMonoid + Neg] DensePolynomial::sub(Self[A], Self[A]) -> Self[A]
 pub fn[A : Eq + @luna-generic.AddMonoid + Mul] DensePolynomial::substitute(Self[A], Self[A]) -> Self[A]
 pub fn[A] DensePolynomial::to_coefficients(Self[A]) -> Array[A]
 pub fn[A : Eq + @luna-generic.Zero] DensePolynomial::to_immut(Self[A]) -> @Luna-Flow/luna-poly/immut/dense.DensePolynomial[A]
+pub fn[A : Show + Eq + @luna-generic.Zero] DensePolynomial::to_string(Self[A]) -> String
 pub fn[A : Eq + @luna-generic.Zero + @luna-generic.One] DensePolynomial::variable() -> Self[A]
+pub fn[A] DensePolynomial::zero() -> Self[A]
 pub impl[A : Eq + @luna-generic.AddMonoid + Mul + @luna-generic.One] @arithmetic.PowNatChecked for DensePolynomial[A]
 pub impl[A : Eq + @luna-generic.Zero + @luna-generic.One] @luna-generic.One for DensePolynomial[A]
 pub impl[A] @luna-generic.Zero for DensePolynomial[A]
@@ -61,4 +73,3 @@ pub impl[A : Eq + @luna-generic.AddMonoid + Neg] Sub for DensePolynomial[A]
 // Type aliases
 
 // Traits
-

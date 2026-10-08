@@ -2,12 +2,12 @@
 /// Mutable dense univariate polynomial with canonical trailing-zero handling.
 struct DensePolynomial[A] {
   mut coefficients : Array[A]
-} derive(Eq, Compare)
+} derive(Eq, Compare, Debug)
 
 ///|
 fn[A : Eq + Zero] canonical_coefficients(values : Array[A]) -> Array[A] {
   let copy = values.copy()
-  while !copy.is_empty() && copy.last().unwrap() == A::zero() {
+  while !copy.is_empty() && copy.last().unwrap() == @lg.Zero::zero() {
     let _ = copy.pop()
   }
   copy
@@ -17,7 +17,7 @@ fn[A : Eq + Zero] canonical_coefficients(values : Array[A]) -> Array[A] {
 pub fn[A : Eq + Zero] DensePolynomial::from_coefficients(
   values : Array[A],
 ) -> DensePolynomial[A] {
-  { coefficients: canonical_coefficients(values) }
+  { coefficients: canonical_coefficients(values), }
 }
 
 ///|
@@ -155,7 +155,7 @@ pub fn[A : Eq + Zero] DensePolynomial::set_coefficient(
 ) -> Unit {
   guard power >= 0 else { abort("DensePolynomial power must be non-negative") }
   if power >= self.length() {
-    self.coefficients.resize(power + 1, A::zero())
+    self.coefficients.resize(power + 1, @lg.Zero::zero())
   }
   self.coefficients[power] = coefficient
   self.coefficients = canonical_coefficients(self.coefficients)
@@ -170,7 +170,7 @@ pub fn[A] DensePolynomial::clear(self : DensePolynomial[A]) -> Unit {
 pub fn[A] DensePolynomial::copy(
   self : DensePolynomial[A],
 ) -> DensePolynomial[A] {
-  { coefficients: self.coefficients.copy() }
+  { coefficients: self.coefficients.copy(), }
 }
 
 ///|
@@ -192,7 +192,7 @@ pub fn[A : Eq + AddMonoid] DensePolynomial::add_inplace(
   other : DensePolynomial[A],
 ) -> Unit {
   let length = @cmp.maximum(self.length(), other.length())
-  self.coefficients.resize(length, A::zero())
+  self.coefficients.resize(length, @lg.Zero::zero())
   for i in 0..<other.length() {
     self.coefficients[i] = self.coefficients[i] + other.coefficients[i]
   }
@@ -218,12 +218,12 @@ pub fn[A : Eq + Zero + Mul] DensePolynomial::scale_inplace(
 
 ///|
 pub impl[A] Zero for DensePolynomial[A] with fn zero() {
-  { coefficients: [] }
+  { coefficients: [], }
 }
 
 ///|
 pub impl[A : Eq + Zero + One] One for DensePolynomial[A] with fn one() {
-  DensePolynomial::from_coefficients([A::one()])
+  DensePolynomial::from_coefficients([@lg.One::one()])
 }
 
 ///|
@@ -256,7 +256,7 @@ pub impl[A : Eq + AddMonoid + Mul] Mul for DensePolynomial[A] with fn mul(
   if self.length() == 0 || other.length() == 0 {
     return DensePolynomial::zero()
   }
-  let values = Array::make(self.length() + other.length() - 1, A::zero())
+  let values = Array::make(self.length() + other.length() - 1, @lg.Zero::zero())
   for i, left in self.coefficients {
     for j, right in other.coefficients {
       values[i + j] = values[i + j] + left * right
@@ -294,7 +294,7 @@ pub fn[A : AddMonoid + Mul] DensePolynomial::eval(
   self : DensePolynomial[A],
   value : A,
 ) -> A {
-  let mut result = A::zero()
+  let mut result = @lg.Zero::zero()
   for i = self.length() - 1; i >= 0; i = i - 1 {
     result = result * value + self.coefficients[i]
   }
@@ -367,7 +367,7 @@ pub impl[A : Show + Eq + Zero] Show for DensePolynomial[A] with fn output(
   self,
   logger,
 ) {
-  self.to_immut().output(logger)
+  Show::output(self.to_immut(), logger)
 }
 
 ///|

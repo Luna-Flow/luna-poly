@@ -2,7 +2,7 @@
 /// Mutable wrapper around the immutable context-aware polynomial model.
 struct ContextPolynomial[A] {
   mut value : @immut_context.ContextPolynomial[A]
-}
+} derive(Debug)
 
 ///|
 pub(all) enum ContextSubstitutionValue[A] {
@@ -150,12 +150,12 @@ pub fn[A] ContextPolynomial::context(
 }
 
 ///|
-fn[A] ContextPolynomial::term_count(self : ContextPolynomial[A]) -> Int {
+pub fn[A] ContextPolynomial::term_count(self : ContextPolynomial[A]) -> Int {
   self.to_terms().length()
 }
 
 ///|
-fn[A] ContextPolynomial::arity(self : ContextPolynomial[A]) -> Int {
+pub fn[A] ContextPolynomial::arity(self : ContextPolynomial[A]) -> Int {
   let mut result = 0
   for term in self.to_terms() {
     let (exponent, _) = term
@@ -409,7 +409,7 @@ pub fn[A : Eq + AddMonoid + Mul] ContextPolynomial::mul_inplace(
 pub fn[A] ContextPolynomial::copy(
   self : ContextPolynomial[A],
 ) -> ContextPolynomial[A] {
-  { value: self.value }
+  { value: self.value, }
 }
 
 ///|
@@ -478,7 +478,7 @@ pub impl[A : Show + Zero] Show for ContextPolynomial[A] with fn output(
   self,
   logger,
 ) {
-  self.value.output(logger)
+  Show::output(self.value, logger)
 }
 
 ///|
