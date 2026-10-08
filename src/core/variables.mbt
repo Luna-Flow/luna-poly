@@ -83,7 +83,8 @@ pub fn VariableContext::extend_checked(
 }
 
 ///|
-pub fn VariableContext::extend(
+#alias(extend, deprecated="Use `VariableContext::extend_with` instead")
+pub fn VariableContext::extend_with(
   self : VariableContext,
   name : String,
 ) -> (VariableContext, Variable) {

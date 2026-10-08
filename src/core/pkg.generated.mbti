@@ -97,8 +97,9 @@ pub impl Show for Variable
 type VariableContext derive(Eq, @debug.Debug)
 pub fn VariableContext::contains(Self, Variable) -> Bool
 pub fn VariableContext::equal(Self, Self) -> Bool
-pub fn VariableContext::extend(Self, String) -> (Self, Variable)
 pub fn VariableContext::extend_checked(Self, String) -> (Self, Variable)?
+#alias(extend, deprecated)
+pub fn VariableContext::extend_with(Self, String) -> (Self, Variable)
 pub fn VariableContext::from_names(Array[String]) -> Self
 pub fn VariableContext::from_names_checked(Array[String]) -> Self?
 pub fn VariableContext::get(Self, Int) -> Variable?
