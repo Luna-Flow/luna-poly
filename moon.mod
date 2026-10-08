@@ -19,6 +19,4 @@ keywords = [ "polynomial", "symbolic-methods", "numerical-methods", "math" ]
 
 description = "Immutable and mutable polynomial libraries for MoonBit with canonical dense, sparse, and context-aware representations."
 
-options(
-  source: "src",
-)
+source = "src"
