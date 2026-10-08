@@ -4,6 +4,14 @@
 
 `core` fixes the meaning that every representation in `luna-poly` shares: what a monomial is, in which order monomials are listed, what a named variable is, and which observations a generic algorithm may make about a polynomial without knowing its storage. Dense, term-array, sparse and context-bound polynomials, immutable or mutable, all build on these definitions, so they agree on equality, ordering and naming by construction rather than by convention.
 
+## Constraints
+
+- MoonBit traits have only the `Self` parameter: there are no multi-parameter traits and no associated types, so "a polynomial type with coefficient type `A`" cannot be a trait.
+- Since MoonBit 0.10, trait implementations are not callable as methods unless they are promoted explicitly; `extends.mbt` decides which ones are.
+- Monomials are keys in sorted maps and in hash maps, so they need a total order and a hash, both consistent with equality.
+- `Luna-Flow/type_theory` owns the shared vocabulary for names; `luna-poly` may use its `Name` but must not depend on its term syntax or binding machinery.
+- Algebraic structure (`Zero`, `One`, `Ring`, ...) is defined by `Luna-Flow/luna-generic` 0.3.3, which `core` must not duplicate.
+
 ## Mathematical background
 
 ### Polynomial rings
@@ -154,7 +162,7 @@ Every partial operation has an aborting form and a `*_checked` form that returns
 - **Contexts.** Names are pairwise distinct and the variable at position $i$ has index $i$. `extend_checked` and `from_names_checked` enforce this; nothing else constructs contexts.
 - **Name round trip.** $L_\Gamma(N(v)) = v$ for $v \in \Gamma$, and $N(L_\Gamma(t)) = t$ when defined.
 - **Shape compatibility** is an equivalence relation.
-- **Complexity.** `ExponentVector` construction, `mul` and `compare` are $O(\ell)$ in the stored length; `degree` is $O(1)$. Context lookup by name is a linear scan, $O(k)$ string comparisons; `get` and `contains` are $O(1)$ apart from comparing one variable.
+- **Complexity.** `ExponentVector` construction, `mul` and `compare` are $O(\ell)$ in the stored length; `degree` is $O(1)$. Context lookup by name is a linear scan, $O(k)$ string comparisons; `get` and `contains` read one position of a persistent vector, $O(\log k)$ with a large base and effectively constant, plus one variable comparison.
 
 ## Alternatives rejected
 

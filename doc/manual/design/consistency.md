@@ -4,6 +4,12 @@
 
 `luna-poly` promises that its two layers and its representations describe the same mathematics. `consistency` turns that promise into tests that run with `moon test`, in a package that depends on both facades, so that neither layer's own tests need to know about the other.
 
+## Constraints
+
+- Neither layer may depend on the other's tests, so cross-layer checks need a package that imports both facades.
+- The package must not add public API: it holds whitebox tests only, and its interface file stays empty.
+- Checks must run with a plain `moon test`, without extra tools.
+
 ## Mathematical background
 
 Each representation $\rho$ (dense, term, sparse, context; immutable or mutable) comes with an interpretation $[\![\cdot]\!]_\rho$ into a polynomial ring. Consistency is the statement that every operation commutes with interpretation:

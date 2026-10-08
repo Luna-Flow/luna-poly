@@ -4,6 +4,12 @@
 
 The mutable `ContextPolynomial[A]` gives named-variable polynomials the same in-place interface as the other mutable containers (`add_inplace`, `mul_inplace`, `clear`, `copy`) without a second implementation of contexts, named evaluation and substitution.
 
+## Constraints
+
+- Context validation (membership, duplicates, name resolution, context equality) is the most intricate logic of the library and must not be implemented twice.
+- Results and failure cases must equal those of `immut/context`.
+- Substitution payloads may hold mutable polynomials, which the immutable payload type cannot.
+
 ## Mathematical background
 
 The semantics are those of [`immut/context`](../immut/context.md#mathematical-background): a pair $(\Gamma, f)$ with $f \in R[\Gamma]$, substitution as the ring homomorphism $\varphi_\sigma$, and partial evaluation as substitution by scalars. A mutable context polynomial is a variable whose value is such a pair; in-place operations are assignments $f \leftarrow f + g$ and $f \leftarrow f g$ inside the fixed ring $R[\Gamma]$.

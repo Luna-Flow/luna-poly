@@ -4,6 +4,12 @@
 
 The `immut` facade gives the value-oriented half of `luna-poly` a single import. A user who wants polynomials as values should not need to know that dense, term, sparse and context polynomials live in four packages, nor that monomials and traits come from `core` and `luna-generic`.
 
+## Constraints
+
+- MoonBit re-exports names one by one with `pub using`; there is no way to re-export a whole package.
+- An alias must be the same type as the original, so the facade cannot add methods or instances.
+- The `mutable` facade must export the same names, so that code moves between layers by changing one import.
+
 ## Mathematical background
 
 Every immutable type models an element of a polynomial ring: $R[x]$ for `DensePolynomial`, $R[x_0, x_1, \dots]$ for `TermPolynomial` and `SparsePolynomial`, and $R[\Gamma]$ for `ContextPolynomial` (see the [core design](core.md#mathematical-background)). Ring elements are values: $f + g$ is a new element and $f$ does not change. The immutable layer mirrors that: no operation changes an existing polynomial, so a polynomial can be shared, stored in several places and reused after any computation, exactly like an integer.

@@ -4,6 +4,13 @@
 
 `DensePolynomial[A]` is the univariate polynomial as a value: a canonical coefficient vector that can be shared freely, compared with `==`, and combined with the ring operators. It targets polynomials whose coefficients are mostly non-zero, where storing every coefficient up to the degree is both the simplest and the fastest layout.
 
+## Constraints
+
+- Coefficient types range from semirings without negation (`UInt`) through wrapping integers (`Int`, which is $\mathbb Z/2^{32}$) to inexact `Double` and exact `BigInt`, so one bound for the whole type would exclude useful cases.
+- Values must be shareable without defensive copies, so the storage is a persistent `@immut/vector.Vector`.
+- A generic coefficient type provides no roots of unity or suitable modulus, which rules out FFT-based multiplication.
+- luna-generic 0.3.3 maps integers into a coefficient type only through `NatHomomorphism`, implemented for `Float`, `Double` and `BigInt`; the formal derivative depends on it.
+
 ## Mathematical background
 
 A univariate polynomial over $R$ is a finitely supported sequence $(c_0, c_1, \dots)$, written $f = \sum_i c_i x^i$. Its degree is $\deg f = \max\{ i \mid c_i \neq 0 \}$, with $\deg 0 = -\infty$ (returned as `None`). Addition is coefficient-wise and multiplication is the Cauchy product

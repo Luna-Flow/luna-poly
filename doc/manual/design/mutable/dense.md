@@ -4,6 +4,12 @@
 
 The mutable `DensePolynomial[A]` lets an algorithm build or update a univariate polynomial in place (set coefficients one by one, accumulate sums, multiply into a running product) without allocating a new value for every step, while giving exactly the same mathematical results as [`immut/dense`](../immut/dense.md).
 
+## Constraints
+
+- Results must equal those of `immut/dense` on the same inputs.
+- Only methods whose names say so may mutate; operators must leave both operands unchanged.
+- MoonBit arrays are shared by reference, so every array that leaves or enters the container must be copied.
+
 ## Mathematical background
 
 The represented object is the same as in the immutable package: a polynomial $f = \sum_i c_i x^i \in R[x]$ stored as its trimmed coefficient word (see the [immut/dense design](../immut/dense.md#canonical-form-trim-trailing-zeros)). A mutable container is a *variable* holding such a value. An in-place operation $\mathtt{op\_inplace}(p, q)$ is the assignment $p \leftarrow p \circ q$; it must leave the container holding the canonical word of the new value.

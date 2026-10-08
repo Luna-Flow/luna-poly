@@ -4,6 +4,12 @@
 
 `SparsePolynomial[A]` stores a multivariate polynomial as an ordered map from monomials to coefficients. It is the representation to use when an algorithm asks "what is the coefficient of $x^\alpha$?" more often than it traverses the whole polynomial, and it gives that answer in logarithmic time while staying an immutable value.
 
+## Constraints
+
+- The value must behave as an immutable polynomial and still answer coefficient lookups in logarithmic time.
+- Iteration order, equality and printing must agree with the monomial order of `core`.
+- Both multivariate types must canonicalize identically, without `immut/sparse` depending on `immut/term`.
+
 ## Mathematical background
 
 A polynomial is a finitely supported function $f : \mathbb{N}^{(\infty)} \to R$, $\alpha \mapsto f_\alpha$ (see the [core design](../core.md#mathematical-background)). Its support $\operatorname{supp} f = \{ \alpha \mid f_\alpha \neq 0 \}$ is finite, and $f$ is determined by its restriction to the support. A sparse polynomial stores exactly that restriction, the finite partial map
@@ -28,7 +34,7 @@ The tree also matches the cost profile of the other operations: building it from
 
 ### Canonical content: no zero values
 
-**Invariant.** Every stored value is non-zero. Construction reuses the normalization of the term representation (sort, merge equal keys, drop zero sums) and inserts the survivors; `neg` and `scale` skip results that compare equal to zero, which can happen with zero divisors. Since keys are canonical exponent vectors and values are non-zero, the stored map *is* the partial map $\alpha \mapsto f_\alpha$ on $\operatorname{supp} f$, and
+**Invariant.** Every stored value is non-zero. Construction runs the same normalization as the term representation (sort, merge equal keys, drop zero sums; the package keeps a private copy of that routine so that it does not depend on `immut/term`) and inserts the survivors; `neg` and `scale` skip results that compare equal to zero, which can happen with zero divisors. Since keys are canonical exponent vectors and values are non-zero, the stored map *is* the partial map $\alpha \mapsto f_\alpha$ on $\operatorname{supp} f$, and
 
 $$
 \texttt{p == q} \iff \texttt{p.to\_terms() == q.to\_terms()} \iff p = q .
@@ -42,7 +48,7 @@ $$
 
 ### Arithmetic shared with the term representation
 
-Addition and multiplication collect the term lists (all $mn$ products for `*`) and rebuild the map through the shared normalization, exactly as for [`TermPolynomial`](term.md#arithmetic-by-concatenation-and-renormalization). Both representations therefore compute the same canonical result, and the costs are the same up to the constant factor of tree insertion. `eval` is the same term-by-term evaluation homomorphism, with the same arity precondition.
+Addition and multiplication collect the term lists (all $mn$ products for `*`) and rebuild the map through the same normalization, exactly as for [`TermPolynomial`](term.md#arithmetic-by-concatenation-and-renormalization). Both representations therefore compute the same canonical result, and the costs are the same up to the constant factor of tree insertion. `eval` is the same term-by-term evaluation homomorphism, with the same arity precondition.
 
 ### Two multivariate representations
 

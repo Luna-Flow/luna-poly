@@ -4,6 +4,12 @@
 
 The `mutable` facade gives the execution-oriented half of `luna-poly` a single import, and the layer behind it lets algorithms update polynomials in place while computing exactly what the [`immut`](immut.md) layer computes. Performance comes first in this layer, but its side effects must stay where the caller can see them: in methods whose names say they mutate.
 
+## Constraints
+
+- The mutable layer must compute exactly what the immutable layer computes; two independent implementations of every algorithm would have to be kept in agreement by hand.
+- MoonBit has no ownership or borrowing types, so aliasing between containers can only be prevented by copying at the boundaries.
+- The facade must export the same names as `immut`.
+
 ## Mathematical background
 
 A mutable polynomial is a *variable* whose value is a polynomial; the values are the same mathematical objects as in the immutable layer, in the same canonical forms. An in-place operation is an assignment $p \leftarrow p \circ q$, and the contract of the layer is
@@ -62,7 +68,7 @@ The layers match in names, parameter order and checked-variant conventions. The 
 - Canonical form after every public call, in every container.
 - For every operation, the mutable result converted with `to_immut` equals the immutable result on the converted inputs.
 - No mutable container shares mutable storage with any other value.
-- Passing a container as its own argument (`p.add_inplace(p)`, `p.mul_inplace(p)`) gives $2p$ and $p^2$.
+- Passing a container as its own argument (`p.add_inplace(p)`, `p.mul_inplace(p)`) gives $2p$ and $p^2$, with one exception: the sparse `p.add_inplace(p)` is wrong when doubling a coefficient gives zero (see [mutable/sparse](mutable/sparse.md#pointwise-updates-on-the-tree)).
 
 ## Alternatives rejected
 

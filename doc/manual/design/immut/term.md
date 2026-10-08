@@ -4,6 +4,12 @@
 
 `TermPolynomial[A]` is the multivariate polynomial in *distributed* form: a flat, sorted list of non-zero terms. It is the representation for traversing a polynomial in order, for whole-polynomial arithmetic, and for reading the leading term directly, while staying an immutable value with structural equality.
 
+## Constraints
+
+- The term order must be the monomial order of `ExponentVector::compare`, shared with every other representation.
+- Values are immutable and compared with the derived `Eq`, so the stored list must be a canonical form.
+- Coefficient bounds are per function, as in the dense type; addition may only assume an `AddMonoid`.
+
 ## Mathematical background
 
 A polynomial $f \in R[x_0, x_1, \dots]$ is a finite sum $f = \sum_{k=1}^{m} c_k x^{\alpha_k}$ with distinct exponent vectors $\alpha_k \in \mathbb{N}^{(\infty)}$ and non-zero coefficients $c_k$ (see the [core design](../core.md#mathematical-background)). Fix the monomial order $\prec$ of `ExponentVector::compare`. Listing the terms so that $\alpha_1 \succ \alpha_2 \succ \cdots \succ \alpha_m$ gives the *canonical term list* of $f$. The first term $c_1 x^{\alpha_1}$ is the leading term $\operatorname{LT}(f)$, $\alpha_1$ the leading monomial and $c_1$ the leading coefficient.
@@ -58,7 +64,7 @@ This is the property that makes graded orders useful for division-style algorith
 
 ### Evaluation term by term
 
-`eval(values)` computes $\sum_k c_k \prod_i a_i^{\alpha_{k,i}}$, each power by binary exponentiation. For a commutative coefficient ring this is the evaluation homomorphism $\mathrm{ev}_a : R[x_0, \dots, x_{n-1}] \to R$, $x_i \mapsto a_i$; it is a ring homomorphism by the same monomial argument as in the [dense design](dense.md#composition-is-evaluation-at-a-polynomial). The cost is $O\bigl(\sum_k \sum_i \log \alpha_{k,i}\bigr)$ coefficient multiplications.
+`eval(values)` computes $\sum_k c_k \prod_i a_i^{\alpha_{k,i}}$, each power by binary exponentiation. For a commutative coefficient ring this is the evaluation homomorphism $\mathrm{ev}_a : R[x_0, \dots, x_{n-1}] \to R$, $x_i \mapsto a_i$; it is a ring homomorphism by the same monomial argument as in the [dense design](dense.md#composition-is-evaluation-at-a-polynomial). Term $k$ costs, for every stored position $i < \ell_k$, one multiplication into the term and at most $2\lfloor\log_2 \alpha_{k,i}\rfloor + 1$ for the power (none when $\alpha_{k,i} = 0$), so the total is $O\bigl(\sum_k (\ell_k + \sum_i \log_2(1 + \alpha_{k,i}))\bigr)$ coefficient multiplications, where $\ell_k$ is the stored length of $\alpha_k$.
 
 The point must supply at least `arity()` values: index $i$ is read for every variable a term uses. `eval` aborts on a shorter array and `eval_checked` returns `None`; values beyond the arity are never read.
 
@@ -73,7 +79,7 @@ The point must supply at least `arity()` values: index $i$ is read for every var
 - **Leading term.** `to_terms()[0]` is $\operatorname{LT}(f)$, and $\operatorname{LT}(fg) = \operatorname{LT}(f)\operatorname{LT}(g)$ when the coefficient product is non-zero.
 - **`one()`** is the zero polynomial exactly when $1 = 0$ in `A`.
 - **Powers.** `pow(e)` performs $O(\log e)$ multiplications and `pow(0)` is `one()`.
-- **Complexity** ($m$, $n$ terms): `from_terms` $O(m \log m)$; `+` $O((m+n)\log(m+n))$; `*` $O(mn \log(mn))$; `scale`, `neg`, `arity`, `total_degree` $O(m)$; `eval` $O(\sum_k \sum_i \log \alpha_{k,i})$. Each comparison costs $O(\ell)$.
+- **Complexity** ($m$, $n$ terms): `from_terms` $O(m \log m)$; `+` $O((m+n)\log(m+n))$; `*` $O(mn \log(mn))$; `scale`, `neg`, `arity`, `total_degree` $O(m)$; `eval` $O\bigl(\sum_k (\ell_k + \sum_i \log_2(1 + \alpha_{k,i}))\bigr)$ multiplications. Each comparison costs $O(\ell)$.
 
 ## Alternatives rejected
 

@@ -4,6 +4,12 @@
 
 The mutable `TermPolynomial[A]` is a container for a multivariate polynomial in distributed form that algorithms can update step by step (add a term, multiply in a factor, scale by a monomial) while it keeps the canonical sorted term array of [`immut/term`](../immut/term.md) at every observable point.
 
+## Constraints
+
+- The canonical form and the normalization are those of `immut/term`; the mutable container must not introduce a second canonicalization routine.
+- Readers must never observe an unsorted or unmerged state, even in the middle of an operation.
+- Results must equal those of `immut/term`.
+
 ## Mathematical background
 
 The container holds the canonical term list of some $f \in R[x_0, x_1, \dots]$: terms $(\alpha_k, c_k)$ with $\alpha_1 \succ \alpha_2 \succ \cdots$ in the [monomial order](../core.md#the-monomial-order) and every $c_k \neq 0$. The in-place operations are assignments:

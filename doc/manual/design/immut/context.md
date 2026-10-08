@@ -4,6 +4,13 @@
 
 `ContextPolynomial[A]` lets users write polynomials in named variables and transform them by evaluation, partial evaluation and substitution, while the arithmetic stays positional and reuses the term and sparse representations. It is also the place where `luna-poly` meets `Luna-Flow/type_theory`: substitutions can be keyed by `type_theory` names, but canonical forms, storage and coefficient arithmetic remain owned by this package.
 
+## Constraints
+
+- Arithmetic must stay positional and reuse `TermPolynomial` and `SparsePolynomial`; names are a layer on top.
+- Substitution keyed by `type_theory` names must not import `type_theory`'s binding machinery: polynomials have no binders.
+- Every partial operation needs an aborting and a checked form that returns `Option`, as everywhere in `luna-poly`.
+- Contexts are plain values compared structurally, with no identity to track.
+
 ## Mathematical background
 
 ### Polynomials over a context

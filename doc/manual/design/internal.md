@@ -4,6 +4,11 @@
 
 `internal` keeps code that several representation packages need, but that is not part of the public surface, in one place. Today it contains a single function, the natural-power routine behind every `pow` and every evaluation of $x_i^{\alpha_i}$.
 
+## Constraints
+
+- MoonBit makes an `internal` package importable only inside its module, so the helpers here are not part of the public API.
+- Every representation needs natural powers, of polynomials and of coefficients, with the smallest possible bound on the element type.
+
 ## Mathematical background
 
 For an element $a$ of a monoid with unit $1$ and $e \in \mathbb{N}$, $a^e$ is the $e$-fold product, $a^0 = 1$. Writing $e$ in binary, $e = \sum_j b_j 2^j$, gives
