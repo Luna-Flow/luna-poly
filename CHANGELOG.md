@@ -24,8 +24,16 @@ All notable changes to `Luna-Flow/luna-poly` are listed here. The format follows
 
 - Tests for `type_theory` name lookup in `VariableContext`, and for named substitution, duplicate-name rejection and incompatible-context rejection in the immutable and mutable context packages.
 
+### Fixed
+
+- `@mutable.SparsePolynomial::add_inplace` iterates over a snapshot of its argument, so `p.add_inplace(p)` is `2p` also when a coefficient doubles to zero (#37).
+- `ContextPolynomial::eval_named_checked` returns `None` instead of aborting when the polynomial uses more variables than its context names (part of #34).
+- `ExponentVector` prints its factors separated by ` * ` (`x * x_1` instead of `xx_1`), and so do term and sparse polynomials (#35).
+
 ### Documentation
 
+- The manual follows the luna-generic layout: an overview with Install, a Part/Tutorial/API/Design table and reading paths; Purpose and Importing sections on every API page; a task table at the start of every tutorial; a Constraints section on every design page. Every operation-record method has its own API heading.
+- Logic review of the design pages: exact evaluation cost of `TermPolynomial`, cost of context lookups, and the normalization shared by the two multivariate types.
 - Documentation rewritten: API, tutorial and design pages for every package (`core`, both facades, the eight representation packages, `internal` and `consistency`), an architecture guide, and a new contributing guide, with zh_CN and ja_JP translations.
 
 ## 0.2.0

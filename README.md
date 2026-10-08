@@ -64,7 +64,7 @@ MoonBit toolchain with `moonc` 0.10 or later. Dependencies: `Luna-Flow/luna-gene
 
 ## Documentation
 
-The manual, with API references, tutorials and design notes for every package, is published at <https://lunaflow.cn/en/luna-poly/> in English, Chinese and Japanese. Its English source is [`doc/manual/index.md`](doc/manual/index.md). Changes between versions are listed in [`CHANGELOG.md`](CHANGELOG.md).
+The manual, with API references, tutorials and design notes for every package, is published at <https://lunaflow.cn/en/luna-poly/> in English, Chinese and Japanese. Its English source is [`doc/manual/index.md`](doc/manual/index.md); start with the [immut tutorial](doc/manual/tutorial/immut.md), and read the [architecture guide](doc/manual/architecture.md) before contributing. Changes between versions are listed in [`CHANGELOG.md`](CHANGELOG.md).
 
 ## Contributing
 
