@@ -1,107 +1,39 @@
-# Contribution Guidelines
+# Contributing
 
-## 1. Code Style
+This guide collects the conventions for working on `luna-poly`. The Luna Flow organization rules apply on top of it.
 
-- The project follows the formatting style enforced by the MoonBit Toolchain. Format your code automatically using the following command:
-  
-  ```bash
-  moon fmt
-  ```
-  
-  Ensure that you run `moon fmt` before committing your code to maintain consistency.
-  
-  Alternatively, you can use the `ready_to_pr.sh` script to automatically format the code, run checks, generate test coverage files, and create `.mbti` files.
+## Before a pull request
 
-## 2. Naming Conventions
+Run, from the repository (`./ready_to_pr.sh` runs `moon fmt`, `moon check`, `moon test` and `moon info`):
 
-### 2.1 Variable Naming
+```bash
+moon fmt
+moon check --target all
+moon test
+moon info
+```
 
-- Use **lowercase letters with underscores** as separators (e.g., `my_var`).
-- Variable names should be descriptive and clearly indicate their purpose.
+Review the diff of every `pkg.generated.mbti`: it is the authority for the public API, and any change in it is an API change that the documentation and the changelog must reflect.
 
-### 2.2 Function Naming
+## Code style
 
-- Use **lowercase letters with underscores** as separators (e.g., `calc_total_price()`).
-- Function names should be concise and descriptive, clearly expressing their functionality.
+- Format with `moon fmt`; separate top-level items with `///|`.
+- Use snake_case for bindings, functions, files and folders, and PascalCase for types and traits. Name files after what they implement (`sparse_polynomial.mbt`), not `utils.mbt`.
+- Keep explicit method promotions (`pub extend T with Trait::{...}`) in `extends.mbt`. Promote operators, `equal`, `compare`, `hash` and canonical `to_string`; keep other trait methods available only through the trait, and mark compatibility promotions `#deprecated` and `#doc(hidden)`.
+- In blackbox tests, qualify names of the package under test (`@immut.DensePolynomial`); whitebox tests (`*_wbtest.mbt`) may use them unqualified.
 
-### 2.3 Struct and Trait Naming
+## Library conventions
 
-- Use **PascalCase** (e.g., `MyStruct`, `MyTrait`).
-- Names should intuitively reflect the function or role of the struct or trait, avoiding overly abstract or non-descriptive names.
+- **Canonical forms.** Every public operation returns canonical values: trimmed dense vectors, strictly descending merged term arrays, zero-free sparse maps. A new operation must restore the invariant before it returns.
+- **Minimal bounds.** Each function asks only for the `luna-generic` capabilities it uses.
+- **Checked variants.** A partial operation has an aborting form and a `*_checked` form that returns `None` on contract violations. Abort messages name the violated contract.
+- **Two layers.** Add an operation to `immut` first; add the mutable counterpart with the same name and parameter order, delegating to `immut` unless in-place storage gives a real benefit, and add a check to `src/consistency`. Document every intended difference in the [mutable design](design/mutable.md#api-symmetry-with-immut).
+- **Mutation is named.** Only setters, `clear`, `add_term_inplace` and `*_inplace` methods may mutate their receiver.
 
-### 2.4 Constant Naming
+## Documentation
 
-- **Note:** In the MoonBit context, "variables" are typically referred to as "bindings" and are immutable by default unless marked with `mut`. Thus, there is no strict distinction between constant and variable naming.
-- Use **lowercase letters with underscores** as separators (e.g., `machine_dbl_epsilon`).
-- Prefix constants with a descriptive category where applicable (e.g., `machine_dbl_epsilon`, where `machine` indicates a machine-related constant).
-- Constant names should be concise and descriptive to facilitate understanding.
+The manual follows the Luna Flow documentation standard: English pages in `doc/manual` (one `api/`, `design/` and `tutorial/` page per package, named after the package path), Chinese and Japanese translations as gettext catalogs in `doc/locale`. After editing English pages, run `lunadoc update` and translate the new or fuzzy messages. Every runnable `moonbit` block must compile against the current code; mark intentional fragments `moonbit nocheck`.
 
-### 2.5 Result Err Construction and Err Code
+## Commits
 
-- Use **uppercase letters with underscores** as separators (e.g., `E_MAX_ITER`).
-- Err codes should be prefixed with `E` to indicate an error-related construct.
-- Err codes should be concise and descriptive for easy comprehension.
-
-## 3. Comments
-
-- **Conciseness**: Comments should be clear and to the point, avoiding unnecessary verbosity.
-- **Consistency**: Use uniform terminology and style across the codebase.
-- **Clarity**: Ensure comments are easy to understand, avoiding complex jargon or ambiguous wording.
-- **Accuracy**: Comments must accurately reflect the functionality and purpose of the code.
-- **Up-to-date**: Comments should be updated alongside code changes to maintain relevance.
-
-Developers are encouraged to use MoonBit LSP’s AI-generated code comments to improve efficiency, but AI-generated comments should be reviewed to ensure correctness.
-
-## 4. File Standards
-
-### 4.1 Folder Naming
-
-- Use **lowercase letters** for folder names.
-- Folder names should be concise, descriptive, and separated using underscores (`_`). Avoid numbers and special characters.
-
-  Examples:
-
-  - For differentiation-related functionality: `diff`
-  - For derivative-related functionality: `deriv`
-
-### 4.2 File Organization
-
-- Files should be organized based on functionality, with each file focusing on a specific feature. Use **lowercase letters with underscores** for file names.
-- File names should be descriptive and clearly indicate the core functionality they implement.
-
-  Examples:
-
-  - `gauss_kronrod.mbt`: Implements Gaussian quadrature with Kronrod extension.
-  - `adaptive_quadrature_gk.mbt`: Implements adaptive quadrature using Gaussian quadrature with Kronrod extension.
-
-- **Note:** Avoid overly generic or vague file names such as `utils.mbt`. Instead, ensure file names correspond to their function or module.
-
-## 5. Commit Guidelines
-
-### 5.1 Commit Messages
-
-- Use the `ready_to_pr.sh` script before committing to format code, run checks, generate test coverage files, and create `.mbti` files.
-- Each commit should have a clear description of the changes made.
-- Commit messages should be in **English**, concise, and precise.
-- Use prefixes such as `fix:`, `feat:`, `refactor:`, and `doc:` to indicate the type of change.
-
-  Examples:
-  
-  ```text
-  fix: fix bug in something
-  feat: add feature for something
-  refactor: refactor something
-  doc: add docs for something
-  ```
-
-### 5.2 Commit Frequency
-
-- Keep commits small and focused on a single feature or fix.
-- Avoid large, monolithic commits that include multiple unrelated changes.
-
-## 6. Code Review
-
-- If you are not a maintainer or collaborator, contact them before modifying dependencies or version numbers in `moon.mod`.
-- All code submissions must undergo **code review**.
-- Code reviews should focus on code quality, style, performance, and security.
-- Reviewers should provide constructive feedback to improve the code.
+Use Conventional Commits in English, `<type>(<scope>): <subject>`, with the package as scope (`fix(immut/context): ...`), one logical change per commit. If you are not a maintainer, ask before changing dependencies or the version in `moon.mod`.

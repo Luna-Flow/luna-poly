@@ -1,78 +1,84 @@
 # luna-poly
 
-`luna-poly` provides canonical polynomial types for MoonBit with explicit immutable and mutable execution models. This manual describes version 0.2.0.
+`luna-poly` provides canonical polynomial types for MoonBit: dense univariate polynomials, multivariate polynomials as sorted term arrays or ordered maps, and polynomials over named variables with evaluation, partial evaluation and substitution. Every type comes in an immutable flavour, where polynomials are values, and a mutable flavour, where explicitly named methods update a container in place. This manual describes version 0.2.0.
 
-The library has one shared capability layer and two explicit execution models:
+## What you get
 
-- `core` provides shared types, capability traits, and functional operation
-  records.
-- `immut` provides persistent value semantics.
-- `mutable` provides explicit setters and `_inplace` operations.
+- **Canonical forms.** Every representation removes zero terms and keeps one normal form, so `==` is equality of polynomials.
+- **A shared monomial model.** Exponent vectors without a fixed number of variables, ordered by a graded monomial order.
+- **Algorithms with stated costs.** Schoolbook and Karatsuba multiplication, Horner evaluation, composition, formal derivatives, binary powers, and simultaneous substitution as a ring homomorphism.
+- **Generic code.** Small capability traits, operation records, and the algebra traits of [`luna-generic`](https://lunaflow.cn/en/luna-generic/) re-exported by both facades.
+- **Named variables** through variable contexts, bridged to [`type_theory`](https://lunaflow.cn/en/type_theory/) names.
+- **Checked variants** of every partial operation, returning `None` instead of aborting.
 
-Concrete implementations live in mirrored subpackages:
+## Packages
 
-- `immut/dense`, `immut/term`, `immut/sparse`, `immut/context`
-- `mutable/dense`, `mutable/term`, `mutable/sparse`, `mutable/context`
+| Package | Role | Pages |
+| --- | --- | --- |
+| `core` | exponent vectors, variables and contexts, shapes, capability traits, operation records | [API](api/core.md) · [tutorial](tutorial/core.md) · [design](design/core.md) |
+| `immut` | facade of the immutable layer | [API](api/immut.md) · [tutorial](tutorial/immut.md) · [design](design/immut.md) |
+| `immut/dense` | immutable dense univariate `DensePolynomial` | [API](api/immut/dense.md) · [tutorial](tutorial/immut/dense.md) · [design](design/immut/dense.md) |
+| `immut/term` | immutable sorted-term `TermPolynomial` | [API](api/immut/term.md) · [tutorial](tutorial/immut/term.md) · [design](design/immut/term.md) |
+| `immut/sparse` | immutable ordered-map `SparsePolynomial` | [API](api/immut/sparse.md) · [tutorial](tutorial/immut/sparse.md) · [design](design/immut/sparse.md) |
+| `immut/context` | immutable named-variable `ContextPolynomial` and substitution | [API](api/immut/context.md) · [tutorial](tutorial/immut/context.md) · [design](design/immut/context.md) |
+| `mutable` | facade of the mutable layer | [API](api/mutable.md) · [tutorial](tutorial/mutable.md) · [design](design/mutable.md) |
+| `mutable/dense` | mutable `DensePolynomial` | [API](api/mutable/dense.md) · [tutorial](tutorial/mutable/dense.md) · [design](design/mutable/dense.md) |
+| `mutable/term` | mutable `TermPolynomial` | [API](api/mutable/term.md) · [tutorial](tutorial/mutable/term.md) · [design](design/mutable/term.md) |
+| `mutable/sparse` | mutable `SparsePolynomial` | [API](api/mutable/sparse.md) · [tutorial](tutorial/mutable/sparse.md) · [design](design/mutable/sparse.md) |
+| `mutable/context` | mutable `ContextPolynomial` | [API](api/mutable/context.md) · [tutorial](tutorial/mutable/context.md) · [design](design/mutable/context.md) |
+| `internal` | module-private helpers (natural powers) | [API](api/internal.md) · [tutorial](tutorial/internal.md) · [design](design/internal.md) |
+| `consistency` | test-only package checking that layers and representations agree | [API](api/consistency.md) · [tutorial](tutorial/consistency.md) · [design](design/consistency.md) |
 
-The top-level `immut` and `mutable` packages are facades that re-export core
-capabilities plus their concrete implementations. Both facades expose dense
-univariate, sorted-term multivariate, and ordered-map sparse polynomials.
-Canonical form and natural-power behavior are shared across both packages.
+The [architecture guide](architecture.md) shows how the packages depend on each other.
 
-The 0.2.0 package layout is intentionally source-incompatible with the former root package. Import `/immut` or `/mutable` explicitly.
+## Reading paths
 
-## Representations
+**New to the library.** Read the [immut tutorial](tutorial/immut.md), then the tutorial of the representation you need: [dense](tutorial/immut/dense.md) for one variable, [term](tutorial/immut/term.md) or [sparse](tutorial/immut/sparse.md) for several, [context](tutorial/immut/context.md) for named variables and substitution.
 
-Both packages provide `DensePolynomial`, `TermPolynomial`, `SparsePolynomial`, `ExponentVector`, and context-aware polynomial helpers. Dense polynomials use ascending coefficient arrays; `TermPolynomial` uses a sorted term array; `SparsePolynomial` uses an ordered map. Every representation removes zero terms and maintains a canonical form.
+**Using it in an application.** Keep the [immut API](api/immut.md) and the per-representation API pages at hand; they state every precondition, failure case and cost. Read the [mutable tutorial](tutorial/mutable.md) when profiling shows that intermediate values matter.
 
-Natural powers implement `Luna-Flow/arithmetic.PowNatChecked`. The convenience `pow(UInt)` methods use the same semantics: exponent zero returns the multiplicative identity, including for the zero polynomial.
+**Writing generic code or a new representation.** Read the [core tutorial](tutorial/core.md) and the [core design](design/core.md), which derives the monomial order and explains the capability traits and operation records.
 
-## Named variables
+**Contributing.** Read the [architecture guide](architecture.md), the design pages of the packages you touch, the [consistency](design/consistency.md) page, and the [contributing guide](contributing.md).
 
-`Variable` and `VariableContext` provide the named-variable layer. A `ContextPolynomial` binds a variable context to either term-array or sparse storage, supports both indexed and named evaluation, and exposes checked variants for context or assignment failures.
+## Requirements and installation
 
-Context-aware polynomials integrate with `Luna-Flow/type_theory` names for substitution-facing APIs. `Variable::to_type_theory_name` and `VariableContext::variable_by_type_theory_name` bridge polynomial variables to the shared semantic substrate. `ContextPolynomial::substitute_checked` replaces variables with scalars or same-context polynomials, while `eval_partial_checked` is the scalar-only partial-evaluation specialization. These operations preserve polynomial-owned canonicalization; `type_theory` provides the shared naming and substitution vocabulary, not polynomial storage or normalization.
+`luna-poly` needs the MoonBit toolchain with `moonc` 0.10 or later. Add it to a module with
 
-## Generic code
-
-Use `UnivariatePolynomial`, `MultivariatePolynomial`,
-`ContextualPolynomial`, and `MutablePolynomial` when an algorithm only needs a
-capability boundary. Use `Type::ops()` records when functional-style generic
-code needs construction, conversion, or algebraic operations without matching
-on the storage representation.
-
-The shared `core` layer also exposes lightweight shape metadata through `PolynomialShape` and `HasShape`. Generic code can inspect univariate length, multivariate arity and term count, or context compatibility before combining values. Checked APIs such as `coefficient_checked`, `scale_checked`, `eval_checked`, substitution, and context `*_checked` methods return `None` for contract failures; the shorter convenience methods abort instead.
-
-The `immut` and `mutable` facades re-export the common algebra traits from `Luna-Flow/luna-generic`, including `Zero`, `One`, `AddMonoid`, `MulMonoid`, `Semiring`, `Ring`, `Field`, and `Num`, so polynomial APIs can be used with the same capability style as `Luna-Flow/linear-algebra`.
-
-## Example
-
-```moonbit
-let p = @immut.DensePolynomial::from_coefficients([1, 2, 3])
-let q = p.pow(2)
-let value = q.eval(2)
-
-let buffer = @mutable.DensePolynomial::from_coefficients([1, 2, 3])
-buffer.set_coefficient(1, 5)
-buffer.add_inplace(@mutable.DensePolynomial::from_coefficients([-1, -5, -3]))
-
-let context = @immut.VariableContext::from_names(["x", "y"])
-let x = context.require_variable("x")
-let y = context.require_variable("y")
-let named = @immut.ContextPolynomial::from_named_terms_as_sparse(
-  context,
-  [([(x, 2U)], 1), ([(x, 1U), (y, 1U)], 3), ([], 4)],
-)
-let named_value = named.eval_named([(x, 2), (y, 5)])
-
-let partial = named.eval_partial_named([(x.to_type_theory_name(), 2)])
-let y_plus_one = @immut.ContextPolynomial::from_named_terms_as_sparse(
-  context,
-  [([(y, 1U)], 1), ([], 1)],
-)
-let substituted = named.substitute([(x, @immut.Polynomial(y_plus_one))])
+```bash
+moon add Luna-Flow/luna-poly@0.2.0
 ```
 
-## Where to go next
+and import a facade in `moon.pkg`:
 
-Start with the [`immut` tutorial](tutorial/immut.md) for value-style polynomials, or the [`mutable` tutorial](tutorial/mutable.md) for in-place updates. The design pages explain canonical form and representation invariants ([`immut`](design/immut.md)) and the mutation boundary ([`mutable`](design/mutable.md)). The generated `pkg.generated.mbti` files remain the authority for exact signatures. To work on the library itself, read the [contribution guidelines](contributing.md).
+```text
+import {
+  "Luna-Flow/luna-poly/immut",
+}
+```
+
+It depends on `Luna-Flow/luna-generic`, `Luna-Flow/arithmetic` and `Luna-Flow/type_theory`, which `moon` installs automatically.
+
+## A first example
+
+```moonbit
+test "first example" {
+  let p = @immut.DensePolynomial::from_coefficients([1, 2, 3])
+  inspect(p.pow(2).eval(2), content="289")
+
+  let ctx = @immut.VariableContext::from_names(["x", "y"])
+  let x = ctx.require_variable("x")
+  let y = ctx.require_variable("y")
+  let q = @immut.ContextPolynomial::from_named_terms_as_sparse(ctx, [
+    ([(x, 2U)], 1),
+    ([(x, 1U), (y, 1U)], 3),
+    ([], 4),
+  ])
+  inspect(q.eval_named([(x, 2), (y, 5)]), content="38")
+  inspect(q.eval_partial([(x, 2)]), content="8 + 6 * y")
+}
+```
+
+## Version 0.2.0 layout
+
+Version 0.2.0 replaced the former single root package by `core`, the implementation packages and the two facades. Import `Luna-Flow/luna-poly/immut` or `Luna-Flow/luna-poly/mutable` explicitly; code written for the old root package does not compile unchanged.
