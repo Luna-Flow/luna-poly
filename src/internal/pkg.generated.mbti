@@ -11,4 +11,3 @@ pub fn[A : Mul] pow_nat(A, UInt, one~ : A) -> A
 // Type aliases
 
 // Traits
-
