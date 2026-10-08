@@ -2,14 +2,14 @@
 priv enum ContextPolynomialStorage[A] {
   TermStorage(TermPolynomial[A])
   SparseStorage(SparsePolynomial[A])
-}
+} derive(Debug)
 
 ///|
 /// Context-bound multivariate polynomial with selectable term or sparse storage.
 struct ContextPolynomial[A] {
   context : VariableContext
   storage : ContextPolynomialStorage[A]
-}
+} derive(Debug)
 
 ///|
 pub(all) enum ContextSubstitutionValue[A] {
@@ -55,7 +55,7 @@ pub fn[A] ContextPolynomial::from_term_polynomial(
   context : VariableContext,
   polynomial : TermPolynomial[A],
 ) -> ContextPolynomial[A] {
-  { context, storage: TermStorage(polynomial) }
+  { context, storage: TermStorage(polynomial), }
 }
 
 ///|
@@ -63,7 +63,7 @@ pub fn[A] ContextPolynomial::from_sparse_polynomial(
   context : VariableContext,
   polynomial : SparsePolynomial[A],
 ) -> ContextPolynomial[A] {
-  { context, storage: SparseStorage(polynomial) }
+  { context, storage: SparseStorage(polynomial), }
 }
 
 ///|
@@ -89,7 +89,10 @@ pub fn[A : Eq + AddMonoid + One] ContextPolynomial::variable_checked(
     ContextPolynomial::from_sparse_polynomial(
       context,
       SparsePolynomial::from_terms([
-        (ExponentVector::one().with_exponent(variable.index(), 1), A::one()),
+        (
+          ExponentVector::one().with_exponent(variable.index(), 1),
+          @lg.One::one(),
+        ),
       ]),
     ),
   )
@@ -170,12 +173,12 @@ pub fn[A] ContextPolynomial::context(
 }
 
 ///|
-fn[A] ContextPolynomial::term_count(self : ContextPolynomial[A]) -> Int {
+pub fn[A] ContextPolynomial::term_count(self : ContextPolynomial[A]) -> Int {
   self.to_terms().length()
 }
 
 ///|
-fn[A] ContextPolynomial::arity(self : ContextPolynomial[A]) -> Int {
+pub fn[A] ContextPolynomial::arity(self : ContextPolynomial[A]) -> Int {
   let mut result = 0
   for term in self.to_terms() {
     let (exponent, _) = term
@@ -405,7 +408,7 @@ pub fn[A : Eq + AddMonoid + Mul + One] ContextPolynomial::substitute_checked(
   if !self.validate_substitution_values(replacements) {
     return None
   }
-  let mut result = ContextPolynomial::constant(self.context, A::zero())
+  let mut result = ContextPolynomial::constant(self.context, @lg.Zero::zero())
   let variables = self.context.variables()
   for term in self.to_terms() {
     let (exponent, coefficient) = term
@@ -424,7 +427,7 @@ pub fn[A : Eq + AddMonoid + Mul + One] ContextPolynomial::substitute_checked(
         Some(Scalar(value)) =>
           ContextPolynomial::constant(
             self.context,
-            @internal.pow_nat(value, power, one=A::one()),
+            @internal.pow_nat(value, power, one=@lg.One::one()),
           )
         Some(Polynomial(polynomial)) => polynomial.pow(power)
       }
@@ -632,7 +635,7 @@ pub impl[A : Show + Zero] Show for ContextPolynomial[A] with fn output(
 ) {
   let terms = self.to_terms()
   if terms.is_empty() {
-    logger.write_object(A::zero())
+    logger.write_object((@lg.Zero::zero() : A))
     return
   }
   for i in 0..<terms.length() {

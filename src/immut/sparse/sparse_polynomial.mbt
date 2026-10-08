@@ -2,11 +2,11 @@
 /// Immutable multivariate polynomial backed by an ordered map.
 struct SparsePolynomial[A] {
   terms : @sorted_map.SortedMap[ExponentVector, A]
-}
+} derive(Debug)
 
 ///|
 pub fn[A] SparsePolynomial::new() -> SparsePolynomial[A] {
-  { terms: @sorted_map.SortedMap([]) }
+  { terms: @sorted_map.SortedMap([]), }
 }
 
 ///|
@@ -26,14 +26,14 @@ fn[A : Eq + AddMonoid] normalize_terms(
     if term.0 == exponent {
       coefficient = coefficient + term.1
     } else {
-      if coefficient != A::zero() {
+      if coefficient != @lg.Zero::zero() {
         result.push((exponent, coefficient))
       }
       exponent = term.0
       coefficient = term.1
     }
   }
-  if coefficient != A::zero() {
+  if coefficient != @lg.Zero::zero() {
     result.push((exponent, coefficient))
   }
   result
@@ -72,7 +72,7 @@ pub fn[A] SparsePolynomial::size(self : SparsePolynomial[A]) -> Int {
 }
 
 ///|
-fn[A] SparsePolynomial::arity(self : SparsePolynomial[A]) -> Int {
+pub fn[A] SparsePolynomial::arity(self : SparsePolynomial[A]) -> Int {
   let mut result = 0
   for exponent, _coefficient in self.terms {
     result = @cmp.maximum(result, exponent.length())
@@ -81,7 +81,7 @@ fn[A] SparsePolynomial::arity(self : SparsePolynomial[A]) -> Int {
 }
 
 ///|
-fn[A] SparsePolynomial::total_degree(self : SparsePolynomial[A]) -> UInt? {
+pub fn[A] SparsePolynomial::total_degree(self : SparsePolynomial[A]) -> UInt? {
   let mut result = 0U
   let mut found = false
   for exponent, _coefficient in self.terms {
@@ -170,8 +170,8 @@ pub impl[A] Zero for SparsePolynomial[A] with fn zero() {
 ///|
 pub impl[A : Eq + Zero + One] One for SparsePolynomial[A] with fn one() {
   let result = SparsePolynomial::new()
-  if A::one() != A::zero() {
-    result.terms.set(ExponentVector::one(), A::one())
+  if (@lg.One::one() : A) != @lg.Zero::zero() {
+    result.terms.set(ExponentVector::one(), @lg.One::one())
   }
   result
 }
@@ -193,7 +193,7 @@ pub impl[A : Eq + Zero + Neg] Neg for SparsePolynomial[A] with fn neg(self) {
   let result = SparsePolynomial::new()
   for exponent, coefficient in self.terms {
     let negated = -coefficient
-    if negated != A::zero() {
+    if negated != @lg.Zero::zero() {
       result.terms.set(exponent, negated)
     }
   }
@@ -231,12 +231,12 @@ pub fn[A : Eq + Zero + Mul] SparsePolynomial::scale(
   coefficient : A,
 ) -> SparsePolynomial[A] {
   let result = SparsePolynomial::new()
-  if coefficient == A::zero() {
+  if coefficient == @lg.Zero::zero() {
     return result
   }
   for term_exponent, term_coefficient in self.terms {
     let scaled = term_coefficient * coefficient
-    if scaled != A::zero() {
+    if scaled != @lg.Zero::zero() {
       result.terms.set(term_exponent * exponent, scaled)
     }
   }
@@ -262,11 +262,12 @@ pub fn[A : AddMonoid + Mul + One] SparsePolynomial::eval_checked(
   if self.arity() > values.length() {
     return None
   }
-  let mut result = A::zero()
+  let mut result = @lg.Zero::zero()
   for exponent, coefficient in self.terms {
     let mut term = coefficient
     for i in 0..<exponent.length() {
-      term = term * @internal.pow_nat(values[i], exponent[i], one=A::one())
+      term = term *
+        @internal.pow_nat(values[i], exponent[i], one=@lg.One::one())
     }
     result = result + term
   }
@@ -320,7 +321,7 @@ pub impl[A : Show + Zero] Show for SparsePolynomial[A] with fn output(
   logger,
 ) {
   if self.terms.length() == 0 {
-    logger.write_object(A::zero())
+    logger.write_object((@lg.Zero::zero() : A))
     return
   }
   let mut first = true

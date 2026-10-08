@@ -90,4 +90,3 @@ pub using @core {trait UnivariatePolynomial}
 pub using @luna-generic {trait Zero}
 
 // Traits
-

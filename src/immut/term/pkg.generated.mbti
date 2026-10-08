@@ -5,6 +5,7 @@ import {
   "Luna-Flow/arithmetic",
   "Luna-Flow/luna-generic",
   "Luna-Flow/luna-poly/core",
+  "moonbitlang/core/debug",
 }
 
 // Values
@@ -12,17 +13,30 @@ import {
 // Errors
 
 // Types and methods
-type TermPolynomial[A] derive(Eq)
+type TermPolynomial[A] derive(Eq, @debug.Debug)
+pub fn[A : Eq + @luna-generic.AddMonoid] TermPolynomial::add(Self[A], Self[A]) -> Self[A]
+pub fn[A] TermPolynomial::arity(Self[A]) -> Int
 pub fn[A] TermPolynomial::coefficients(Self[A]) -> Array[A]
+pub fn[A : Eq] TermPolynomial::equal(Self[A], Self[A]) -> Bool
 pub fn[A : @luna-generic.AddMonoid + Mul + @luna-generic.One] TermPolynomial::eval(Self[A], Array[A]) -> A
 pub fn[A : @luna-generic.AddMonoid + Mul + @luna-generic.One] TermPolynomial::eval_checked(Self[A], Array[A]) -> A?
 pub fn[A : Eq + @luna-generic.AddMonoid] TermPolynomial::from_array(Array[(Array[UInt], A)]) -> Self[A]
 pub fn[A : Eq + @luna-generic.AddMonoid] TermPolynomial::from_terms(Array[(@core.ExponentVector, A)]) -> Self[A]
+pub fn[A] TermPolynomial::is_zero(Self[A]) -> Bool
+pub fn[A : Eq + @luna-generic.AddMonoid + Mul] TermPolynomial::mul(Self[A], Self[A]) -> Self[A]
+pub fn[A : Eq + @luna-generic.Zero + Neg] TermPolynomial::neg(Self[A]) -> Self[A]
+pub fn[A : Eq + @luna-generic.Zero + @luna-generic.One] TermPolynomial::one() -> Self[A]
 pub fn[A : Eq + @luna-generic.AddMonoid + Mul + @luna-generic.One] TermPolynomial::ops() -> @core.MultivariateOps[Self[A], A]
 pub fn[A : Eq + @luna-generic.AddMonoid + Mul + @luna-generic.One] TermPolynomial::pow(Self[A], UInt) -> Self[A]
 pub fn[A : Eq + @luna-generic.Zero + Mul] TermPolynomial::scale(Self[A], @core.ExponentVector, A) -> Self[A]
+pub fn[A] TermPolynomial::shape(Self[A]) -> @core.PolynomialShape
 pub fn[A] TermPolynomial::size(Self[A]) -> Int
+pub fn[A : Eq + @luna-generic.AddMonoid + Neg] TermPolynomial::sub(Self[A], Self[A]) -> Self[A]
+pub fn[A] TermPolynomial::term_count(Self[A]) -> Int
+pub fn[A : Show + @luna-generic.Zero] TermPolynomial::to_string(Self[A]) -> String
 pub fn[A] TermPolynomial::to_terms(Self[A]) -> Array[(@core.ExponentVector, A)]
+pub fn[A] TermPolynomial::total_degree(Self[A]) -> UInt?
+pub fn[A] TermPolynomial::zero() -> Self[A]
 pub impl[A : Eq + @luna-generic.AddMonoid + Mul + @luna-generic.One] @arithmetic.PowNatChecked for TermPolynomial[A]
 pub impl[A : Eq + @luna-generic.Zero + @luna-generic.One] @luna-generic.One for TermPolynomial[A]
 pub impl[A] @luna-generic.Zero for TermPolynomial[A]
@@ -41,4 +55,3 @@ pub impl[A : Eq + @luna-generic.AddMonoid + Neg] Sub for TermPolynomial[A]
 // Type aliases
 
 // Traits
-

@@ -2,17 +2,17 @@
 /// Immutable dense univariate polynomial in ascending coefficient order.
 struct DensePolynomial[A] {
   coefficients : @core_vector.Vector[A]
-} derive(Eq, Compare)
+} derive(Eq, Compare, Debug)
 
 ///|
 fn[A : Eq + Zero] DensePolynomial::from_vector(
   values : @core_vector.Vector[A],
 ) -> DensePolynomial[A] {
   let mut length = values.length()
-  while length > 0 && values[length - 1] == A::zero() {
+  while length > 0 && values[length - 1] == @lg.Zero::zero() {
     length = length - 1
   }
-  { coefficients: @core_vector.makei(length, fn(i) { values[i] }) }
+  { coefficients: @core_vector.makei(length, fn(i) { values[i] }), }
 }
 
 ///|
@@ -120,7 +120,7 @@ pub fn[A : Eq + Zero] DensePolynomial::monomial_checked(
   if power < 0 {
     return None
   }
-  if coefficient == A::zero() {
+  if coefficient == @lg.Zero::zero() {
     Some(DensePolynomial::zero())
   } else {
     Some(
@@ -129,7 +129,7 @@ pub fn[A : Eq + Zero] DensePolynomial::monomial_checked(
           if i == power {
             coefficient
           } else {
-            A::zero()
+            @lg.Zero::zero()
           }
         }),
       ),
@@ -146,17 +146,17 @@ pub fn[A : Eq + Zero] DensePolynomial::constant(
 
 ///|
 pub fn[A : Eq + Zero + One] DensePolynomial::variable() -> DensePolynomial[A] {
-  DensePolynomial::from_coefficients([A::zero(), A::one()])
+  DensePolynomial::from_coefficients([@lg.Zero::zero(), @lg.One::one()])
 }
 
 ///|
 pub impl[A] Zero for DensePolynomial[A] with fn zero() {
-  { coefficients: @core_vector.from_array([]) }
+  { coefficients: @core_vector.from_array([]), }
 }
 
 ///|
 pub impl[A : Eq + Zero + One] One for DensePolynomial[A] with fn one() {
-  DensePolynomial::constant(A::one())
+  DensePolynomial::constant(@lg.One::one())
 }
 
 ///|
@@ -190,7 +190,7 @@ pub impl[A : Eq + AddMonoid + Mul] Mul for DensePolynomial[A] with fn mul(
   if self.length() == 0 || other.length() == 0 {
     return DensePolynomial::zero()
   }
-  let values = Array::make(self.length() + other.length() - 1, A::zero())
+  let values = Array::make(self.length() + other.length() - 1, @lg.Zero::zero())
   for i in 0..<self.length() {
     let left = self.coefficients[i]
     for j in 0..<other.length() {
@@ -222,14 +222,14 @@ pub fn[A : Eq + Zero + Mul] DensePolynomial::scale_checked(
   if power < 0 {
     return None
   }
-  if self.length() == 0 || coefficient == A::zero() {
+  if self.length() == 0 || coefficient == @lg.Zero::zero() {
     return Some(DensePolynomial::zero())
   }
   Some(
     DensePolynomial::from_vector(
       @core_vector.makei(power + self.length(), fn(i) {
         if i < power {
-          A::zero()
+          @lg.Zero::zero()
         } else {
           coefficient * self.coefficients[i - power]
         }
@@ -243,7 +243,7 @@ pub fn[A : AddMonoid + Mul] DensePolynomial::eval(
   self : DensePolynomial[A],
   value : A,
 ) -> A {
-  let mut result = A::zero()
+  let mut result = @lg.Zero::zero()
   for i = self.length() - 1; i >= 0; i = i - 1 {
     result = result * value + self.coefficients[i]
   }
@@ -347,8 +347,8 @@ pub fn[A : Eq + AddMonoid + Mul + Neg + One] DensePolynomial::karatsuba(
     low_product -
     high_product
   low_product +
-  middle_product.scale(split, A::one()) +
-  high_product.scale(split * 2, A::one())
+  middle_product.scale(split, @lg.One::one()) +
+  high_product.scale(split * 2, @lg.One::one())
 }
 
 ///|
@@ -357,13 +357,13 @@ pub impl[A : Show + Eq + Zero] Show for DensePolynomial[A] with fn output(
   logger,
 ) {
   if self.length() == 0 {
-    logger.write_object(A::zero())
+    logger.write_object((@lg.Zero::zero() : A))
     return
   }
   let mut first = true
   for power in 0..<self.length() {
     let coefficient = self.coefficients[power]
-    if coefficient != A::zero() {
+    if coefficient != @lg.Zero::zero() {
       if !first {
         logger.write_string(" + ")
       }
