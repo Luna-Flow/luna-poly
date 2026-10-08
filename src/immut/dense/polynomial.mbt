@@ -399,6 +399,14 @@ test "dense polynomial derivative uses shared numeric capability" {
 }
 
 ///|
+test "dense polynomial derivative over fixed-width integers" {
+  let p = DensePolynomial::from_coefficients([1, 2, 3])
+  assert_true(p.derivative().to_coefficients() == [2, 6])
+  let q = DensePolynomial::from_coefficients([5UL, 0UL, 0UL, 7UL])
+  assert_true(q.derivative().to_coefficients() == [0UL, 0UL, 21UL])
+}
+
+///|
 test "dense polynomial substitution and powers" {
   let p = DensePolynomial::from_coefficients([1, 2, 3])
   let q = DensePolynomial::from_coefficients([2, 3])
