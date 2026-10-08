@@ -23,7 +23,7 @@ pub fn[A : Compare] DensePolynomial::compare(Self[A], Self[A]) -> Int
 pub fn[A : Eq + @luna-generic.Zero] DensePolynomial::constant(A) -> Self[A]
 pub fn[A] DensePolynomial::copy(Self[A]) -> Self[A]
 pub fn[A] DensePolynomial::degree(Self[A]) -> Int?
-pub fn[A : @luna-generic.NatHomomorphism + Eq + @luna-generic.Zero + Mul] DensePolynomial::derivative(Self[A]) -> Self[A]
+pub fn[A : @luna-generic.FromNat + Eq + @luna-generic.Zero + Mul] DensePolynomial::derivative(Self[A]) -> Self[A]
 pub fn[A : Eq] DensePolynomial::equal(Self[A], Self[A]) -> Bool
 pub fn[A : @luna-generic.AddMonoid + Mul] DensePolynomial::eval(Self[A], A) -> A
 pub fn[A : Eq + @luna-generic.Zero] DensePolynomial::from_coefficients(Array[A]) -> Self[A]
