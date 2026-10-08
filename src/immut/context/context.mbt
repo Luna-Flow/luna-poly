@@ -309,9 +309,16 @@ fn[A] ContextPolynomial::assignment_values_checked(
       return None
     }
   }
+  // `from_term_polynomial` and `from_sparse_polynomial` do not check the
+  // arity, so a polynomial may use positions that the context does not name.
+  let arity = self.arity()
+  if arity > self.context.size() {
+    return None
+  }
+  let variables = self.context.variables()
   let values : Array[A] = []
-  for i in 0..<self.arity() {
-    let variable = self.context.variables()[i]
+  for i in 0..<arity {
+    let variable = variables[i]
     match lookup_assignment(assignments, variable) {
       None => return None
       Some(value) => values.push(value)
@@ -885,4 +892,22 @@ test "zero substitutions are canonicalized" {
   ])
   let substituted = p.substitute([(x, Scalar(0))])
   assert_true(substituted.to_terms() == [(ExponentVector::one(), 1)])
+}
+
+///|
+test "eval_named_checked rejects polynomials wider than the context" {
+  let context = VariableContext::from_names(["x", "y"])
+  let x = context.require_variable("x")
+  let y = context.require_variable("y")
+  let wide : TermPolynomial[Int] = TermPolynomial::from_terms([
+    (ExponentVector::from_array([1, 0, 1]), 1),
+  ])
+  let p = ContextPolynomial::from_term_polynomial(context, wide)
+  assert_eq(p.arity(), 3)
+  assert_true(p.eval_named_checked([(x, 2), (y, 3)]) is None)
+  let sparse = ContextPolynomial::from_sparse_polynomial(
+    context,
+    wide.to_terms() |> SparsePolynomial::from_terms,
+  )
+  assert_true(sparse.eval_named_checked([(x, 2), (y, 3)]) is None)
 }
