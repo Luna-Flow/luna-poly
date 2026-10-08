@@ -152,9 +152,14 @@ pub impl Show for ExponentVector with fn output(self, logger) {
     logger.write_char('1')
     return
   }
+  let mut first = true
   for i in 0..<self.length() {
     let exponent = self.exponents[i]
     if exponent != 0 {
+      if !first {
+        logger.write_string(" * ")
+      }
+      first = false
       if i == 0 {
         logger.write_char('x')
       } else {
@@ -177,4 +182,12 @@ test "exponent vector is canonical and immutable" {
   let updated = vector.with_exponent(1, 0)
   assert_true(vector.to_array() == [1U, 2])
   assert_true(updated.to_array() == [1U])
+}
+
+///|
+test "exponent vector separates its factors" {
+  inspect(ExponentVector::from_array([1, 1]), content="x * x_1")
+  inspect(ExponentVector::from_array([2, 0, 3]), content="x^2 * x_2^3")
+  inspect(ExponentVector::from_array([0, 1]), content="x_1")
+  inspect(ExponentVector::one(), content="1")
 }
