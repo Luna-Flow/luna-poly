@@ -420,8 +420,14 @@ test "add_inplace on itself agrees with immutable doubling" {
     for mask in 0..<(1 << n) {
       let terms : Array[(ExponentVector, Int)] = []
       for k in 0..<n {
-        let coefficient = if ((mask >> k) & 1) == 1 { -2147483648 } else { k + 1 }
-        terms.push((ExponentVector::from_array([k.reinterpret_as_uint()]), coefficient))
+        let coefficient = if ((mask >> k) & 1) == 1 {
+          -2147483648
+        } else {
+          k + 1
+        }
+        terms.push(
+          (ExponentVector::from_array([k.reinterpret_as_uint()]), coefficient),
+        )
       }
       let p = SparsePolynomial::from_terms(terms)
       p.add_inplace(p)
