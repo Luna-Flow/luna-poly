@@ -1,72 +1,141 @@
-# immut Tutorial
+# immut tutorial
 
-Use `immut` when polynomials should behave like ordinary values. Constructors copy input arrays, updates return new values, and old values remain unchanged.
+This tutorial is the entry point for using polynomials as values. It shows one import that gives you every immutable representation, helps you pick the right one, and moves a polynomial between them. Each representation has its own tutorial for the details.
 
-## Dense Univariate DensePolynomial
+## Quick start
 
-```moonbit
-let p = @immut.DensePolynomial::from_coefficients([1, 2, 3])
-let q = @immut.DensePolynomial::variable()
-let value = p.eval(2)
-let composed = p.substitute(q + @immut.DensePolynomial::constant(1))
+```bash
+moon add Luna-Flow/luna-poly@0.2.0
 ```
 
-`p` represents `1 + 2x + 3x^2`, so `value` is `17`. `substitute` does not mutate `p`.
-
-Constructors keep canonical form:
-
-```moonbit
-let p = @immut.DensePolynomial::from_coefficients([1, 2, 0, 0])
-let coefficients = p.to_coefficients()
+```text
+import {
+  "Luna-Flow/luna-poly/immut",
+}
 ```
 
-`coefficients` is `[1, 2]`.
-
-## Exponent Vectors
-
 ```moonbit
-let xy2 = @immut.ExponentVector::from_array([1U, 2])
-let x = xy2.with_exponent(1, 0)
-let degree = xy2.degree()
+test "immut quick start" {
+  let p = @immut.DensePolynomial::from_coefficients([1, 2, 3])
+  let q = p.pow(2)
+  inspect(q, content="1 + 4x^1 + 10x^2 + 12x^3 + 9x^4")
+  inspect(q.eval(2), content="289")
+  inspect(p, content="1 + 2x^1 + 3x^2")
+}
 ```
 
-`xy2` represents `x * x_1^2`; its total degree is `3`. `x` is a new value.
+`p.pow(2)` returns a new polynomial; `p` itself is unchanged, as it is after every operation in this layer.
 
-## Multivariate Term Arrays
+## Everyday tasks
+
+### Pick a representation
+
+| You have | Use | Tutorial |
+| --- | --- | --- |
+| one variable, most coefficients non-zero | `DensePolynomial` | [immut/dense](immut/dense.md) |
+| several variables, process terms in order | `TermPolynomial` | [immut/term](immut/term.md) |
+| several variables, look up coefficients | `SparsePolynomial` | [immut/sparse](immut/sparse.md) |
+| named variables, evaluation or substitution by name | `ContextPolynomial` | [immut/context](immut/context.md) |
+
+All four share the operators `+`, `-`, `*`, unary `-` and the method `pow`.
+
+### Same polynomial, three representations
 
 ```moonbit
-let p = @immut.TermPolynomial::from_array([
-  ([1U, 0], 2),
-  ([1U], -2),
-  ([0U, 1], 3),
-])
-let value = p.eval([5, 2])
+test "three representations" {
+  let dense = @immut.DensePolynomial::from_coefficients([1, 2, 1])
+  let term = @immut.TermPolynomial::from_array([([2U], 1), ([1U], 2), ([], 1)])
+  let sparse = @immut.SparsePolynomial::from_terms(term.to_terms())
+  inspect(dense.eval(3), content="16")
+  inspect(term.eval([3]), content="16")
+  inspect(sparse.eval([3]), content="16")
+}
 ```
 
-The first two terms have equivalent exponents and cancel out. The remaining term is `3 * x_1`, so `value` is `6`.
+$x^2 + 2x + 1$ at $x = 3$ is $16$ in each representation.
 
-## Sparse Map Representation
+### Move between representations
+
+Multivariate representations convert through their term lists; a context polynomial binds or releases a context:
 
 ```moonbit
-let p = @immut.SparsePolynomial::from_array([
-  ([2U], 1),
-  ([1U], 2),
-  ([], 1),
-])
-let coeff = p.get(@immut.ExponentVector::from_array([1U]))
-let value = p.eval([2])
+test "conversions" {
+  let ctx = @immut.VariableContext::from_names(["x", "y"])
+  let term = @immut.TermPolynomial::from_array([([1U, 1], 2), ([], 1)])
+  let sparse = @immut.SparsePolynomial::from_terms(term.to_terms())
+  let named = @immut.ContextPolynomial::from_sparse_polynomial(ctx, sparse)
+  inspect(named, content="1 + 2 * x * y")
+  let back = named.to_term_polynomial()
+  assert_true(back == term)
+}
 ```
 
-`p` represents `x^2 + 2x + 1`; `coeff` is `Some(2)` and `value` is `9`.
+### Rely on value semantics
 
-## Choosing A Representation
+Keep old versions around freely, for example to compare before and after:
 
-- Use `DensePolynomial` for dense univariate polynomials.
-- Use `TermPolynomial` for sequential multivariate term processing.
-- Use `SparsePolynomial` when exponent lookup matters.
-- Convert between multivariate representations explicitly:
-  `SparsePolynomial::from_terms(term.to_terms())` or
-  `TermPolynomial::from_terms(sparse.to_terms())`.
-- Use `UnivariatePolynomial`, `MultivariatePolynomial`, `ContextualPolynomial`,
-  or `Type::ops()` when generic code should not depend on the storage
-  representation.
+```moonbit
+test "history" {
+  let history = [@immut.DensePolynomial::from_coefficients([0, 1])]
+  for _ in 0..<3 {
+    let last = history[history.length() - 1]
+    history.push(last * last + @immut.DensePolynomial::constant(1))
+  }
+  inspect(history.map(p => p.length()).map(n => n.to_string()).join(" "), content="2 3 5 9")
+  inspect(history[1], content="1 + 1x^2")
+}
+```
+
+## Going further
+
+### Write generic code once
+
+The facade re-exports the capability traits and the `luna-generic` algebra traits, so both kinds of bounds need only this import:
+
+```moonbit
+fn[P : @immut.MultivariatePolynomial] degree_or_minus_one(p : P) -> Int {
+  match @immut.HasTotalDegree::total_degree(p) {
+    Some(d) => d.reinterpret_as_int()
+    None => -1
+  }
+}
+
+fn[A : @immut.Ring + Eq] square_minus_one(p : @immut.DensePolynomial[A]) -> @immut.DensePolynomial[A] {
+  p * p - @immut.DensePolynomial::one()
+}
+
+test "generic" {
+  inspect(degree_or_minus_one(@immut.TermPolynomial::from_array([([1U, 2], 1)])), content="3")
+  inspect(degree_or_minus_one(@immut.SparsePolynomial::from_array([([1U], 0)])), content="-1")
+  inspect(square_minus_one(@immut.DensePolynomial::from_coefficients([1, 1])), content="2x^1 + 1x^2")
+}
+```
+
+### Hand values to the mutable layer
+
+When a hot loop needs in-place updates, convert at the boundary and convert back:
+
+```moonbit
+test "to mutable and back" {
+  let p = @immut.DensePolynomial::from_coefficients([1, 1])
+  let buffer = @mutable.DensePolynomial::from_immut(p)
+  for _ in 0..<3 {
+    buffer.mul_inplace(@mutable.DensePolynomial::from_immut(p))
+  }
+  inspect(buffer.to_immut(), content="1 + 4x^1 + 6x^2 + 4x^3 + 1x^4")
+  inspect(p, content="1 + 1x^1")
+}
+```
+
+## Common pitfalls
+
+- **Different types, same polynomial.** `DensePolynomial` and `TermPolynomial` cannot be added to each other; convert first.
+- **Substitution constructors.** `@immut.Polynomial(p)` does not exist; write `Polynomial(p)` inside a substitution list, or `@immut.ContextSubstitutionValue::Polynomial(p)`.
+- **Two `core` packages.** If you also import `Luna-Flow/type_theory/core`, alias it (for example `@tt_core`); the facade itself does not need `luna-poly/core`.
+- **Rebuild costs.** Immutable updates rebuild their result; use the mutable layer for long incremental constructions.
+
+## Next steps
+
+- The per-representation tutorials linked in the table above.
+- The [immut API](../api/immut.md) for the list of re-exports, and the [immut design](../design/immut.md) for the reasoning behind the facade.
+- The [mutable tutorial](mutable.md) for the execution-oriented layer.

@@ -1,244 +1,127 @@
 # immut API
 
-This page documents the current public API of `Luna-Flow/luna-poly/immut`. The package provides value-oriented polynomial containers: constructors copy input arrays, algebraic operations return new values, and existing values are not mutated.
+`Luna-Flow/luna-poly/immut` is the facade of the immutable polynomial layer. It defines nothing of its own: it re-exports the shared [`core`](core.md) vocabulary, the common algebra traits of `Luna-Flow/luna-generic`, and the four immutable representations, so one import gives access to the whole value-oriented API.
 
-Use `src/immut/pkg.generated.mbti` and `moon info` as the exact signature source.
+```text
+import {
+  "Luna-Flow/luna-poly/immut",
+}
+```
 
-`immut` is a facade over `immut/dense`, `immut/term`, `immut/sparse`, and
-`immut/context`. It also re-exports the shared `core` capability traits:
-`HasLength`, `HasDegree`, `IsZero`, `HasTermCount`, `HasArity`,
-`HasTotalDegree`, `HasContext`, `HasShape`, `UnivariatePolynomial`,
-`MultivariatePolynomial`, and `ContextualPolynomial`. Concrete polynomial
-types expose `Type::ops()` records for generic functional algorithms.
+Every name below is a `pub using` alias: `@immut.DensePolynomial` *is* `@immut/dense.DensePolynomial`, and `@immut.ExponentVector` *is* `@core.ExponentVector`. Methods are documented on the page of the package that defines the type.
 
-The facade also re-exports `luna-generic` algebra traits such as `Zero`, `One`,
-`AddMonoid`, `MulMonoid`, `Semiring`, `Ring`, `Field`, and `Num`.
+## Polynomial types
 
-`PolynomialShape` is the shared dimension descriptor. Use
-`HasShape::shape(value)` to inspect univariate length, multivariate arity and
-term count, or contextual `VariableContext` compatibility.
+### `DensePolynomial`
 
----
+Immutable dense univariate polynomial. See the [immut/dense API](immut/dense.md).
 
-## ExponentVector
+```mbti
+pub using @dense {type DensePolynomial}
+```
 
-`ExponentVector` represents the exponent vector of a multivariate monomial. For example, `[2, 0, 1]` represents `x^2 * x_2`. Trailing zero exponents are removed and the total degree is cached.
+### `TermPolynomial`
 
-### Construction And Queries
+Immutable multivariate polynomial as a sorted term array. See the [immut/term API](immut/term.md).
 
-- `ExponentVector::from_array(values : Array[UInt]) -> ExponentVector`
+```mbti
+pub using @term {type TermPolynomial}
+```
 
-  Builds a canonical exponent vector. The input array is copied.
+### `SparsePolynomial`
 
-- `ExponentVector::one() -> ExponentVector`
+Immutable multivariate polynomial as an ordered map. See the [immut/sparse API](immut/sparse.md).
 
-  Returns the multiplicative unit, represented by the empty exponent vector.
+```mbti
+pub using @sparse {type SparsePolynomial}
+```
 
-- `length(self : ExponentVector) -> Int`
+### `ContextPolynomial`, `ContextSubstitutionValue`
 
-  Returns the canonical storage length, excluding trailing zeroes.
+Immutable polynomial over a named-variable context, and the payload of its substitutions. See the [immut/context API](immut/context.md).
 
-- `degree(self : ExponentVector) -> UInt`
+```mbti
+pub using @context {type ContextPolynomial}
+pub using @context {type ContextSubstitutionValue}
+```
 
-  Returns the sum of all exponents.
+The alias re-exports the type, not its constructors as standalone values: write `Scalar(v)` and `Polynomial(p)` where the expected type is known, or `@immut.ContextSubstitutionValue::Polynomial(p)` in full.
 
-- `is_one(self : ExponentVector) -> Bool`
+## Shared vocabulary from `core`
 
-  Checks whether the vector is the unit exponent.
+### `ExponentVector`, `Variable`, `VariableContext`, `PolynomialShape`
 
-- `get(self : ExponentVector, index : Int) -> UInt`
+Monomials, named variables, variable contexts and shape metadata. See the [core API](core.md).
 
-  Supports `v[i]`. Non-negative indexes beyond the stored length return `0`; negative indexes abort.
+```mbti
+pub using @core {type ExponentVector}
+pub using @core {type Variable}
+pub using @core {type VariableContext}
+pub using @core {type PolynomialShape}
+```
 
-- `get_checked(self : ExponentVector, index : Int) -> UInt?`
+### `UnivariateOps`, `MultivariateOps`, `ContextOps`
 
-  Returns `None` for negative indexes.
+Operation records for dictionary-passing generic code. See the [core API](core.md#operation-records).
 
-- `with_exponent(self : ExponentVector, index : Int, value : UInt) -> ExponentVector`
+```mbti
+pub using @core {type UnivariateOps}
+pub using @core {type MultivariateOps}
+pub using @core {type ContextOps}
+```
 
-  Returns a new vector with one exponent replaced and the result canonicalized.
+### Capability traits
 
-- `with_exponent_checked(self : ExponentVector, index : Int, value : UInt) -> ExponentVector?`
+The observation traits and their bundles. See the [core API](core.md#capability-traits).
 
-  Returns `None` for negative indexes.
+```mbti
+pub using @core {trait HasLength}
+pub using @core {trait HasDegree}
+pub using @core {trait IsZero}
+pub using @core {trait HasTermCount}
+pub using @core {trait HasArity}
+pub using @core {trait HasTotalDegree}
+pub using @core {trait HasContext}
+pub using @core {trait HasShape}
+pub using @core {trait Clearable}
+pub using @core {trait Copyable}
+pub using @core {trait UnivariatePolynomial}
+pub using @core {trait MultivariatePolynomial}
+pub using @core {trait ContextualPolynomial}
+pub using @core {trait MutablePolynomial}
+```
 
-- `to_array(self : ExponentVector) -> Array[UInt]`
+`Clearable`, `Copyable` and `MutablePolynomial` are re-exported here as well so that both facades export the same trait set, although no immutable type implements them.
 
-  Returns a copy of the exponent array.
+## Algebra traits from `luna-generic`
 
-`ExponentVector` implements `One`, `Mul`, `Eq`, `Compare`, `Hash`, and `Show`. Multiplication adds exponents pointwise; comparison orders by total degree first, then by higher variable index down to lower index.
+### `Zero`, `One`, `AddMonoid`, `MulMonoid`, `AddGroup`, `MulGroup`, `Semiring`, `Ring`, `Field`, `Num`
 
----
+The algebraic capability traits of [`Luna-Flow/luna-generic`](https://lunaflow.cn/en/luna-generic/), re-exported so that coefficient bounds can be written without a second import.
 
-## DensePolynomial[A]
-
-`DensePolynomial[A]` is a dense univariate polynomial. Public inputs and outputs use ascending coefficient arrays: `[1, 2, 3]` means `1 + 2x + 3x^2`. Internally, canonical coefficients are stored in a core immutable vector. Trailing zero coefficients are removed after construction and operations; the zero polynomial is stored as an empty vector.
-
-### Construction And Queries
-
-- `DensePolynomial::from_coefficients(values : Array[A]) -> DensePolynomial[A]`
-
-  Builds a polynomial from ascending coefficients, requiring `A : Eq + Zero`.
-  Algebraic operations add only the capabilities they use; `moon info` is the
-  source of truth for exact operation bounds.
-
-- `DensePolynomial::constant(value : A) -> DensePolynomial[A]`
-
-  Builds a constant polynomial.
-
-- `DensePolynomial::variable() -> DensePolynomial[A]`
-
-  Builds the variable `x`.
-
-- `DensePolynomial::monomial(power : Int, coefficient : A) -> DensePolynomial[A]`
-
-  Builds `coefficient * x^power`. `power` must be non-negative; a zero coefficient returns zero.
-
-- `DensePolynomial::monomial_checked(power : Int, coefficient : A) -> DensePolynomial[A]?`
-
-  Returns `None` for negative powers.
-
-- `to_coefficients`, `length`, `degree`, `coefficient`, `leading_term`, `leading_coefficient`
-
-  Query the canonical coefficient representation. Out-of-range non-negative coefficients read as zero.
-
-- `coefficient_checked(power : Int) -> A?`
-
-  Returns `None` for negative powers and `Some(zero)` for non-negative powers beyond the canonical length.
-
-### Operations
-
-- `+`, `-`, `*`
-
-  DensePolynomial addition, subtraction, and convolution multiplication.
-
-- `scale(self : DensePolynomial[A], power : Int, coefficient : A) -> DensePolynomial[A]`
-
-  Returns `coefficient * x^power * self`.
-
-- `scale_checked(self : DensePolynomial[A], power : Int, coefficient : A) -> DensePolynomial[A]?`
-
-  Returns `None` for negative powers.
-
-- `eval(self : DensePolynomial[A], value : A) -> A`
-
-  Evaluates with Horner form.
-
-- `substitute(self : DensePolynomial[A], value : DensePolynomial[A]) -> DensePolynomial[A]`
-
-  Substitutes another polynomial for `x`.
-
-- `derivative(self : DensePolynomial[A]) -> DensePolynomial[A]`
-
-  Returns the formal derivative. The coefficient type must support `NatHomomorphism`.
-
-- `pow(self : DensePolynomial[A], exponent : UInt) -> DensePolynomial[A]`
-
-  Natural-number exponentiation; also exposed through `arithmetic.PowNatChecked`.
-
-- `karatsuba(self : DensePolynomial[A], other : DensePolynomial[A]) -> DensePolynomial[A]`
-
-  Karatsuba multiplication. Small inputs fall back to ordinary multiplication.
-
----
-
-## TermPolynomial[A]
-
-`TermPolynomial[A]` is a multivariate polynomial backed by a canonical sorted term sequence stored in a core immutable vector. Each term is `(ExponentVector, A)`. Duplicate exponents are merged and zero coefficients are removed.
-
-- `TermPolynomial::from_terms(terms : Array[(ExponentVector, A)]) -> TermPolynomial[A]`
-- `TermPolynomial::from_array(terms : Array[(Array[UInt], A)]) -> TermPolynomial[A]`
-- `to_terms(self : TermPolynomial[A]) -> Array[(ExponentVector, A)]`
-- `size(self : TermPolynomial[A]) -> Int`
-- `coefficients(self : TermPolynomial[A]) -> Array[A]`
-- `scale(self : TermPolynomial[A], exponent : ExponentVector, coefficient : A) -> TermPolynomial[A]`
-- `eval(self : TermPolynomial[A], values : Array[A]) -> A`
-- `eval_checked(self : TermPolynomial[A], values : Array[A]) -> A?`
-- `pow(self : TermPolynomial[A], exponent : UInt) -> TermPolynomial[A]`
-
-`TermPolynomial` implements `Zero`, `One`, `Add`, `Neg`, `Sub`, `Mul`, `Show`, and `arithmetic.PowNatChecked`. Evaluation aborts if a term needs a variable index missing from the `values` array.
-
-Convert explicitly with `SparsePolynomial::from_terms(term.to_terms())`.
-
----
-
-## SparsePolynomial[A]
-
-`SparsePolynomial[A]` is another multivariate representation backed by `SortedMap[ExponentVector, A]`. It is useful when callers need lookup by exponent.
-
-- `SparsePolynomial::new() -> SparsePolynomial[A]`
-- `SparsePolynomial::from_terms(terms : Array[(ExponentVector, A)]) -> SparsePolynomial[A]`
-- `SparsePolynomial::from_array(terms : Array[(Array[UInt], A)]) -> SparsePolynomial[A]`
-- `to_terms(self : SparsePolynomial[A]) -> Array[(ExponentVector, A)]`
-- `size(self : SparsePolynomial[A]) -> Int`
-- `is_empty(self : SparsePolynomial[A]) -> Bool`
-- `get(self : SparsePolynomial[A], exponent : ExponentVector) -> A?`
-- `get_checked(self : SparsePolynomial[A], exponent : ExponentVector) -> A?`
-- `add_term(self : SparsePolynomial[A], exponent : ExponentVector, coefficient : A) -> SparsePolynomial[A]`
-- `scale(self : SparsePolynomial[A], exponent : ExponentVector, coefficient : A) -> SparsePolynomial[A]`
-- `eval(self : SparsePolynomial[A], values : Array[A]) -> A`
-- `eval_checked(self : SparsePolynomial[A], values : Array[A]) -> A?`
-- `pow(self : SparsePolynomial[A], exponent : UInt) -> SparsePolynomial[A]`
-
-`SparsePolynomial` implements `Zero`, `One`, `Add`, `Neg`, `Sub`, `Mul`, `Eq`, `Show`, and `arithmetic.PowNatChecked`.
-
-Convert explicitly with `TermPolynomial::from_terms(sparse.to_terms())`.
-
----
-
-## VariableContext And ContextPolynomial[A]
-
-`Variable` and `VariableContext` provide a named-variable layer over the
-position-indexed `ExponentVector` model. Variable names are unique inside one
-context, and each variable has a stable context-local index.
-
-- `VariableContext::new() -> VariableContext`
-- `VariableContext::from_names(names : Array[String]) -> VariableContext`
-- `VariableContext::from_names_checked(names : Array[String]) -> VariableContext?`
-- `extend`, `extend_checked`, `variable`, `require_variable`, `contains`, `size`, `variables`, `get`
-- `Variable::name() -> String`
-- `Variable::index() -> Int`
-- `Variable::to_type_theory_name() -> @type_theory/core.Name`
-- `VariableContext::variable_by_type_theory_name`, `require_type_theory_name`
-
-`ContextPolynomial[A]` binds a `VariableContext` to either term-array or sparse
-storage.
-
-- `ContextSubstitutionValue[A]`
-
-  Substitution payload for context polynomials. `Scalar(value)` replaces a
-  variable with a coefficient value; `Polynomial(value)` replaces it with a
-  same-context polynomial.
-
-- `ContextPolynomial::constant`
-- `ContextPolynomial::variable`, `variable_checked`
-- `ContextPolynomial::from_term_polynomial`
-- `ContextPolynomial::from_sparse_polynomial`
-- `ContextPolynomial::from_named_terms_as_terms`, `from_named_terms_as_terms_checked`
-- `ContextPolynomial::from_named_terms_as_sparse`, `from_named_terms_as_sparse_checked`
-- `context`, `to_terms`, `to_term_polynomial`, `to_sparse_polynomial`
-- `eval(values : Array[A])`
-- `eval_checked(values : Array[A]) -> A?`
-- `eval_named(assignments : Array[(Variable, A)])`
-- `eval_named_checked(assignments : Array[(Variable, A)]) -> A?`
-- `eval_partial`, `eval_partial_checked`
-- `eval_partial_named`, `eval_partial_named_checked`
-- `substitute`, `substitute_checked`
-- `substitute_names`, `substitute_names_checked`
-- `add_checked`, `mul_checked`, `pow`
-
-Checked APIs return `None` for variables outside the context, duplicate or
-incomplete named assignments, incompatible contexts, invalid substitution
-targets, duplicate substitution entries, or unknown `type_theory` names.
-`variable_checked` also returns `None` when the variable belongs to another
-context.
-
-Partial evaluation preserves the existing `VariableContext`; it does not
-project away assigned variables. Substitution is simultaneous and one pass:
-inserted replacement polynomials are not recursively substituted again in the
-same call. Convenience APIs abort for the same contract failures. Ordinary
-`+`, `-`, and `*` abort on incompatible contexts.
-
-Substitution APIs use `Luna-Flow/type_theory` names for `*_names` variants, but
-canonicalization, powers, zero-term removal, and polynomial storage remain
-owned by `luna-poly`.
+```mbti
+pub using @luna-generic {trait Zero}
+pub using @luna-generic {trait One}
+pub using @luna-generic {trait AddMonoid}
+pub using @luna-generic {trait MulMonoid}
+pub using @luna-generic {trait AddGroup}
+pub using @luna-generic {trait MulGroup}
+pub using @luna-generic {trait Semiring}
+pub using @luna-generic {trait Ring}
+pub using @luna-generic {trait Field}
+pub using @luna-generic {trait Num}
+```
+
+```moonbit
+fn[A : @immut.Ring + Eq] cube_at(p : @immut.DensePolynomial[A], a : A) -> A {
+  p.pow(3).eval(a)
+}
+
+test "one import" {
+  let p = @immut.DensePolynomial::from_coefficients([1, 1])
+  inspect(cube_at(p, 1), content="8")
+  let v : @immut.ExponentVector = @immut.ExponentVector::from_array([1U])
+  let s = @immut.SparsePolynomial::from_terms([(v, 2)])
+  inspect(@immut.HasTermCount::term_count(s), content="1")
+}
+```

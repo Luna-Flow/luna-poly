@@ -1,85 +1,54 @@
-# immut Design
+# immut design
 
-`immut` is the value-oriented layer of `luna-poly`. It models polynomials, exponent vectors, and multivariate term collections as canonical values.
+## Design goal
 
-## Responsibilities
+The `immut` facade gives the value-oriented half of `luna-poly` a single import. A user who wants polynomials as values should not need to know that dense, term, sparse and context polynomials live in four packages, nor that monomials and traits come from `core` and `luna-generic`.
 
-- Re-export shared `core` capability traits through the `immut` facade.
-- Provide dense univariate `DensePolynomial[A]`.
-- Provide `ExponentVector` as a multivariate exponent key.
-- Provide two multivariate representations: sorted term sequence `TermPolynomial[A]` and ordered-map `SparsePolynomial[A]`.
-- Implement ordinary algebraic operations and `arithmetic.PowNatChecked` for polynomial types.
+## Mathematical background
 
-## Canonical Form
+Every immutable type models an element of a polynomial ring: $R[x]$ for `DensePolynomial`, $R[x_0, x_1, \dots]$ for `TermPolynomial` and `SparsePolynomial`, and $R[\Gamma]$ for `ContextPolynomial` (see the [core design](core.md#mathematical-background)). Ring elements are values: $f + g$ is a new element and $f$ does not change. The immutable layer mirrors that: no operation changes an existing polynomial, so a polynomial can be shared, stored in several places and reused after any computation, exactly like an integer.
 
-- `DensePolynomial` stores coefficients in a core immutable vector, removes trailing zero coefficients, and represents zero as an empty vector.
-- `ExponentVector` stores exponents in a core immutable vector, removes trailing zero exponents, and caches total degree.
-- `TermPolynomial` stores terms in a core immutable vector, merges equal exponents, removes zero coefficients, and keeps terms sorted.
-- `SparsePolynomial` stores non-zero terms in a `SortedMap`; an empty map is zero.
+## Design decisions
 
-These rules are observable through `to_coefficients`, `to_terms`, `size`, `degree`, and equality.
+### A facade over implementation packages
 
-## Value Semantics
+**Problem.** Splitting the implementation into `immut/dense`, `immut/term`, `immut/sparse` and `immut/context` keeps each representation small and lets the packages depend only on what they use (dense does not depend on the multivariate code). But four imports, plus `core`, plus `luna-generic`, is a poor entry point.
 
-Public constructors copy input arrays. Update-like operations return new values, including:
+**Choice.** `immut` consists only of `pub using` re-exports. The aliases are the same types, not wrappers, so values move between code that imports the facade and code that imports a subpackage without conversion. Re-exporting the `luna-generic` traits lets bounds such as `A : @immut.Ring` be written with the same import.
 
-- `ExponentVector::with_exponent`
-- `SparsePolynomial::add_term`
-- `+`, `-`, `*`, `scale`, and `pow`
+### Value semantics everywhere
 
-Callers may safely reuse old values after any operation.
+All four representations keep their contents in persistent vectors or behind private fields that are never mutated after construction, and every constructor copies caller-owned arrays. Therefore:
 
-## Representation Differences
+- no public function mutates its receiver or an argument;
+- a polynomial observed twice gives the same answers both times;
+- sharing a polynomial between data structures is always safe.
 
-`TermPolynomial` and `SparsePolynomial` describe the same mathematical objects but optimize different access patterns:
+The price is that incremental updates (`SparsePolynomial::add_term`) rebuild their result. Incremental algorithms belong in the [`mutable`](mutable.md) layer.
 
-- `TermPolynomial` favors ordered traversal and batch algebraic operations over a canonical term sequence.
-- `SparsePolynomial` favors lookup by `ExponentVector`.
-- Convert explicitly with `SparsePolynomial::from_terms(term.to_terms())` or
-  `TermPolynomial::from_terms(sparse.to_terms())`; conversion reapplies
-  canonicalization without coupling implementation packages to each other.
+### Explicit conversions between representations
 
-## Capability Boundary
+Representations do not convert implicitly. `TermPolynomial` and `SparsePolynomial` convert through `to_terms()` and `from_terms`, which re-applies canonicalization; `ContextPolynomial` binds either with a context and converts back with `to_term_polynomial` or `to_sparse_polynomial`. Keeping conversions explicit keeps the implementation packages independent of each other and makes every cost visible in the code.
 
-Algorithms that only need shared behavior should use `UnivariatePolynomial`,
-`MultivariatePolynomial`, or `ContextualPolynomial` instead of matching on a
-concrete storage type. When an algorithm needs construction or algebraic
-operations in addition to queries, accept the corresponding `Type::ops()`
-record and call its function fields.
+### Symmetry with `mutable`
 
-`HasShape` and `PolynomialShape` provide the dimension layer expected by
-generic numeric code: univariate values report coefficient length,
-multivariate values report arity and term count, and contextual values report
-their `VariableContext` plus arity and term count. Shape compatibility is
-available through `PolynomialShape::is_compatible_with` and
-`compatible_checked`.
+The facade exports the same trait set and type names as the [`mutable` facade](mutable.md), and each immutable type has a mutable counterpart with the same constructors, queries, operators and checked variants. Code written against the shared traits or operation records runs on both. The differences are listed in the [mutable design](mutable.md#api-symmetry-with-immut).
 
-The facade re-exports common `luna-generic` algebra traits (`Zero`, `One`,
-`AddMonoid`, `MulMonoid`, `Semiring`, `Ring`, `Field`, and `Num`) so callers can
-write polynomial algorithms with the same capability vocabulary used by
-`Luna-Flow/linear-algebra`.
+## Correctness / invariants
 
-Checked methods return `None` for caller contract failures such as negative
-powers, negative exponent-vector indexes, incomplete indexed evaluation, or
-context mismatch. Convenience methods keep the existing aborting behavior.
+- Every exported type is identical to its definition in the implementation package or in `core`.
+- Every immutable polynomial is in canonical form after every public operation (trimmed dense vectors, sorted merged term arrays, zero-free sparse maps), so `==` is polynomial equality wherever `Eq` is provided.
+- No public operation mutates an existing value.
 
-## Substitution Boundary
+## Alternatives rejected
 
-Context-aware substitution uses `Luna-Flow/type_theory` names as the shared
-semantic naming layer. `luna-poly` still owns polynomial semantics:
-canonicalization, coefficient arithmetic, powers, sparse/term storage, and
-context compatibility are handled inside `ContextPolynomial`.
+- **One root package.** The 0.1 layout put everything in one package. Splitting made dependencies explicit; the facade keeps the single import.
+- **Wrapper types in the facade.** Wrappers would need conversion at every package boundary; aliases need none.
+- **Implicit representation conversion.** Choosing the storage behind the user's back would hide costs; only `ContextPolynomial` picks storage, and only for mixed operands.
 
-Substitution is simultaneous and one pass. A variable can be replaced by a
-scalar coefficient or by a same-context polynomial, but inserted replacement
-polynomials are not recursively substituted again in the same call. Partial
-evaluation is the scalar-only specialization and preserves the original
-`VariableContext` instead of projecting away assigned variables. Checked
-substitution rejects foreign variables, duplicate replacement entries, unknown
-`type_theory` names, and polynomial replacements from incompatible contexts.
+## Boundaries
 
-## Maintenance Notes
-
-- Document only APIs that exist on the current branch.
-- Update this page when canonicalization, term ordering, zero handling, or evaluation abort conditions change.
-- Document any observable divergence from `mutable` in the corresponding `mutable` pages.
+- The facade adds no functions, types or behaviour of its own.
+- The constructors `Scalar` and `Polynomial` are reachable through the re-exported `ContextSubstitutionValue` type, not as standalone facade values.
+- Persistence is by copying and encapsulation; there is no structural sharing between a polynomial and the result of an update.
+- In-place updates are out of scope; see [`mutable`](mutable.md).
