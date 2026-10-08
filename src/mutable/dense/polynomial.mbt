@@ -310,7 +310,7 @@ pub fn[A : Eq + AddMonoid + Mul] DensePolynomial::substitute(
 }
 
 ///|
-pub fn[A : NatHomomorphism + Eq + Zero + Mul] DensePolynomial::derivative(
+pub fn[A : FromNat + Eq + Zero + Mul] DensePolynomial::derivative(
   self : DensePolynomial[A],
 ) -> DensePolynomial[A] {
   DensePolynomial::from_immut(self.to_immut().derivative())

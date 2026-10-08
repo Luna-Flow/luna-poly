@@ -263,7 +263,7 @@ pub fn[A : Eq + AddMonoid + Mul] DensePolynomial::substitute(
 }
 
 ///|
-pub fn[A : NatHomomorphism + Eq + Zero + Mul] DensePolynomial::derivative(
+pub fn[A : FromNat + Eq + Zero + Mul] DensePolynomial::derivative(
   self : DensePolynomial[A],
 ) -> DensePolynomial[A] {
   if self.length() <= 1 {
@@ -271,8 +271,7 @@ pub fn[A : NatHomomorphism + Eq + Zero + Mul] DensePolynomial::derivative(
   }
   DensePolynomial::from_vector(
     @core_vector.makei(self.length() - 1, fn(i) {
-      NatHomomorphism::from_nat((i + 1).reinterpret_as_uint()) *
-      self.coefficients[i + 1]
+      FromNat::from_natural(BigInt::from_int(i + 1)) * self.coefficients[i + 1]
     }),
   )
 }
