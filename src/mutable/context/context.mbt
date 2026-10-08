@@ -547,3 +547,15 @@ test "mutable context polynomial rejects incompatible named polynomial substitut
     ]) is None,
   )
 }
+
+///|
+test "eval_named_checked rejects polynomials wider than the context" {
+  let context = VariableContext::from_names(["x"])
+  let x = context.require_variable("x")
+  let wide : TermPolynomial[Int] = TermPolynomial::from_terms([
+    (ExponentVector::from_array([1, 1]), 1),
+  ])
+  let p = ContextPolynomial::from_term_polynomial(context, wide)
+  assert_true(p.eval_named_checked([(x, 2)]) is None)
+  assert_true(ContextPolynomial::ops().eval_named_checked(p, [(x, 2)]) is None)
+}
