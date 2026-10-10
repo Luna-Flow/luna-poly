@@ -4,6 +4,8 @@ All notable changes to `Luna-Flow/luna-poly` are listed here. The format follows
 
 ## Unreleased
 
+## 0.3.0 - 2026-10-10
+
 ### Changed
 
 - Migrated to MoonBit 0.10 (`moonc` 0.10 or later is required). `moon.mod` now uses the `source = "src"` field, and the package manifests import `moonbitlang/core/debug` where `Debug` is derived.
