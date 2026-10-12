@@ -1,6 +1,6 @@
 # luna-poly
 
-This manual documents version `0.3.0` of `Luna-Flow/luna-poly`, the version in `moon.mod`.
+This manual documents version `0.4.0` of `Luna-Flow/luna-poly`, the version in `moon.mod`.
 
 ## Overview
 
@@ -20,7 +20,7 @@ Version 0.3.0 bounds `DensePolynomial::derivative` by `FromNat` from luna-generi
 ## Install
 
 ```bash
-moon add Luna-Flow/luna-poly@0.3.0
+moon add Luna-Flow/luna-poly@0.4.0
 ```
 
 Then import a facade in your `moon.pkg`:
@@ -31,7 +31,7 @@ import {
 }
 ```
 
-The package needs the MoonBit toolchain 0.10 or later (`moonc` ≥ 0.10). It depends on `Luna-Flow/luna-generic` 0.4.0, `Luna-Flow/arithmetic` 0.5.0 and `Luna-Flow/type_theory` 0.2.0, which `moon` installs automatically.
+The package needs the MoonBit toolchain 0.10 or later (`moonc` ≥ 0.10). It depends on `Luna-Flow/luna-generic` 0.4.0, `Luna-Flow/arithmetic` 0.5.1 and `Luna-Flow/type_theory` 0.4.0, which `moon` installs automatically.
 
 ## Pages
 

@@ -20,7 +20,7 @@ This tutorial teaches you to compute with univariate polynomials as immutable va
 Add the module and import the immutable facade, which re-exports `DensePolynomial`:
 
 ```bash
-moon add Luna-Flow/luna-poly@0.3.0
+moon add Luna-Flow/luna-poly@0.4.0
 ```
 
 ```text

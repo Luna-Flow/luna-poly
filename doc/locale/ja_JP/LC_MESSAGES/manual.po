@@ -4073,8 +4073,8 @@ msgid "luna-poly"
 msgstr "luna-poly"
 
 #: manual/index.md:3
-msgid "This manual documents version `0.3.0` of `Luna-Flow/luna-poly`, the version in `moon.mod`."
-msgstr "このマニュアルは `Luna-Flow/luna-poly` のバージョン `0.3.0`（`moon.mod` に書かれたバージョン）を説明します。"
+msgid "This manual documents version `0.4.0` of `Luna-Flow/luna-poly`, the version in `moon.mod`."
+msgstr "このマニュアルは `Luna-Flow/luna-poly` のバージョン `0.4.0`（`moon.mod` に書かれたバージョン）を説明します。"
 
 #: manual/index.md:5
 msgid "Overview"
@@ -4125,8 +4125,8 @@ msgid "Then import a facade in your `moon.pkg`:"
 msgstr "次に `moon.pkg` でファサードをインポートします："
 
 #: manual/index.md:34
-msgid "The package needs the MoonBit toolchain 0.10 or later (`moonc` ≥ 0.10). It depends on `Luna-Flow/luna-generic` 0.4.0, `Luna-Flow/arithmetic` 0.5.0 and `Luna-Flow/type_theory` 0.2.0, which `moon` installs automatically."
-msgstr "パッケージには MoonBit ツールチェーン 0.10 以降（`moonc` ≥ 0.10）が必要です。`Luna-Flow/luna-generic` 0.4.0、`Luna-Flow/arithmetic` 0.5.0、`Luna-Flow/type_theory` 0.2.0 に依存しており、これらは `moon` が自動的にインストールします。"
+msgid "The package needs the MoonBit toolchain 0.10 or later (`moonc` ≥ 0.10). It depends on `Luna-Flow/luna-generic` 0.4.0, `Luna-Flow/arithmetic` 0.5.1 and `Luna-Flow/type_theory` 0.4.0, which `moon` installs automatically."
+msgstr "パッケージには MoonBit ツールチェーン 0.10 以降（`moonc` ≥ 0.10）が必要です。`Luna-Flow/luna-generic` 0.4.0、`Luna-Flow/arithmetic` 0.5.1、`Luna-Flow/type_theory` 0.4.0 に依存しており、これらは `moon` が自動的にインストールします。"
 
 #: manual/index.md:36
 msgid "Pages"

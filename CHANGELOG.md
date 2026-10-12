@@ -4,6 +4,8 @@ All notable changes to `Luna-Flow/luna-poly` are listed here. The format follows
 
 ## Unreleased
 
+## 0.4.0 - 2026-10-13
+
 ### Changed
 
 - **Breaking:** the deprecated `VariableContext::extend` alias is removed (`extend`
