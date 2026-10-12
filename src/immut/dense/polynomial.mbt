@@ -30,12 +30,12 @@ pub fn[A] DensePolynomial::to_coefficients(
 }
 
 ///|
-pub fn[A] DensePolynomial::length(self : DensePolynomial[A]) -> Int {
+pub fn[A] DensePolynomial::length(self : DensePolynomial[A]) -> Int32 {
   self.coefficients.length()
 }
 
 ///|
-pub fn[A] DensePolynomial::degree(self : DensePolynomial[A]) -> Int? {
+pub fn[A] DensePolynomial::degree(self : DensePolynomial[A]) -> Int32? {
   if self.coefficients.is_empty() {
     None
   } else {
@@ -69,7 +69,7 @@ pub impl[A] @poly_core.UnivariatePolynomial for DensePolynomial[A]
 ///|
 pub fn[A : Zero] DensePolynomial::coefficient(
   self : DensePolynomial[A],
-  power : Int,
+  power : Int32,
 ) -> A {
   match self.coefficient_checked(power) {
     None => abort("DensePolynomial power must be non-negative")
@@ -80,7 +80,7 @@ pub fn[A : Zero] DensePolynomial::coefficient(
 ///|
 pub fn[A : Zero] DensePolynomial::coefficient_checked(
   self : DensePolynomial[A],
-  power : Int,
+  power : Int32,
 ) -> A? {
   if power < 0 {
     None
@@ -92,7 +92,9 @@ pub fn[A : Zero] DensePolynomial::coefficient_checked(
 }
 
 ///|
-pub fn[A] DensePolynomial::leading_term(self : DensePolynomial[A]) -> (Int, A)? {
+pub fn[A] DensePolynomial::leading_term(
+  self : DensePolynomial[A],
+) -> (Int32, A)? {
   self.degree().map(fn(power) { (power, self.coefficients[power]) })
 }
 
@@ -103,7 +105,7 @@ pub fn[A] DensePolynomial::leading_coefficient(self : DensePolynomial[A]) -> A? 
 
 ///|
 pub fn[A : Eq + Zero] DensePolynomial::monomial(
-  power : Int,
+  power : Int32,
   coefficient : A,
 ) -> DensePolynomial[A] {
   match DensePolynomial::monomial_checked(power, coefficient) {
@@ -114,7 +116,7 @@ pub fn[A : Eq + Zero] DensePolynomial::monomial(
 
 ///|
 pub fn[A : Eq + Zero] DensePolynomial::monomial_checked(
-  power : Int,
+  power : Int32,
   coefficient : A,
 ) -> DensePolynomial[A]? {
   if power < 0 {
@@ -204,7 +206,7 @@ pub impl[A : Eq + AddMonoid + Mul] Mul for DensePolynomial[A] with fn mul(
 ///|
 pub fn[A : Eq + Zero + Mul] DensePolynomial::scale(
   self : DensePolynomial[A],
-  power : Int,
+  power : Int32,
   coefficient : A,
 ) -> DensePolynomial[A] {
   match self.scale_checked(power, coefficient) {
@@ -216,7 +218,7 @@ pub fn[A : Eq + Zero + Mul] DensePolynomial::scale(
 ///|
 pub fn[A : Eq + Zero + Mul] DensePolynomial::scale_checked(
   self : DensePolynomial[A],
-  power : Int,
+  power : Int32,
   coefficient : A,
 ) -> DensePolynomial[A]? {
   if power < 0 {
@@ -279,7 +281,7 @@ pub fn[A : FromNat + Eq + Zero + Mul] DensePolynomial::derivative(
 ///|
 pub fn[A : Eq + AddMonoid + Mul + One] DensePolynomial::pow(
   self : DensePolynomial[A],
-  exponent : UInt,
+  exponent : UInt32,
 ) -> DensePolynomial[A] {
   @internal.pow_nat(self, exponent, one=DensePolynomial::one())
 }
@@ -380,7 +382,7 @@ test "dense polynomial canonical operations" {
   let p = DensePolynomial::from_coefficients([1, 2, 3, 0, 0])
   assert_true(p.to_coefficients() == [1, 2, 3])
   assert_eq(p.eval(2), 17)
-  let zero : DensePolynomial[Int] = DensePolynomial::zero()
+  let zero : DensePolynomial[Int32] = DensePolynomial::zero()
   assert_true((p * zero).to_coefficients() == [])
 }
 

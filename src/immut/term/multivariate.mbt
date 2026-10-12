@@ -43,7 +43,7 @@ pub fn[A : Eq + AddMonoid] TermPolynomial::from_terms(
 
 ///|
 pub fn[A : Eq + AddMonoid] TermPolynomial::from_array(
-  terms : Array[(Array[UInt], A)],
+  terms : Array[(Array[UInt32], A)],
 ) -> TermPolynomial[A] {
   TermPolynomial::from_terms(
     terms.map(fn(term) { (ExponentVector::from_array(term.0), term.1) }),
@@ -58,12 +58,12 @@ pub fn[A] TermPolynomial::to_terms(
 }
 
 ///|
-pub fn[A] TermPolynomial::size(self : TermPolynomial[A]) -> Int {
+pub fn[A] TermPolynomial::size(self : TermPolynomial[A]) -> Int32 {
   self.terms.length()
 }
 
 ///|
-pub fn[A] TermPolynomial::arity(self : TermPolynomial[A]) -> Int {
+pub fn[A] TermPolynomial::arity(self : TermPolynomial[A]) -> Int32 {
   let mut result = 0
   for term in self.terms {
     result = @cmp.maximum(result, term.0.length())
@@ -72,7 +72,7 @@ pub fn[A] TermPolynomial::arity(self : TermPolynomial[A]) -> Int {
 }
 
 ///|
-pub fn[A] TermPolynomial::total_degree(self : TermPolynomial[A]) -> UInt? {
+pub fn[A] TermPolynomial::total_degree(self : TermPolynomial[A]) -> UInt32? {
   let mut result = 0U
   let mut found = false
   for term in self.terms {
@@ -239,7 +239,7 @@ pub fn[A : AddMonoid + Mul + One] TermPolynomial::eval_checked(
 ///|
 pub fn[A : Eq + AddMonoid + Mul + One] TermPolynomial::pow(
   self : TermPolynomial[A],
-  exponent : UInt,
+  exponent : UInt32,
 ) -> TermPolynomial[A] {
   @internal.pow_nat(self, exponent, one=TermPolynomial::one())
 }

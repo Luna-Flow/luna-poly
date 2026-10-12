@@ -1718,8 +1718,8 @@ msgid "Inline `test` blocks next to each implementation check representation-spe
 msgstr "每个实现旁边的内联 `test` 块检查与表示相关的行为，包括 `core` 中的 `type_theory` 名字查找，以及两个上下文包中的命名代换测试。"
 
 #: manual/architecture.md:70
-msgid "`src/immut/laws_wbtest.mbt` checks algebraic laws with `moonbitlang/quickcheck`."
-msgstr "`src/immut/laws_wbtest.mbt` 用 `moonbitlang/quickcheck` 检查代数定律。"
+msgid "`src/immut/laws_wbtest.mbt` checks algebraic laws with `moonbitlang/core/quickcheck`."
+msgstr "`src/immut/laws_wbtest.mbt` 用 `moonbitlang/core/quickcheck` 检查代数定律。"
 
 #: manual/architecture.md:71
 msgid "`src/consistency/core_wbtest.mbt` checks agreement across layers and representations."
@@ -4601,8 +4601,8 @@ msgid "Going further"
 msgstr "深入了解"
 
 #: manual/tutorial/consistency.md:46
-msgid "Laws of a single representation belong in that representation's package (see `src/immut/laws_wbtest.mbt`, which uses `moonbitlang/quickcheck`); cross-representation and cross-layer equations belong here."
-msgstr "单一表示的定律属于该表示自己的包（见 `src/immut/laws_wbtest.mbt`，它使用 `moonbitlang/quickcheck`）；跨表示和跨层的等式放在这里。"
+msgid "Laws of a single representation belong in that representation's package (see `src/immut/laws_wbtest.mbt`, which uses `moonbitlang/core/quickcheck`); cross-representation and cross-layer equations belong here."
+msgstr "单一表示的定律属于该表示自己的包（见 `src/immut/laws_wbtest.mbt`，它使用 `moonbitlang/core/quickcheck`）；跨表示和跨层的等式放在这里。"
 
 #: manual/tutorial/consistency.md:48
 #: manual/tutorial/core.md:256

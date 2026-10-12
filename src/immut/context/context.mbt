@@ -20,7 +20,7 @@ pub(all) enum ContextSubstitutionValue[A] {
 ///|
 fn VariableContext::exponent_checked(
   self : VariableContext,
-  factors : Array[(Variable, UInt)],
+  factors : Array[(Variable, UInt32)],
 ) -> ExponentVector? {
   let exponents = Array::make(self.size(), 0U)
   for factor in factors {
@@ -37,7 +37,7 @@ fn VariableContext::exponent_checked(
 ///|
 fn[A] VariableContext::terms_checked(
   self : VariableContext,
-  terms : Array[(Array[(Variable, UInt)], A)],
+  terms : Array[(Array[(Variable, UInt32)], A)],
 ) -> Array[(ExponentVector, A)]? {
   let result : Array[(ExponentVector, A)] = []
   for term in terms {
@@ -112,7 +112,7 @@ pub fn[A : Eq + AddMonoid + One] ContextPolynomial::variable(
 ///|
 pub fn[A : Eq + AddMonoid] ContextPolynomial::from_named_terms_as_terms_checked(
   context : VariableContext,
-  terms : Array[(Array[(Variable, UInt)], A)],
+  terms : Array[(Array[(Variable, UInt32)], A)],
 ) -> ContextPolynomial[A]? {
   match context.terms_checked(terms) {
     None => None
@@ -129,7 +129,7 @@ pub fn[A : Eq + AddMonoid] ContextPolynomial::from_named_terms_as_terms_checked(
 ///|
 pub fn[A : Eq + AddMonoid] ContextPolynomial::from_named_terms_as_terms(
   context : VariableContext,
-  terms : Array[(Array[(Variable, UInt)], A)],
+  terms : Array[(Array[(Variable, UInt32)], A)],
 ) -> ContextPolynomial[A] {
   match ContextPolynomial::from_named_terms_as_terms_checked(context, terms) {
     None => abort("Named terms contain variables outside the context")
@@ -140,7 +140,7 @@ pub fn[A : Eq + AddMonoid] ContextPolynomial::from_named_terms_as_terms(
 ///|
 pub fn[A : Eq + AddMonoid] ContextPolynomial::from_named_terms_as_sparse_checked(
   context : VariableContext,
-  terms : Array[(Array[(Variable, UInt)], A)],
+  terms : Array[(Array[(Variable, UInt32)], A)],
 ) -> ContextPolynomial[A]? {
   match context.terms_checked(terms) {
     None => None
@@ -157,7 +157,7 @@ pub fn[A : Eq + AddMonoid] ContextPolynomial::from_named_terms_as_sparse_checked
 ///|
 pub fn[A : Eq + AddMonoid] ContextPolynomial::from_named_terms_as_sparse(
   context : VariableContext,
-  terms : Array[(Array[(Variable, UInt)], A)],
+  terms : Array[(Array[(Variable, UInt32)], A)],
 ) -> ContextPolynomial[A] {
   match ContextPolynomial::from_named_terms_as_sparse_checked(context, terms) {
     None => abort("Named terms contain variables outside the context")
@@ -173,12 +173,12 @@ pub fn[A] ContextPolynomial::context(
 }
 
 ///|
-pub fn[A] ContextPolynomial::term_count(self : ContextPolynomial[A]) -> Int {
+pub fn[A] ContextPolynomial::term_count(self : ContextPolynomial[A]) -> Int32 {
   self.to_terms().length()
 }
 
 ///|
-pub fn[A] ContextPolynomial::arity(self : ContextPolynomial[A]) -> Int {
+pub fn[A] ContextPolynomial::arity(self : ContextPolynomial[A]) -> Int32 {
   let mut result = 0
   for term in self.to_terms() {
     let (exponent, _) = term
@@ -619,7 +619,7 @@ pub impl[A : Eq + AddMonoid + Neg] Sub for ContextPolynomial[A] with fn sub(
 ///|
 pub fn[A : Eq + AddMonoid + Mul + One] ContextPolynomial::pow(
   self : ContextPolynomial[A],
-  exponent : UInt,
+  exponent : UInt32,
 ) -> ContextPolynomial[A] {
   match self.storage {
     TermStorage(polynomial) =>
@@ -864,7 +864,7 @@ test "context variable constructor rejects foreign variables" {
   let context = VariableContext::from_names(["x"])
   let other_context = VariableContext::from_names(["z"])
   let z = other_context.require_variable("z")
-  let variable : ContextPolynomial[Int]? = ContextPolynomial::variable_checked(
+  let variable : ContextPolynomial[Int32]? = ContextPolynomial::variable_checked(
     context, z,
   )
   assert_true(variable is None)
@@ -901,7 +901,7 @@ test "eval_named_checked rejects polynomials wider than the context" {
   let context = VariableContext::from_names(["x", "y"])
   let x = context.require_variable("x")
   let y = context.require_variable("y")
-  let wide : TermPolynomial[Int] = TermPolynomial::from_terms([
+  let wide : TermPolynomial[Int32] = TermPolynomial::from_terms([
     (ExponentVector::from_array([1, 0, 1]), 1),
   ])
   let p = ContextPolynomial::from_term_polynomial(context, wide)

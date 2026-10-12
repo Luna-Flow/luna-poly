@@ -3,22 +3,22 @@ using @lg {trait Zero, trait AddMonoid}
 
 ///|
 test "canonicalization is idempotent" {
-  fn property(coefficients : Array[Int]) -> Bool {
+  fn property(coefficients : Array[Int32]) -> Bool {
     let once = DensePolynomial::from_coefficients(coefficients)
     let twice = DensePolynomial::from_coefficients(once.to_coefficients())
     once == twice
   }
-  @qc.quick_check_fn(property)
+  @qc.check(property)
 }
 
 ///|
 test "dense addition has a zero identity" {
-  fn property(coefficients : Array[Int]) -> Bool {
+  fn property(coefficients : Array[Int32]) -> Bool {
     let polynomial = DensePolynomial::from_coefficients(coefficients)
-    let zero : DensePolynomial[Int] = DensePolynomial::zero()
+    let zero : DensePolynomial[Int32] = DensePolynomial::zero()
     polynomial + zero == polynomial && zero + polynomial == polynomial
   }
-  @qc.quick_check_fn(property)
+  @qc.check(property)
 }
 
 ///|
@@ -34,11 +34,11 @@ test "karatsuba agrees with canonical multiplication above threshold" {
 
 ///|
 priv struct AddOnly {
-  value : Int
+  value : Int32
 } derive(Eq)
 
 ///|
-fn add_only(value : Int) -> AddOnly {
+fn add_only(value : Int32) -> AddOnly {
   { value, }
 }
 
@@ -57,11 +57,11 @@ impl AddMonoid for AddOnly
 
 ///|
 priv struct MulNoOne {
-  value : Int
+  value : Int32
 } derive(Eq)
 
 ///|
-fn mul_no_one(value : Int) -> MulNoOne {
+fn mul_no_one(value : Int32) -> MulNoOne {
   { value, }
 }
 
@@ -85,11 +85,11 @@ impl Mul for MulNoOne with fn mul(self, other) {
 
 ///|
 priv struct GroupNoMul {
-  value : Int
+  value : Int32
 } derive(Eq)
 
 ///|
-fn group_no_mul(value : Int) -> GroupNoMul {
+fn group_no_mul(value : Int32) -> GroupNoMul {
   { value, }
 }
 

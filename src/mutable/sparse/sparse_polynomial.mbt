@@ -19,7 +19,7 @@ pub fn[A : Eq + AddMonoid] SparsePolynomial::from_terms(
 
 ///|
 pub fn[A : Eq + AddMonoid] SparsePolynomial::from_array(
-  terms : Array[(Array[UInt], A)],
+  terms : Array[(Array[UInt32], A)],
 ) -> SparsePolynomial[A] {
   SparsePolynomial::from_terms(
     terms.map(fn(term) { (ExponentVector::from_array(term.0), term.1) }),
@@ -52,12 +52,12 @@ pub fn[A] SparsePolynomial::to_terms(
 }
 
 ///|
-pub fn[A] SparsePolynomial::size(self : SparsePolynomial[A]) -> Int {
+pub fn[A] SparsePolynomial::size(self : SparsePolynomial[A]) -> Int32 {
   self.terms.length()
 }
 
 ///|
-pub fn[A] SparsePolynomial::arity(self : SparsePolynomial[A]) -> Int {
+pub fn[A] SparsePolynomial::arity(self : SparsePolynomial[A]) -> Int32 {
   let mut result = 0
   for exponent, _coefficient in self.terms {
     result = @cmp.maximum(result, exponent.length())
@@ -66,7 +66,7 @@ pub fn[A] SparsePolynomial::arity(self : SparsePolynomial[A]) -> Int {
 }
 
 ///|
-pub fn[A] SparsePolynomial::total_degree(self : SparsePolynomial[A]) -> UInt? {
+pub fn[A] SparsePolynomial::total_degree(self : SparsePolynomial[A]) -> UInt32? {
   let mut result = 0U
   let mut found = false
   for exponent, _coefficient in self.terms {
@@ -336,7 +336,7 @@ pub fn[A : AddMonoid + Mul + One] SparsePolynomial::eval_checked(
 ///|
 pub fn[A : Eq + AddMonoid + Mul + One] SparsePolynomial::pow(
   self : SparsePolynomial[A],
-  exponent : UInt,
+  exponent : UInt32,
 ) -> SparsePolynomial[A] {
   SparsePolynomial::from_immut(self.to_immut().pow(exponent))
 }
@@ -405,7 +405,7 @@ test "mutable sparse operations delete zero coefficients" {
 
 ///|
 test "add_inplace on itself when a coefficient doubles to zero" {
-  let e = fn(values : Array[UInt]) { ExponentVector::from_array(values) }
+  let e = fn(values : Array[UInt32]) { ExponentVector::from_array(values) }
   let terms = [(e([]), -2147483648), (e([1]), 1), (e([2]), 1), (e([3]), 1)]
   let p = SparsePolynomial::from_terms(terms)
   p.add_inplace(p)
@@ -418,7 +418,7 @@ test "add_inplace on itself when a coefficient doubles to zero" {
 test "add_inplace on itself agrees with immutable doubling" {
   for n in 1..<=8 {
     for mask in 0..<(1 << n) {
-      let terms : Array[(ExponentVector, Int)] = []
+      let terms : Array[(ExponentVector, Int32)] = []
       for k in 0..<n {
         let coefficient = if ((mask >> k) & 1) == 1 {
           -2147483648

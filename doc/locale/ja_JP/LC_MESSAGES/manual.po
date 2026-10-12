@@ -1718,8 +1718,8 @@ msgid "Inline `test` blocks next to each implementation check representation-spe
 msgstr "各実装の隣にあるインラインの `test` ブロックは、表現固有の振る舞いを検査します。これには `core` における `type_theory` の名前検索や、両方のコンテキストパッケージにおける名前付き代入のテストが含まれます。"
 
 #: manual/architecture.md:70
-msgid "`src/immut/laws_wbtest.mbt` checks algebraic laws with `moonbitlang/quickcheck`."
-msgstr "`src/immut/laws_wbtest.mbt` は `moonbitlang/quickcheck` を使って代数法則を検査します。"
+msgid "`src/immut/laws_wbtest.mbt` checks algebraic laws with `moonbitlang/core/quickcheck`."
+msgstr "`src/immut/laws_wbtest.mbt` は `moonbitlang/core/quickcheck` を使って代数法則を検査します。"
 
 #: manual/architecture.md:71
 msgid "`src/consistency/core_wbtest.mbt` checks agreement across layers and representations."
@@ -4601,8 +4601,8 @@ msgid "Going further"
 msgstr "さらに進む"
 
 #: manual/tutorial/consistency.md:46
-msgid "Laws of a single representation belong in that representation's package (see `src/immut/laws_wbtest.mbt`, which uses `moonbitlang/quickcheck`); cross-representation and cross-layer equations belong here."
-msgstr "単一の表現の法則はその表現のパッケージに置きます (`moonbitlang/quickcheck` を使う `src/immut/laws_wbtest.mbt` を参照)。表現間およびレイヤー間の等式はここに置きます。"
+msgid "Laws of a single representation belong in that representation's package (see `src/immut/laws_wbtest.mbt`, which uses `moonbitlang/core/quickcheck`); cross-representation and cross-layer equations belong here."
+msgstr "単一の表現の法則はその表現のパッケージに置きます (`moonbitlang/core/quickcheck` を使う `src/immut/laws_wbtest.mbt` を参照)。表現間およびレイヤー間の等式はここに置きます。"
 
 #: manual/tutorial/consistency.md:48
 #: manual/tutorial/core.md:256

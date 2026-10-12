@@ -1,11 +1,11 @@
 ///|
 pub(open) trait HasLength {
-  fn length(Self) -> Int
+  fn length(Self) -> Int32
 }
 
 ///|
 pub(open) trait HasDegree {
-  fn degree(Self) -> Int?
+  fn degree(Self) -> Int32?
 }
 
 ///|
@@ -15,17 +15,17 @@ pub(open) trait IsZero {
 
 ///|
 pub(open) trait HasTermCount {
-  fn term_count(Self) -> Int
+  fn term_count(Self) -> Int32
 }
 
 ///|
 pub(open) trait HasArity {
-  fn arity(Self) -> Int
+  fn arity(Self) -> Int32
 }
 
 ///|
 pub(open) trait HasTotalDegree {
-  fn total_degree(Self) -> UInt?
+  fn total_degree(Self) -> UInt32?
 }
 
 ///|
@@ -35,20 +35,20 @@ pub(open) trait HasContext {
 
 ///|
 pub enum PolynomialShape {
-  Univariate(length~ : Int)
-  Multivariate(arity~ : Int, term_count~ : Int)
-  Contextual(context~ : VariableContext, arity~ : Int, term_count~ : Int)
+  Univariate(length~ : Int32)
+  Multivariate(arity~ : Int32, term_count~ : Int32)
+  Contextual(context~ : VariableContext, arity~ : Int32, term_count~ : Int32)
 } derive(Eq, Debug)
 
 ///|
-pub fn PolynomialShape::univariate(length : Int) -> PolynomialShape {
+pub fn PolynomialShape::univariate(length : Int32) -> PolynomialShape {
   Univariate(length~)
 }
 
 ///|
 pub fn PolynomialShape::multivariate(
-  arity : Int,
-  term_count : Int,
+  arity : Int32,
+  term_count : Int32,
 ) -> PolynomialShape {
   Multivariate(arity~, term_count~)
 }
@@ -56,14 +56,14 @@ pub fn PolynomialShape::multivariate(
 ///|
 pub fn PolynomialShape::contextual(
   context : VariableContext,
-  arity : Int,
-  term_count : Int,
+  arity : Int32,
+  term_count : Int32,
 ) -> PolynomialShape {
   Contextual(context~, arity~, term_count~)
 }
 
 ///|
-pub fn PolynomialShape::arity(self : PolynomialShape) -> Int {
+pub fn PolynomialShape::arity(self : PolynomialShape) -> Int32 {
   match self {
     Univariate(_) => 1
     Multivariate(arity~, ..) => arity
@@ -72,7 +72,7 @@ pub fn PolynomialShape::arity(self : PolynomialShape) -> Int {
 }
 
 ///|
-pub fn PolynomialShape::term_count(self : PolynomialShape) -> Int? {
+pub fn PolynomialShape::term_count(self : PolynomialShape) -> Int32? {
   match self {
     Univariate(_) => None
     Multivariate(term_count~, ..) => Some(term_count)
@@ -142,14 +142,14 @@ struct UnivariateOps[P, A] {
   one_fn : () -> P
   from_coefficients_fn : (Array[A]) -> P
   to_coefficients_fn : (P) -> Array[A]
-  coefficient_fn : (P, Int) -> A
-  coefficient_checked_fn : (P, Int) -> A?
+  coefficient_fn : (P, Int32) -> A
+  coefficient_checked_fn : (P, Int32) -> A?
   eval_fn : (P, A) -> A
   add_fn : (P, P) -> P
   mul_fn : (P, P) -> P
-  scale_fn : (P, Int, A) -> P
-  scale_checked_fn : (P, Int, A) -> P?
-  pow_fn : (P, UInt) -> P
+  scale_fn : (P, Int32, A) -> P
+  scale_checked_fn : (P, Int32, A) -> P?
+  pow_fn : (P, UInt32) -> P
 }
 
 ///|
@@ -158,14 +158,14 @@ pub fn[P, A] UnivariateOps::new(
   one : () -> P,
   from_coefficients : (Array[A]) -> P,
   to_coefficients : (P) -> Array[A],
-  coefficient : (P, Int) -> A,
-  coefficient_checked : (P, Int) -> A?,
+  coefficient : (P, Int32) -> A,
+  coefficient_checked : (P, Int32) -> A?,
   eval : (P, A) -> A,
   add : (P, P) -> P,
   mul : (P, P) -> P,
-  scale : (P, Int, A) -> P,
-  scale_checked : (P, Int, A) -> P?,
-  pow : (P, UInt) -> P,
+  scale : (P, Int32, A) -> P,
+  scale_checked : (P, Int32, A) -> P?,
+  pow : (P, UInt32) -> P,
 ) -> UnivariateOps[P, A] {
   {
     zero_fn: zero,
@@ -213,7 +213,7 @@ pub fn[P, A] UnivariateOps::to_coefficients(
 pub fn[P, A] UnivariateOps::coefficient(
   self : UnivariateOps[P, A],
   polynomial : P,
-  power : Int,
+  power : Int32,
 ) -> A {
   (self.coefficient_fn)(polynomial, power)
 }
@@ -222,7 +222,7 @@ pub fn[P, A] UnivariateOps::coefficient(
 pub fn[P, A] UnivariateOps::coefficient_checked(
   self : UnivariateOps[P, A],
   polynomial : P,
-  power : Int,
+  power : Int32,
 ) -> A? {
   (self.coefficient_checked_fn)(polynomial, power)
 }
@@ -258,7 +258,7 @@ pub fn[P, A] UnivariateOps::mul(
 pub fn[P, A] UnivariateOps::scale(
   self : UnivariateOps[P, A],
   polynomial : P,
-  power : Int,
+  power : Int32,
   coefficient : A,
 ) -> P {
   (self.scale_fn)(polynomial, power, coefficient)
@@ -268,7 +268,7 @@ pub fn[P, A] UnivariateOps::scale(
 pub fn[P, A] UnivariateOps::scale_checked(
   self : UnivariateOps[P, A],
   polynomial : P,
-  power : Int,
+  power : Int32,
   coefficient : A,
 ) -> P? {
   (self.scale_checked_fn)(polynomial, power, coefficient)
@@ -278,7 +278,7 @@ pub fn[P, A] UnivariateOps::scale_checked(
 pub fn[P, A] UnivariateOps::pow(
   self : UnivariateOps[P, A],
   polynomial : P,
-  exponent : UInt,
+  exponent : UInt32,
 ) -> P {
   (self.pow_fn)(polynomial, exponent)
 }
@@ -294,7 +294,7 @@ struct MultivariateOps[P, A] {
   add_fn : (P, P) -> P
   mul_fn : (P, P) -> P
   scale_fn : (P, ExponentVector, A) -> P
-  pow_fn : (P, UInt) -> P
+  pow_fn : (P, UInt32) -> P
 }
 
 ///|
@@ -308,7 +308,7 @@ pub fn[P, A] MultivariateOps::new(
   add : (P, P) -> P,
   mul : (P, P) -> P,
   scale : (P, ExponentVector, A) -> P,
-  pow : (P, UInt) -> P,
+  pow : (P, UInt32) -> P,
 ) -> MultivariateOps[P, A] {
   {
     zero_fn: zero,
@@ -400,7 +400,7 @@ pub fn[P, A] MultivariateOps::scale(
 pub fn[P, A] MultivariateOps::pow(
   self : MultivariateOps[P, A],
   polynomial : P,
-  exponent : UInt,
+  exponent : UInt32,
 ) -> P {
   (self.pow_fn)(polynomial, exponent)
 }
