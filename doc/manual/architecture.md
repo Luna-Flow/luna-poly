@@ -67,7 +67,7 @@ The mutable version converts its payload to the immutable one, runs the same ste
 ## Tests
 
 - Inline `test` blocks next to each implementation check representation-specific behaviour, including the `type_theory` name lookups in `core` and the named substitution tests in both context packages.
-- `src/immut/laws_wbtest.mbt` checks algebraic laws with `moonbitlang/quickcheck`.
+- `src/immut/laws_wbtest.mbt` checks algebraic laws with `moonbitlang/core/quickcheck`.
 - `src/consistency/core_wbtest.mbt` checks agreement across layers and representations.
 
 Run everything with `moon test`; see the [contributing guide](contributing.md) for the full pre-PR sequence.

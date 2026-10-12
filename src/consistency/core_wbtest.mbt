@@ -62,7 +62,9 @@ fn[P : @immut.UnivariatePolynomial] is_univariate_zero(value : P) -> Bool {
 }
 
 ///|
-fn[P : @immut.MultivariatePolynomial] multivariate_term_count(value : P) -> Int {
+fn[P : @immut.MultivariatePolynomial] multivariate_term_count(
+  value : P,
+) -> Int32 {
   @immut.HasTermCount::term_count(value)
 }
 
@@ -163,8 +165,8 @@ test "extended ops records support generic construction and algebra" {
 
 ///|
 test "facades re-export algebra capability traits" {
-  let zero : Int = zero_from_immut()
-  let one : Int = one_from_mutable()
+  let zero : Int32 = zero_from_immut()
+  let one : Int32 = one_from_mutable()
   assert_eq(zero, 0)
   assert_eq(one, 1)
 }

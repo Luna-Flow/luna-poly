@@ -1712,7 +1712,7 @@ msgid "Inline `test` blocks next to each implementation check representation-spe
 msgstr ""
 
 #: manual/architecture.md:70
-msgid "`src/immut/laws_wbtest.mbt` checks algebraic laws with `moonbitlang/quickcheck`."
+msgid "`src/immut/laws_wbtest.mbt` checks algebraic laws with `moonbitlang/core/quickcheck`."
 msgstr ""
 
 #: manual/architecture.md:71
@@ -4578,7 +4578,7 @@ msgid "Going further"
 msgstr ""
 
 #: manual/tutorial/consistency.md:46
-msgid "Laws of a single representation belong in that representation's package (see `src/immut/laws_wbtest.mbt`, which uses `moonbitlang/quickcheck`); cross-representation and cross-layer equations belong here."
+msgid "Laws of a single representation belong in that representation's package (see `src/immut/laws_wbtest.mbt`, which uses `moonbitlang/core/quickcheck`); cross-representation and cross-layer equations belong here."
 msgstr ""
 
 #: manual/tutorial/consistency.md:48

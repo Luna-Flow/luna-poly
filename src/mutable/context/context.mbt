@@ -95,7 +95,7 @@ pub fn[A : Eq + AddMonoid + One] ContextPolynomial::variable(
 ///|
 pub fn[A : Eq + AddMonoid] ContextPolynomial::from_named_terms_as_terms_checked(
   context : VariableContext,
-  terms : Array[(Array[(Variable, UInt)], A)],
+  terms : Array[(Array[(Variable, UInt32)], A)],
 ) -> ContextPolynomial[A]? {
   match
     @immut_context.ContextPolynomial::from_named_terms_as_terms_checked(
@@ -109,7 +109,7 @@ pub fn[A : Eq + AddMonoid] ContextPolynomial::from_named_terms_as_terms_checked(
 ///|
 pub fn[A : Eq + AddMonoid] ContextPolynomial::from_named_terms_as_terms(
   context : VariableContext,
-  terms : Array[(Array[(Variable, UInt)], A)],
+  terms : Array[(Array[(Variable, UInt32)], A)],
 ) -> ContextPolynomial[A] {
   match ContextPolynomial::from_named_terms_as_terms_checked(context, terms) {
     None => abort("Named terms contain variables outside the context")
@@ -120,7 +120,7 @@ pub fn[A : Eq + AddMonoid] ContextPolynomial::from_named_terms_as_terms(
 ///|
 pub fn[A : Eq + AddMonoid] ContextPolynomial::from_named_terms_as_sparse_checked(
   context : VariableContext,
-  terms : Array[(Array[(Variable, UInt)], A)],
+  terms : Array[(Array[(Variable, UInt32)], A)],
 ) -> ContextPolynomial[A]? {
   match
     @immut_context.ContextPolynomial::from_named_terms_as_sparse_checked(
@@ -134,7 +134,7 @@ pub fn[A : Eq + AddMonoid] ContextPolynomial::from_named_terms_as_sparse_checked
 ///|
 pub fn[A : Eq + AddMonoid] ContextPolynomial::from_named_terms_as_sparse(
   context : VariableContext,
-  terms : Array[(Array[(Variable, UInt)], A)],
+  terms : Array[(Array[(Variable, UInt32)], A)],
 ) -> ContextPolynomial[A] {
   match ContextPolynomial::from_named_terms_as_sparse_checked(context, terms) {
     None => abort("Named terms contain variables outside the context")
@@ -150,12 +150,12 @@ pub fn[A] ContextPolynomial::context(
 }
 
 ///|
-pub fn[A] ContextPolynomial::term_count(self : ContextPolynomial[A]) -> Int {
+pub fn[A] ContextPolynomial::term_count(self : ContextPolynomial[A]) -> Int32 {
   self.to_terms().length()
 }
 
 ///|
-pub fn[A] ContextPolynomial::arity(self : ContextPolynomial[A]) -> Int {
+pub fn[A] ContextPolynomial::arity(self : ContextPolynomial[A]) -> Int32 {
   let mut result = 0
   for term in self.to_terms() {
     let (exponent, _) = term
@@ -468,7 +468,7 @@ pub impl[A : Eq + AddMonoid + Neg] Sub for ContextPolynomial[A] with fn sub(
 ///|
 pub fn[A : Eq + AddMonoid + Mul + One] ContextPolynomial::pow(
   self : ContextPolynomial[A],
-  exponent : UInt,
+  exponent : UInt32,
 ) -> ContextPolynomial[A] {
   ContextPolynomial::from_immut(self.value.pow(exponent))
 }
@@ -554,7 +554,7 @@ test "mutable context polynomial rejects incompatible named polynomial substitut
 test "eval_named_checked rejects polynomials wider than the context" {
   let context = VariableContext::from_names(["x"])
   let x = context.require_variable("x")
-  let wide : TermPolynomial[Int] = TermPolynomial::from_terms([
+  let wide : TermPolynomial[Int32] = TermPolynomial::from_terms([
     (ExponentVector::from_array([1, 1]), 1),
   ])
   let p = ContextPolynomial::from_term_polynomial(context, wide)

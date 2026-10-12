@@ -4,6 +4,19 @@ All notable changes to `Luna-Flow/luna-poly` are listed here. The format follows
 
 ## Unreleased
 
+### Changed
+
+- **Breaking:** the deprecated `VariableContext::extend` alias is removed (`extend`
+  is a reserved word in the latest toolchain); use `extend_with`.
+- Builds with the latest MoonBit toolchain (moon 0.1.20261012, moonc 0.10.15):
+  `Luna-Flow/arithmetic` is raised to 0.5.1 and `Luna-Flow/type_theory` to 0.4.0
+  (the earlier versions depend on packages that ship the legacy `moon.mod.json`,
+  which the new toolchain rejects), and the sources follow the formatter of that
+  toolchain.
+- The `moonbitlang/quickcheck` dependency is removed (its published 0.14.0 ships
+  the legacy `moon.mod.json`); the law tests call `check` of
+  `moonbitlang/core/quickcheck`, bundled with MoonBit core.
+
 ## 0.3.0 - 2026-10-10
 
 ### Changed

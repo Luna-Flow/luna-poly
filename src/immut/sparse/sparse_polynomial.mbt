@@ -52,7 +52,7 @@ pub fn[A : Eq + AddMonoid] SparsePolynomial::from_terms(
 
 ///|
 pub fn[A : Eq + AddMonoid] SparsePolynomial::from_array(
-  terms : Array[(Array[UInt], A)],
+  terms : Array[(Array[UInt32], A)],
 ) -> SparsePolynomial[A] {
   SparsePolynomial::from_terms(
     terms.map(fn(term) { (ExponentVector::from_array(term.0), term.1) }),
@@ -67,12 +67,12 @@ pub fn[A] SparsePolynomial::to_terms(
 }
 
 ///|
-pub fn[A] SparsePolynomial::size(self : SparsePolynomial[A]) -> Int {
+pub fn[A] SparsePolynomial::size(self : SparsePolynomial[A]) -> Int32 {
   self.terms.length()
 }
 
 ///|
-pub fn[A] SparsePolynomial::arity(self : SparsePolynomial[A]) -> Int {
+pub fn[A] SparsePolynomial::arity(self : SparsePolynomial[A]) -> Int32 {
   let mut result = 0
   for exponent, _coefficient in self.terms {
     result = @cmp.maximum(result, exponent.length())
@@ -81,7 +81,7 @@ pub fn[A] SparsePolynomial::arity(self : SparsePolynomial[A]) -> Int {
 }
 
 ///|
-pub fn[A] SparsePolynomial::total_degree(self : SparsePolynomial[A]) -> UInt? {
+pub fn[A] SparsePolynomial::total_degree(self : SparsePolynomial[A]) -> UInt32? {
   let mut result = 0U
   let mut found = false
   for exponent, _coefficient in self.terms {
@@ -277,7 +277,7 @@ pub fn[A : AddMonoid + Mul + One] SparsePolynomial::eval_checked(
 ///|
 pub fn[A : Eq + AddMonoid + Mul + One] SparsePolynomial::pow(
   self : SparsePolynomial[A],
-  exponent : UInt,
+  exponent : UInt32,
 ) -> SparsePolynomial[A] {
   @internal.pow_nat(self, exponent, one=SparsePolynomial::one())
 }

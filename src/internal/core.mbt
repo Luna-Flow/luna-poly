@@ -1,5 +1,5 @@
 ///|
-pub fn[A : Mul] pow_nat(base : A, exponent : UInt, one~ : A) -> A {
+pub fn[A : Mul] pow_nat(base : A, exponent : UInt32, one~ : A) -> A {
   for state = one, exp = exponent, factor = base {
     if exp == 0 {
       break state

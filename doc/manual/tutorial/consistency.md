@@ -43,7 +43,7 @@ For a checked API, assert that both layers return `None` on the same invalid inp
 
 ## Going further
 
-Laws of a single representation belong in that representation's package (see `src/immut/laws_wbtest.mbt`, which uses `moonbitlang/quickcheck`); cross-representation and cross-layer equations belong here.
+Laws of a single representation belong in that representation's package (see `src/immut/laws_wbtest.mbt`, which uses `moonbitlang/core/quickcheck`); cross-representation and cross-layer equations belong here.
 
 ## Common pitfalls
 

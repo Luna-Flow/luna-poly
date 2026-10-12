@@ -1,13 +1,13 @@
 ///|
 /// Canonical exponent vector. Trailing zero exponents are never stored.
 struct ExponentVector {
-  exponents : @core_vector.Vector[UInt]
-  degree : UInt
+  exponents : @core_vector.Vector[UInt32]
+  degree : UInt32
 } derive(Debug)
 
 ///|
 fn ExponentVector::from_vector(
-  values : @core_vector.Vector[UInt],
+  values : @core_vector.Vector[UInt32],
 ) -> ExponentVector {
   let mut length = values.length()
   while length > 0 && values[length - 1] == 0 {
@@ -22,7 +22,7 @@ fn ExponentVector::from_vector(
 }
 
 ///|
-pub fn ExponentVector::from_array(values : Array[UInt]) -> ExponentVector {
+pub fn ExponentVector::from_array(values : Array[UInt32]) -> ExponentVector {
   ExponentVector::from_vector(@core_vector.from_array(values))
 }
 
@@ -32,12 +32,12 @@ pub fn ExponentVector::one() -> ExponentVector {
 }
 
 ///|
-pub fn ExponentVector::length(self : ExponentVector) -> Int {
+pub fn ExponentVector::length(self : ExponentVector) -> Int32 {
   self.exponents.length()
 }
 
 ///|
-pub fn ExponentVector::degree(self : ExponentVector) -> UInt {
+pub fn ExponentVector::degree(self : ExponentVector) -> UInt32 {
   self.degree
 }
 
@@ -48,7 +48,7 @@ pub fn ExponentVector::is_one(self : ExponentVector) -> Bool {
 
 ///|
 #alias("_[_]")
-pub fn ExponentVector::get(self : ExponentVector, index : Int) -> UInt {
+pub fn ExponentVector::get(self : ExponentVector, index : Int32) -> UInt32 {
   match self.get_checked(index) {
     None => abort("ExponentVector index out of bounds")
     Some(value) => value
@@ -56,7 +56,10 @@ pub fn ExponentVector::get(self : ExponentVector, index : Int) -> UInt {
 }
 
 ///|
-pub fn ExponentVector::get_checked(self : ExponentVector, index : Int) -> UInt? {
+pub fn ExponentVector::get_checked(
+  self : ExponentVector,
+  index : Int32,
+) -> UInt32? {
   if index < 0 {
     None
   } else if index < self.length() {
@@ -69,8 +72,8 @@ pub fn ExponentVector::get_checked(self : ExponentVector, index : Int) -> UInt? 
 ///|
 pub fn ExponentVector::with_exponent(
   self : ExponentVector,
-  index : Int,
-  value : UInt,
+  index : Int32,
+  value : UInt32,
 ) -> ExponentVector {
   match self.with_exponent_checked(index, value) {
     None => abort("ExponentVector index out of bounds")
@@ -81,8 +84,8 @@ pub fn ExponentVector::with_exponent(
 ///|
 pub fn ExponentVector::with_exponent_checked(
   self : ExponentVector,
-  index : Int,
-  value : UInt,
+  index : Int32,
+  value : UInt32,
 ) -> ExponentVector? {
   if index < 0 {
     return None
@@ -99,7 +102,7 @@ pub fn ExponentVector::with_exponent_checked(
 }
 
 ///|
-pub fn ExponentVector::to_array(self : ExponentVector) -> Array[UInt] {
+pub fn ExponentVector::to_array(self : ExponentVector) -> Array[UInt32] {
   self.exponents.iter().to_array()
 }
 

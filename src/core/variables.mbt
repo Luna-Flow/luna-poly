@@ -2,7 +2,7 @@
 /// Named variable with a stable context-local index.
 struct Variable {
   name : String
-  index : Int
+  index : Int32
 } derive(Eq, Compare, Debug)
 
 ///|
@@ -11,7 +11,7 @@ pub fn Variable::name(self : Variable) -> String {
 }
 
 ///|
-pub fn Variable::index(self : Variable) -> Int {
+pub fn Variable::index(self : Variable) -> Int32 {
   self.index
 }
 
@@ -83,7 +83,6 @@ pub fn VariableContext::extend_checked(
 }
 
 ///|
-#alias(extend, deprecated="Use `VariableContext::extend_with` instead")
 pub fn VariableContext::extend_with(
   self : VariableContext,
   name : String,
@@ -95,7 +94,7 @@ pub fn VariableContext::extend_with(
 }
 
 ///|
-pub fn VariableContext::size(self : VariableContext) -> Int {
+pub fn VariableContext::size(self : VariableContext) -> Int32 {
   self.variables.length()
 }
 
@@ -105,7 +104,7 @@ pub fn VariableContext::variables(self : VariableContext) -> Array[Variable] {
 }
 
 ///|
-pub fn VariableContext::get(self : VariableContext, index : Int) -> Variable? {
+pub fn VariableContext::get(self : VariableContext, index : Int32) -> Variable? {
   if index < 0 || index >= self.size() {
     None
   } else {
