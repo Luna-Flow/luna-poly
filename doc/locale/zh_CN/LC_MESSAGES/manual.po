@@ -4073,8 +4073,8 @@ msgid "luna-poly"
 msgstr "luna-poly"
 
 #: manual/index.md:3
-msgid "This manual documents version `0.3.0` of `Luna-Flow/luna-poly`, the version in `moon.mod`."
-msgstr "本手册记录 `Luna-Flow/luna-poly` 的 `0.3.0` 版本，即 `moon.mod` 中的版本。"
+msgid "This manual documents version `0.4.0` of `Luna-Flow/luna-poly`, the version in `moon.mod`."
+msgstr "本手册记录 `Luna-Flow/luna-poly` 的 `0.4.0` 版本，即 `moon.mod` 中的版本。"
 
 #: manual/index.md:5
 msgid "Overview"
@@ -4125,8 +4125,8 @@ msgid "Then import a facade in your `moon.pkg`:"
 msgstr "然后在 `moon.pkg` 中导入一个门面包："
 
 #: manual/index.md:34
-msgid "The package needs the MoonBit toolchain 0.10 or later (`moonc` ≥ 0.10). It depends on `Luna-Flow/luna-generic` 0.4.0, `Luna-Flow/arithmetic` 0.5.0 and `Luna-Flow/type_theory` 0.2.0, which `moon` installs automatically."
-msgstr "本包需要 MoonBit 工具链 0.10 或更高版本（`moonc` ≥ 0.10）。它依赖 `Luna-Flow/luna-generic` 0.4.0、`Luna-Flow/arithmetic` 0.5.0 和 `Luna-Flow/type_theory` 0.2.0，`moon` 会自动安装它们。"
+msgid "The package needs the MoonBit toolchain 0.10 or later (`moonc` ≥ 0.10). It depends on `Luna-Flow/luna-generic` 0.4.0, `Luna-Flow/arithmetic` 0.5.1 and `Luna-Flow/type_theory` 0.4.0, which `moon` installs automatically."
+msgstr "本包需要 MoonBit 工具链 0.10 或更高版本（`moonc` ≥ 0.10）。它依赖 `Luna-Flow/luna-generic` 0.4.0、`Luna-Flow/arithmetic` 0.5.1 和 `Luna-Flow/type_theory` 0.4.0，`moon` 会自动安装它们。"
 
 #: manual/index.md:36
 msgid "Pages"
