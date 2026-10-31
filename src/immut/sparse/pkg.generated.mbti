@@ -16,11 +16,11 @@ import {
 type SparsePolynomial[A] derive(@debug.Debug)
 pub fn[A : Eq + @luna-generic.AddMonoid] SparsePolynomial::add(Self[A], Self[A]) -> Self[A]
 pub fn[A : Eq + @luna-generic.AddMonoid] SparsePolynomial::add_term(Self[A], @core.ExponentVector, A) -> Self[A]
-pub fn[A] SparsePolynomial::arity(Self[A]) -> Int
+pub fn[A] SparsePolynomial::arity(Self[A]) -> Int32
 pub fn[A : Eq] SparsePolynomial::equal(Self[A], Self[A]) -> Bool
 pub fn[A : @luna-generic.AddMonoid + Mul + @luna-generic.One] SparsePolynomial::eval(Self[A], Array[A]) -> A
 pub fn[A : @luna-generic.AddMonoid + Mul + @luna-generic.One] SparsePolynomial::eval_checked(Self[A], Array[A]) -> A?
-pub fn[A : Eq + @luna-generic.AddMonoid] SparsePolynomial::from_array(Array[(Array[UInt], A)]) -> Self[A]
+pub fn[A : Eq + @luna-generic.AddMonoid] SparsePolynomial::from_array(Array[(Array[UInt32], A)]) -> Self[A]
 pub fn[A : Eq + @luna-generic.AddMonoid] SparsePolynomial::from_terms(Array[(@core.ExponentVector, A)]) -> Self[A]
 pub fn[A] SparsePolynomial::get(Self[A], @core.ExponentVector) -> A?
 pub fn[A] SparsePolynomial::get_checked(Self[A], @core.ExponentVector) -> A?
@@ -31,15 +31,15 @@ pub fn[A : Eq + @luna-generic.Zero + Neg] SparsePolynomial::neg(Self[A]) -> Self
 pub fn[A] SparsePolynomial::new() -> Self[A]
 pub fn[A : Eq + @luna-generic.Zero + @luna-generic.One] SparsePolynomial::one() -> Self[A]
 pub fn[A : Eq + @luna-generic.AddMonoid + Mul + @luna-generic.One] SparsePolynomial::ops() -> @core.MultivariateOps[Self[A], A]
-pub fn[A : Eq + @luna-generic.AddMonoid + Mul + @luna-generic.One] SparsePolynomial::pow(Self[A], UInt) -> Self[A]
+pub fn[A : Eq + @luna-generic.AddMonoid + Mul + @luna-generic.One] SparsePolynomial::pow(Self[A], UInt32) -> Self[A]
 pub fn[A : Eq + @luna-generic.Zero + Mul] SparsePolynomial::scale(Self[A], @core.ExponentVector, A) -> Self[A]
 pub fn[A] SparsePolynomial::shape(Self[A]) -> @core.PolynomialShape
-pub fn[A] SparsePolynomial::size(Self[A]) -> Int
+pub fn[A] SparsePolynomial::size(Self[A]) -> Int32
 pub fn[A : Eq + @luna-generic.AddMonoid + Neg] SparsePolynomial::sub(Self[A], Self[A]) -> Self[A]
-pub fn[A] SparsePolynomial::term_count(Self[A]) -> Int
+pub fn[A] SparsePolynomial::term_count(Self[A]) -> Int32
 pub fn[A : Show + @luna-generic.Zero] SparsePolynomial::to_string(Self[A]) -> String
 pub fn[A] SparsePolynomial::to_terms(Self[A]) -> Array[(@core.ExponentVector, A)]
-pub fn[A] SparsePolynomial::total_degree(Self[A]) -> UInt?
+pub fn[A] SparsePolynomial::total_degree(Self[A]) -> UInt32?
 pub fn[A] SparsePolynomial::zero() -> Self[A]
 pub impl[A : Eq + @luna-generic.AddMonoid + Mul + @luna-generic.One] @arithmetic.PowNatChecked for SparsePolynomial[A]
 pub impl[A : Eq + @luna-generic.Zero + @luna-generic.One] @luna-generic.One for SparsePolynomial[A]

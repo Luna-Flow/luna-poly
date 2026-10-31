@@ -2,7 +2,7 @@
 package "Luna-Flow/luna-poly/internal"
 
 // Values
-pub fn[A : Mul] pow_nat(A, UInt, one~ : A) -> A
+pub fn[A : Mul] pow_nat(A, UInt32, one~ : A) -> A
 
 // Errors
 
