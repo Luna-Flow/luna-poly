@@ -20,22 +20,22 @@ pub fn[P, A] ContextOps::new((VariableContext, Array[(ExponentVector, A)]) -> P,
 pub fn[P, A] ContextOps::to_terms(Self[P, A], P) -> Array[(ExponentVector, A)]
 
 type ExponentVector derive(@debug.Debug)
-pub fn ExponentVector::compare(Self, Self) -> Int
-pub fn ExponentVector::degree(Self) -> UInt
+pub fn ExponentVector::compare(Self, Self) -> Int32
+pub fn ExponentVector::degree(Self) -> UInt32
 pub fn ExponentVector::equal(Self, Self) -> Bool
-pub fn ExponentVector::from_array(Array[UInt]) -> Self
+pub fn ExponentVector::from_array(Array[UInt32]) -> Self
 #alias("_[_]")
-pub fn ExponentVector::get(Self, Int) -> UInt
-pub fn ExponentVector::get_checked(Self, Int) -> UInt?
-pub fn ExponentVector::hash(Self) -> Int
+pub fn ExponentVector::get(Self, Int32) -> UInt32
+pub fn ExponentVector::get_checked(Self, Int32) -> UInt32?
+pub fn ExponentVector::hash(Self) -> Int32
 pub fn ExponentVector::is_one(Self) -> Bool
-pub fn ExponentVector::length(Self) -> Int
+pub fn ExponentVector::length(Self) -> Int32
 pub fn ExponentVector::mul(Self, Self) -> Self
 pub fn ExponentVector::one() -> Self
-pub fn ExponentVector::to_array(Self) -> Array[UInt]
+pub fn ExponentVector::to_array(Self) -> Array[UInt32]
 pub fn ExponentVector::to_string(Self) -> String
-pub fn ExponentVector::with_exponent(Self, Int, UInt) -> Self
-pub fn ExponentVector::with_exponent_checked(Self, Int, UInt) -> Self?
+pub fn ExponentVector::with_exponent(Self, Int32, UInt32) -> Self
+pub fn ExponentVector::with_exponent_checked(Self, Int32, UInt32) -> Self?
 pub impl @luna-generic.One for ExponentVector
 pub impl Compare for ExponentVector
 pub impl Eq for ExponentVector
@@ -49,46 +49,46 @@ pub fn[P, A] MultivariateOps::eval_indexed(Self[P, A], P, Array[A]) -> A
 pub fn[P, A] MultivariateOps::eval_indexed_checked(Self[P, A], P, Array[A]) -> A?
 pub fn[P, A] MultivariateOps::from_terms(Self[P, A], Array[(ExponentVector, A)]) -> P
 pub fn[P, A] MultivariateOps::mul(Self[P, A], P, P) -> P
-pub fn[P, A] MultivariateOps::new(() -> P, () -> P, (Array[(ExponentVector, A)]) -> P, (P) -> Array[(ExponentVector, A)], (P, Array[A]) -> A, (P, Array[A]) -> A?, (P, P) -> P, (P, P) -> P, (P, ExponentVector, A) -> P, (P, UInt) -> P) -> Self[P, A]
+pub fn[P, A] MultivariateOps::new(() -> P, () -> P, (Array[(ExponentVector, A)]) -> P, (P) -> Array[(ExponentVector, A)], (P, Array[A]) -> A, (P, Array[A]) -> A?, (P, P) -> P, (P, P) -> P, (P, ExponentVector, A) -> P, (P, UInt32) -> P) -> Self[P, A]
 pub fn[P, A] MultivariateOps::one(Self[P, A]) -> P
-pub fn[P, A] MultivariateOps::pow(Self[P, A], P, UInt) -> P
+pub fn[P, A] MultivariateOps::pow(Self[P, A], P, UInt32) -> P
 pub fn[P, A] MultivariateOps::scale(Self[P, A], P, ExponentVector, A) -> P
 pub fn[P, A] MultivariateOps::to_terms(Self[P, A], P) -> Array[(ExponentVector, A)]
 pub fn[P, A] MultivariateOps::zero(Self[P, A]) -> P
 
 pub enum PolynomialShape {
-  Univariate(length~ : Int)
-  Multivariate(arity~ : Int, term_count~ : Int)
-  Contextual(context~ : VariableContext, arity~ : Int, term_count~ : Int)
+  Univariate(length~ : Int32)
+  Multivariate(arity~ : Int32, term_count~ : Int32)
+  Contextual(context~ : VariableContext, arity~ : Int32, term_count~ : Int32)
 } derive(Eq, @debug.Debug)
-pub fn PolynomialShape::arity(Self) -> Int
+pub fn PolynomialShape::arity(Self) -> Int32
 pub fn PolynomialShape::compatible_checked(Self, Self) -> Unit?
-pub fn PolynomialShape::contextual(VariableContext, Int, Int) -> Self
+pub fn PolynomialShape::contextual(VariableContext, Int32, Int32) -> Self
 pub fn PolynomialShape::equal(Self, Self) -> Bool
 pub fn PolynomialShape::is_compatible_with(Self, Self) -> Bool
-pub fn PolynomialShape::multivariate(Int, Int) -> Self
-pub fn PolynomialShape::term_count(Self) -> Int?
-pub fn PolynomialShape::univariate(Int) -> Self
+pub fn PolynomialShape::multivariate(Int32, Int32) -> Self
+pub fn PolynomialShape::term_count(Self) -> Int32?
+pub fn PolynomialShape::univariate(Int32) -> Self
 
 type UnivariateOps[P, A]
 pub fn[P, A] UnivariateOps::add(Self[P, A], P, P) -> P
-pub fn[P, A] UnivariateOps::coefficient(Self[P, A], P, Int) -> A
-pub fn[P, A] UnivariateOps::coefficient_checked(Self[P, A], P, Int) -> A?
+pub fn[P, A] UnivariateOps::coefficient(Self[P, A], P, Int32) -> A
+pub fn[P, A] UnivariateOps::coefficient_checked(Self[P, A], P, Int32) -> A?
 pub fn[P, A] UnivariateOps::eval(Self[P, A], P, A) -> A
 pub fn[P, A] UnivariateOps::from_coefficients(Self[P, A], Array[A]) -> P
 pub fn[P, A] UnivariateOps::mul(Self[P, A], P, P) -> P
-pub fn[P, A] UnivariateOps::new(() -> P, () -> P, (Array[A]) -> P, (P) -> Array[A], (P, Int) -> A, (P, Int) -> A?, (P, A) -> A, (P, P) -> P, (P, P) -> P, (P, Int, A) -> P, (P, Int, A) -> P?, (P, UInt) -> P) -> Self[P, A]
+pub fn[P, A] UnivariateOps::new(() -> P, () -> P, (Array[A]) -> P, (P) -> Array[A], (P, Int32) -> A, (P, Int32) -> A?, (P, A) -> A, (P, P) -> P, (P, P) -> P, (P, Int32, A) -> P, (P, Int32, A) -> P?, (P, UInt32) -> P) -> Self[P, A]
 pub fn[P, A] UnivariateOps::one(Self[P, A]) -> P
-pub fn[P, A] UnivariateOps::pow(Self[P, A], P, UInt) -> P
-pub fn[P, A] UnivariateOps::scale(Self[P, A], P, Int, A) -> P
-pub fn[P, A] UnivariateOps::scale_checked(Self[P, A], P, Int, A) -> P?
+pub fn[P, A] UnivariateOps::pow(Self[P, A], P, UInt32) -> P
+pub fn[P, A] UnivariateOps::scale(Self[P, A], P, Int32, A) -> P
+pub fn[P, A] UnivariateOps::scale_checked(Self[P, A], P, Int32, A) -> P?
 pub fn[P, A] UnivariateOps::to_coefficients(Self[P, A], P) -> Array[A]
 pub fn[P, A] UnivariateOps::zero(Self[P, A]) -> P
 
 type Variable derive(Compare, Eq, @debug.Debug)
-pub fn Variable::compare(Self, Self) -> Int
+pub fn Variable::compare(Self, Self) -> Int32
 pub fn Variable::equal(Self, Self) -> Bool
-pub fn Variable::index(Self) -> Int
+pub fn Variable::index(Self) -> Int32
 pub fn Variable::name(Self) -> String
 pub fn Variable::to_string(Self) -> String
 pub fn Variable::to_type_theory_name(Self) -> @Luna-Flow/type_theory/core.Name
@@ -101,11 +101,11 @@ pub fn VariableContext::extend_checked(Self, String) -> (Self, Variable)?
 pub fn VariableContext::extend_with(Self, String) -> (Self, Variable)
 pub fn VariableContext::from_names(Array[String]) -> Self
 pub fn VariableContext::from_names_checked(Array[String]) -> Self?
-pub fn VariableContext::get(Self, Int) -> Variable?
+pub fn VariableContext::get(Self, Int32) -> Variable?
 pub fn VariableContext::new() -> Self
 pub fn VariableContext::require_type_theory_name(Self, @Luna-Flow/type_theory/core.Name) -> Variable
 pub fn VariableContext::require_variable(Self, String) -> Variable
-pub fn VariableContext::size(Self) -> Int
+pub fn VariableContext::size(Self) -> Int32
 pub fn VariableContext::variable(Self, String) -> Variable?
 pub fn VariableContext::variable_by_type_theory_name(Self, @Luna-Flow/type_theory/core.Name) -> Variable?
 pub fn VariableContext::variables(Self) -> Array[Variable]
@@ -126,7 +126,7 @@ pub(open) trait Copyable {
 }
 
 pub(open) trait HasArity {
-  fn arity(Self) -> Int
+  fn arity(Self) -> Int32
 }
 
 pub(open) trait HasContext {
@@ -134,11 +134,11 @@ pub(open) trait HasContext {
 }
 
 pub(open) trait HasDegree {
-  fn degree(Self) -> Int?
+  fn degree(Self) -> Int32?
 }
 
 pub(open) trait HasLength {
-  fn length(Self) -> Int
+  fn length(Self) -> Int32
 }
 
 pub(open) trait HasShape {
@@ -146,11 +146,11 @@ pub(open) trait HasShape {
 }
 
 pub(open) trait HasTermCount {
-  fn term_count(Self) -> Int
+  fn term_count(Self) -> Int32
 }
 
 pub(open) trait HasTotalDegree {
-  fn total_degree(Self) -> UInt?
+  fn total_degree(Self) -> UInt32?
 }
 
 pub(open) trait IsZero {
