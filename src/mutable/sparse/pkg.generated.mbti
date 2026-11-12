@@ -13,7 +13,8 @@ import {
 // Errors
 
 // Types and methods
-type SparsePolynomial[A] derive(@debug.Debug)
+#derive(@debug.Debug)
+type SparsePolynomial[A]
 pub fn[A : Eq + @luna-generic.AddMonoid] SparsePolynomial::add(Self[A], Self[A]) -> Self[A]
 pub fn[A : Eq + @luna-generic.AddMonoid] SparsePolynomial::add_inplace(Self[A], Self[A]) -> Unit
 pub fn[A : Eq + @luna-generic.AddMonoid] SparsePolynomial::add_term_inplace(Self[A], @core.ExponentVector, A) -> Unit

@@ -1,9 +1,10 @@
 ///|
 /// Named variable with a stable context-local index.
+#derive(Eq, Compare, Debug)
 struct Variable {
   name : String
   index : Int32
-} derive(Eq, Compare, Debug)
+}
 
 ///|
 pub fn Variable::name(self : Variable) -> String {
@@ -27,9 +28,10 @@ pub impl Show for Variable with fn output(self, logger) {
 
 ///|
 /// Variable table used by context-aware multivariate polynomials.
+#derive(Eq, Debug)
 struct VariableContext {
   variables : @core_vector.Vector[Variable]
-} derive(Eq, Debug)
+}
 
 ///|
 pub fn VariableContext::new() -> VariableContext {

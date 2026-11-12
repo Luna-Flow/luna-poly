@@ -1,8 +1,9 @@
 ///|
 /// Mutable multivariate polynomial backed by a canonical sorted term array.
+#derive(Eq, Debug)
 struct TermPolynomial[A] {
   mut terms : Array[(ExponentVector, A)]
-} derive(Eq, Debug)
+}
 
 ///|
 pub fn[A : Eq + AddMonoid] TermPolynomial::from_terms(

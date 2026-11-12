@@ -1,9 +1,10 @@
 ///|
 /// Canonical exponent vector. Trailing zero exponents are never stored.
+#derive(Debug)
 struct ExponentVector {
   exponents : @core_vector.Vector[UInt32]
   degree : UInt32
-} derive(Debug)
+}
 
 ///|
 fn ExponentVector::from_vector(

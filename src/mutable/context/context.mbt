@@ -1,8 +1,9 @@
 ///|
 /// Mutable wrapper around the immutable context-aware polynomial model.
+#derive(Debug)
 struct ContextPolynomial[A] {
   mut value : @immut_context.ContextPolynomial[A]
-} derive(Debug)
+}
 
 ///|
 pub(all) enum ContextSubstitutionValue[A] {

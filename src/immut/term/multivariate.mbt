@@ -1,8 +1,9 @@
 ///|
 /// Immutable multivariate polynomial backed by a canonical sorted term array.
+#derive(Eq, Debug)
 struct TermPolynomial[A] {
   terms : @core_vector.Vector[(ExponentVector, A)]
-} derive(Eq, Debug)
+}
 
 ///|
 fn[A : Eq + AddMonoid] normalize_terms(
