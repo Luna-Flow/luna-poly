@@ -4,8 +4,11 @@ All notable changes to `Luna-Flow/luna-poly` are listed here. The format follows
 
 ## Unreleased
 
+## 0.4.1 - 2026-11-12
+
 ### Changed
 
+- Dependencies: `Luna-Flow/arithmetic` 0.5.2 (was 0.5.1), `Luna-Flow/type_theory` 0.4.1 (was 0.4.0).
 - Require MoonBit `moonc` 0.10.20 or later, verified with `moon 0.1.20261104` and `moonc v0.10.20`: `derive(...)` clauses are now `#derive(...)` attributes, which older 0.10 compilers ignore. No public API changed.
 
 ## 0.4.0 - 2026-10-13
