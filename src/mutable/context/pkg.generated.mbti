@@ -13,7 +13,8 @@ import {
 // Errors
 
 // Types and methods
-type ContextPolynomial[A] derive(@debug.Debug)
+#derive(@debug.Debug)
+type ContextPolynomial[A]
 pub fn[A : Eq + @luna-generic.AddMonoid] ContextPolynomial::add(Self[A], Self[A]) -> Self[A]
 pub fn[A : Eq + @luna-generic.AddMonoid] ContextPolynomial::add_inplace(Self[A], Self[A]) -> Unit
 pub fn[A] ContextPolynomial::arity(Self[A]) -> Int32

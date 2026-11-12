@@ -1,8 +1,9 @@
 ///|
 /// Immutable dense univariate polynomial in ascending coefficient order.
+#derive(Eq, Compare, Debug)
 struct DensePolynomial[A] {
   coefficients : @core_vector.Vector[A]
-} derive(Eq, Compare, Debug)
+}
 
 ///|
 fn[A : Eq + Zero] DensePolynomial::from_vector(

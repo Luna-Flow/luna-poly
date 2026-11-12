@@ -34,11 +34,12 @@ pub(open) trait HasContext {
 }
 
 ///|
+#derive(Eq, Debug)
 pub enum PolynomialShape {
   Univariate(length~ : Int32)
   Multivariate(arity~ : Int32, term_count~ : Int32)
   Contextual(context~ : VariableContext, arity~ : Int32, term_count~ : Int32)
-} derive(Eq, Debug)
+}
 
 ///|
 pub fn PolynomialShape::univariate(length : Int32) -> PolynomialShape {

@@ -1,15 +1,17 @@
 ///|
+#derive(Debug)
 priv enum ContextPolynomialStorage[A] {
   TermStorage(TermPolynomial[A])
   SparseStorage(SparsePolynomial[A])
-} derive(Debug)
+}
 
 ///|
 /// Context-bound multivariate polynomial with selectable term or sparse storage.
+#derive(Debug)
 struct ContextPolynomial[A] {
   context : VariableContext
   storage : ContextPolynomialStorage[A]
-} derive(Debug)
+}
 
 ///|
 pub(all) enum ContextSubstitutionValue[A] {

@@ -13,7 +13,8 @@ import {
 // Errors
 
 // Types and methods
-type DensePolynomial[A] derive(Compare, Eq, @debug.Debug)
+#derive(Compare, Eq, @debug.Debug)
+type DensePolynomial[A]
 pub fn[A : Eq + @luna-generic.AddMonoid] DensePolynomial::add(Self[A], Self[A]) -> Self[A]
 pub fn[A : Eq + @luna-generic.AddMonoid] DensePolynomial::add_inplace(Self[A], Self[A]) -> Unit
 pub fn[A] DensePolynomial::clear(Self[A]) -> Unit

@@ -1,8 +1,9 @@
 ///|
 /// Immutable multivariate polynomial backed by an ordered map.
+#derive(Debug)
 struct SparsePolynomial[A] {
   terms : @sorted_map.SortedMap[ExponentVector, A]
-} derive(Debug)
+}
 
 ///|
 pub fn[A] SparsePolynomial::new() -> SparsePolynomial[A] {

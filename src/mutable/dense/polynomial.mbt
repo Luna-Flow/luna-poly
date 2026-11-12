@@ -1,8 +1,9 @@
 ///|
 /// Mutable dense univariate polynomial with canonical trailing-zero handling.
+#derive(Eq, Compare, Debug)
 struct DensePolynomial[A] {
   mut coefficients : Array[A]
-} derive(Eq, Compare, Debug)
+}
 
 ///|
 fn[A : Eq + Zero] canonical_coefficients(values : Array[A]) -> Array[A] {

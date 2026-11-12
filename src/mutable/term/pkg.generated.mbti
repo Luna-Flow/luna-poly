@@ -13,7 +13,8 @@ import {
 // Errors
 
 // Types and methods
-type TermPolynomial[A] derive(Eq, @debug.Debug)
+#derive(Eq, @debug.Debug)
+type TermPolynomial[A]
 pub fn[A : Eq + @luna-generic.AddMonoid] TermPolynomial::add(Self[A], Self[A]) -> Self[A]
 pub fn[A : Eq + @luna-generic.AddMonoid] TermPolynomial::add_inplace(Self[A], Self[A]) -> Unit
 pub fn[A : Eq + @luna-generic.AddMonoid] TermPolynomial::add_term_inplace(Self[A], @core.ExponentVector, A) -> Unit
