@@ -18,7 +18,7 @@ This tutorial shows how to use the shared layer of `luna-poly`: exponent vectors
 Add the module:
 
 ```bash
-moon add Luna-Flow/luna-poly@0.4.0
+moon add Luna-Flow/luna-poly@0.4.1
 ```
 
 Import the package with an alias, so that it does not clash with `Luna-Flow/type_theory/core`, and the immutable facade for concrete polynomials:

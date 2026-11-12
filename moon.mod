@@ -1,11 +1,11 @@
 name = "Luna-Flow/luna-poly"
 
-version = "0.4.0"
+version = "0.4.1"
 
 import {
-  "Luna-Flow/arithmetic@0.5.1",
+  "Luna-Flow/arithmetic@0.5.2",
   "Luna-Flow/luna-generic@0.4.0",
-  "Luna-Flow/type_theory@0.4.0",
+  "Luna-Flow/type_theory@0.4.1",
 }
 
 readme = "README.md"
