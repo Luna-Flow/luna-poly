@@ -31,7 +31,7 @@ import {
 }
 ```
 
-The package needs the MoonBit toolchain 0.10 or later (`moonc` ≥ 0.10). It depends on `Luna-Flow/luna-generic` 0.4.0, `Luna-Flow/arithmetic` 0.5.1 and `Luna-Flow/type_theory` 0.4.0, which `moon` installs automatically.
+The package needs the MoonBit toolchain 0.10.20 or later (`moonc` ≥ 0.10.20). It depends on `Luna-Flow/luna-generic` 0.4.0, `Luna-Flow/arithmetic` 0.5.1 and `Luna-Flow/type_theory` 0.4.0, which `moon` installs automatically.
 
 ## Pages
 
